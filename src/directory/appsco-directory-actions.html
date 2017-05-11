@@ -49,12 +49,12 @@
             :host .bulk-action[hidden] {
                 display: none !important;
             }
-            :host .add-application-button {
-                @apply(--add-application-button);
+            :host .add-account-button {
+                @apply(--add-item-action);
             }
-            .add-application-icon-button {
+            .add-item-icon-button {
                 display: none;
-                @apply(--add-application-icon-button);
+                @apply(--add-item-icon-button);
             }
             :host .flex-none {
                 @apply(--layout-flex-none);
@@ -155,11 +155,11 @@
         <template is="dom-if" if="[[ !_subscriptionInfo ]]">
             <div class="action flex-none">
                 <paper-button
-                        class="add-application-button"
+                        class="add-account-button"
                         on-tap="_onAddAccountAction">Add account</paper-button>
                 <paper-icon-button id="addAccountAction"
                                    icon="icons:add-circle"
-                                   class="add-application-icon-button"
+                                   class="add-item-icon-button"
                                    alt="Add application"
                                    on-tap="_onAddAccountAction"></paper-icon-button>
                 <paper-tooltip for="addAccountAction"
@@ -168,11 +168,11 @@
 
             <div class="action flex-none">
                 <paper-button
-                        class="add-application-button"
+                        class="add-account-button"
                         on-tap="_onImportAccountsAction">Import accounts</paper-button>
                 <paper-icon-button id="importAccountsAction"
                                    icon="icons:add-circle"
-                                   class="add-application-icon-button"
+                                   class="add-item-icon-button"
                                    alt="Add application"
                                    on-tap="_onImportAccountsAction"></paper-icon-button>
                 <paper-tooltip for="importAccountsAction"

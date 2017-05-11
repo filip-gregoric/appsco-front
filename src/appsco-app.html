@@ -429,7 +429,7 @@
                                     name="home"
                                     authorization-token="[[ authorizationToken ]]"
                                     filter-api="[[ api.dashboards ]]?extended=1"
-                                    on-add-application="_onAddApplication"
+                                    on-add-item-action="_onAddItemAction"
                                     on-search="_onSearchApplications"
                                     on-search-clear="_onSearchApplicationsClear"
                                     on-group-selected="_onGroupSelected"
@@ -471,7 +471,7 @@
                                     name="applications"
                                     authorization-token="[[ authorizationToken ]]"
                                     filter-api="[[ api.dashboards ]]?extended=1"
-                                    on-add-application="_onCompanyAddApplication"
+                                    on-add-item-action="_onAddCompanyItemAction"
                                     on-search="_onSearchCompanyApplications"
                                     on-search-clear="_onSearchCompanyApplicationsClear"
                                     on-page-global-info="_onInfoAction"
@@ -1800,8 +1800,14 @@
 
             },
 
-            _onAddApplication: function() {
-                this.$.appscoApplicationAdd.toggle();
+            _onAddItemAction: function(event) {
+                var action = event.detail.action;
+
+                switch (action) {
+                    case 'catalogue-application':
+                        this.$.appscoApplicationAdd.toggle();
+                        break;
+                }
             },
 
             _onApplicationAdded: function(event) {
@@ -2365,8 +2371,14 @@
                 this._notifyAccountLog();
             },
 
-            _onCompanyAddApplication: function() {
-                this.$.appscoCompanyApplicationsAdd.toggle();
+            _onAddCompanyItemAction: function() {
+                var action = event.detail.action;
+
+                switch (action) {
+                    case 'catalogue-application':
+                        this.$.appscoCompanyApplicationsAdd.toggle();
+                        break;
+                }
             },
 
             _onCompanyApplicationAdded: function(event) {
