@@ -522,7 +522,7 @@
             },
 
             _onApplication: function(event) {
-                if(['unpw', 'item', 'login', 'none'].indexOf(event.detail.application.auth_type) > -1) {
+                if(['unpw', 'item', 'login', 'none', 'saml'].indexOf(event.detail.application.auth_type) > -1) {
                     window.open(event.detail.application.meta.plugin_go, "_blank");
                 } else {
                     this._onViewApplicationInfo(event);
