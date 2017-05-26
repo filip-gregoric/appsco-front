@@ -1,0 +1,467 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+
+<link rel="import" href="../../components/appsco-loader.html">
+<link rel="import" href="appsco-company-application-add-settings.html">
+<link rel="import" href="appsco-company-application-sso-list.html">
+
+<dom-module id="appsco-company-sso-application-add">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            :host paper-dialog {
+                width: 670px;
+                top: 20vh;
+                @apply(--appsco-paper-dialog);
+            }
+            :host paper-dialog-scrollable > * {
+                @apply(--paper-dialog-scrollable-child);
+            }
+            :host neon-animated-pages > * {
+                @apply(--neon-animated-pages);
+            }
+            :host neon-animated-pages > .iron-selected {
+                position: relative;
+            }
+            appsco-loader {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            :host .buttons {
+                padding-right: 24px;
+            }
+            :host .buttons paper-button {
+                @apply(--paper-dialog-button);
+            }
+            :host .buttons paper-button.add-action {
+                margin: 0 0 0 10px;
+                display: none;
+                @apply(--paper-dialog-confirm-button);
+            }
+            :host .buttons paper-button[dialog-dismiss] {
+                @apply(--paper-dialog-dismiss-button);
+            }
+        </style>
+
+        <iron-ajax auto
+                   url="[[ itemApi ]]"
+                   on-response="_onItemResponse"
+                   headers="[[ _computedHeaders ]]">
+        </iron-ajax>
+
+        <paper-dialog
+                with-backdrop
+                id="addApplicationDialog"
+                entry-animation="scale-up-animation"
+                exit-animation="fade-out-animation"
+                on-iron-overlay-opened="_onDialogOpened"
+                on-iron-overlay-closed="_onDialogClosed">
+
+            <h2>[[ _dialogTitle ]]</h2>
+
+            <appsco-loader active="[[ _loader ]]" loader-alt="Appsco is processing request" multi-color></appsco-loader>
+
+            <paper-dialog-scrollable>
+                <neon-animated-pages class="flex"
+                                     selected="{{ _selected }}"
+                                     attr-for-selected="name"
+                                     on-neon-animation-finish="_onPageAnimationFinish">
+
+                    <appsco-company-application-sso-list
+                            id="appscoApplicationAddSearch"
+                            name="appsco-application-add-search"
+                            authorization-token="[[ authorizationToken ]]"
+                            applications-template-api="[[ applicationsTemplateApi ]]"
+                            selected-application="{{ _selectedApplication }}"
+                            on-application-select="_onApplicationSelect"
+                            on-add-custom-sso="_onAddItem">
+                    </appsco-company-application-sso-list>
+
+                    <appsco-company-application-add-settings
+                            id="appscoApplicationAddSettings"
+                            name="appsco-application-add-settings"
+                            application="[[ _selectedApplication ]]"
+                            authorization-token="[[ authorizationToken ]]"
+                            add-application-api="[[ addApplicationApi ]]"
+                            loader="{{ _loader }}"
+                            on-application-added="_onApplicationAdded">
+                    </appsco-company-application-add-settings>
+
+                </neon-animated-pages>
+            </paper-dialog-scrollable>
+
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button
+                        id="addApplicationAction"
+                        class="add-action"
+                        on-tap="_onAddApplication">
+                    Add
+                </paper-button>
+            </div>
+        </paper-dialog>
+
+        <iron-a11y-keys  keys="enter"
+                         on-keys-pressed="_onEnter">
+        </iron-a11y-keys>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'appsco-company-sso-application-add',
+
+            properties: {
+
+                /**
+                 * Selected page.
+                 * It has value of component's 'name' attribute.
+                 */
+                _selected: {
+                    type: String,
+                    value: 'appsco-application-add-search',
+                    notify: true
+                },
+
+                /**
+                 * Selected application from search list.
+                 */
+                _selectedApplication: {
+                    type: Object,
+                    value: function() {
+                        return {};
+                    },
+                    notify: true
+                },
+
+                /**
+                 * Link application resource.
+                 */
+                _link: {
+                    type: Object,
+                    value: function() {
+                        return {};
+                    }
+                },
+
+                /**
+                 * Item application resource.
+                 */
+                _item: {
+                    type: Object,
+                    value: function() {
+                        return {};
+                    }
+                },
+
+                /**
+                 * Authorization token
+                 */
+                authorizationToken: {
+                    type: String,
+                    value: ''
+                },
+
+                /**
+                 * Applications template API link.
+                 * API to get applications.
+                 */
+                applicationsTemplateApi: {
+                    type: String
+                },
+
+                /**
+                 * Dashboard API link.
+                 * API on which dashboard to save new application as icon.
+                 */
+                addApplicationApi: {
+                    type: String
+                },
+
+                /**
+                 * Get custom link resource API link.
+                 * API to get custom link resource.
+                 */
+                linkApi: {
+                    type: String
+                },
+
+                /**
+                 * Get custom item API link.
+                 * API to get custom item resource.
+                 */
+                itemApi: {
+                    type: String
+                },
+
+                /**
+                 * Computed headers.
+                 * It contains authorization token.
+                 */
+                _computedHeaders: {
+                    type: Object,
+                    computed: '_computeHeaders(authorizationToken)'
+                },
+
+                _dialogTitle: {
+                    type: String,
+                    value: 'Add application'
+                },
+
+                /**
+                 * Indicates wheather add action should be displayed or not.
+                 * It depends on which page is currently displayed.
+                 */
+                _addAction: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * Indicates if appsco loader should be displayed.
+                 */
+                _loader: {
+                    type: Boolean,
+                    value: false,
+                    observer: '_onLoaderChanged'
+                },
+
+                /**
+                 * Animation config for add application action button (_addAction).
+                 */
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': {
+                                name: 'fade-in-animation',
+                                node: this.$.addApplicationAction,
+                                timing: {
+                                    duration: 300
+                                }
+                            },
+                            'exit': {
+                                name: 'fade-out-animation',
+                                node: this.$.addApplicationAction,
+                                timing: {
+                                    duration: 200
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            behaviors: [
+                Polymer.NeonAnimationRunnerBehavior
+            ],
+
+            listeners: {
+                '_selected-changed': '_onSelectedChanged',
+                'neon-animation-finish': '_onAddActionAnimationFinish'
+            },
+
+            /**
+             * Computes authorization headers.
+             *
+             * @param {Object} authorizationToken
+             * @returns {{Authorization: string}}
+             * @private
+             */
+            _computeHeaders: function (authorizationToken) {
+                return {
+                    'Authorization': 'token ' + authorizationToken
+                }
+            },
+
+            _onLoaderChanged: function(loader) {
+                this._loader = loader;
+            },
+
+            _onLinkResponse: function(event) {
+                var link = event.detail.response;
+
+                link.title = 'Link';
+                this.set('_link', link);
+            },
+
+            _onItemResponse: function(event) {
+                var customApp = event.detail.response;
+
+                customApp.title = 'Application title';
+                this.set('_item', customApp);
+            },
+
+            /**
+             * Called after selected page has been changed.
+             * According to selected page it shows / hides add application action (_addAction).
+             *
+             * @private
+             */
+            _onSelectedChanged: function() {
+
+                if (this._selected != 'appsco-application-add-search') {
+                    this.$.addApplicationAction.style.display = 'block';
+                    this.playAnimation('entry');
+                    this._addAction = true;
+                }
+                else {
+                    this._addAction = false;
+                    this.playAnimation('exit');
+                }
+
+            },
+
+            /**
+             * Called after add application action animation is finished.
+             * It hides action if it shouldn't be visible.
+             *
+             * @private
+             */
+            _onAddActionAnimationFinish: function() {
+
+                if (!this._addAction) {
+                    this.$.addApplicationAction.style.display = 'none';
+                }
+
+            },
+
+            /**
+             * Called after application has been selected from search list.
+             * It shows appsco-application-add-settings page.
+             *
+             * @private
+             */
+            _onApplicationSelect: function() {
+                this._selected = 'appsco-application-add-settings';
+            },
+
+            /**
+             * Called after clicked on Add Custom Application action.
+             * It sets selected application to Item resource.
+             *
+             * @private
+             */
+            _onAddItem: function() {
+                this.set('_selectedApplication', this._item);
+                this._onApplicationSelect();
+                this._dialogTitle = 'Add custom application';
+            },
+
+            /**
+             * Called after clicked on Add Link action.
+             *
+             * @private
+             */
+            _onAddLink: function() {
+                this.set('_selectedApplication', this._link);
+                this._onApplicationSelect();
+                this._dialogTitle = 'Add link';
+            },
+
+            /**
+             * Called after dialog has been opened.
+             *
+             * @private
+             */
+            _onDialogOpened: function() {
+                this._dialogTitle = 'Add application';
+                this.$.appscoApplicationAddSearch.setup();
+            },
+
+            /**
+             * Called after dialog has been closed.
+             * It resets search and settings pages.
+             * It sets selected page to appsco-application-add-search.
+             *
+             * @private
+             */
+            _onDialogClosed: function() {
+                this._selectedApplication = {};
+                this.$.appscoApplicationAddSearch.reset();
+                this.$.appscoApplicationAddSettings.reset();
+                this._selected = 'appsco-application-add-search';
+                this._dialogTitle = 'Add application';
+            },
+
+            /**
+             * Submits signup form on ENTER key using iron-a11y-keys component.
+             *
+             * @private
+             */
+            _onEnter: function() {
+                this._onAddApplication();
+            },
+
+            /**
+             * Called when user wants to save chosen application.
+             * It calls addApplication method of appsco-application-add-settings page.
+             *
+             * @private
+             */
+            _onAddApplication: function() {
+                this.$.appscoApplicationAddSettings.addApplication();
+            },
+
+            /**
+             * Called after application has been successfully added.
+             * It closes the dialog.
+             *
+             * @private
+             */
+            _onApplicationAdded: function() {
+                this._closeDialog();
+            },
+
+            _closeDialog: function() {
+                this.$.addApplicationDialog.close();
+                this.$.addApplicationAction.disabled = false;
+            },
+
+            /**
+             * Toggles application add dialog.
+             */
+            toggle: function() {
+                this.$.addApplicationDialog.toggle();
+            },
+
+            _onPageAnimationFinish: function(event) {
+                var fromPage = event.detail.fromPage,
+                    toPage = event.detail.toPage;
+
+                switch(fromPage.getAttribute('name')) {
+                    case 'appsco-application-add-settings':
+                    case 'appsco-application-add-search':
+                        fromPage.reset();
+                        break;
+
+                    default:
+                        break;
+                }
+
+                switch(toPage.getAttribute('name')) {
+                    case 'appsco-application-add-search':
+                        toPage.setup();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+
+        });
+    </script>
+</dom-module>

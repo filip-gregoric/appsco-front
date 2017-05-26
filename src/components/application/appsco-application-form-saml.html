@@ -1,0 +1,123 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-textarea.html">
+
+<dom-module id="appsco-application-form-saml">
+    <template>
+        <paper-input
+                id="samlIssuer"
+                data-field
+                label="SAML Issuer"
+                value="[[ claims.samlIssuer ]]"
+                name$="[[ claimsNamePrefix ]][samlIssuer]"
+                error-message="Please enter SAML Issuer"
+                required
+        ></paper-input>
+        <paper-input
+                id="domain"
+                data-field
+                label="Domain registered at SP"
+                value="[[ claims.domain ]]"
+                name$="[[ claimsNamePrefix ]][domain]"
+                error-message="Please enter domain"
+                required
+        ></paper-input>
+        <paper-input
+                id="nameIdPolicy"
+                data-field
+                label="Name id policy"
+                value="[[ claims.nameIdPolicy ]]"
+                name$="[[ claimsNamePrefix ]][nameIdPolicy]"
+                error-message="Please enter name id policy"
+                required
+        ></paper-input>
+        <paper-input
+                id="confirmationMethod"
+                data-field
+                label="Confirmation method"
+                value="[[ claims.confirmationMethod ]]"
+                name$="[[ claimsNamePrefix ]][confirmationMethod]"
+                error-message="Please enter confirmation method"
+                required
+        ></paper-input>
+        <paper-input
+                id="authenticationContext"
+                data-field
+                label="Authentication context"
+                value="[[ claims.authenticationContext ]]"
+                name$="[[ claimsNamePrefix ]][authenticationContext]"
+                error-message="Please enter authentication context"
+                required
+        ></paper-input>
+        <paper-input
+                id="allowCreate"
+                data-field
+                label="Allow create"
+                value="[[ claims.allowCreate ]]"
+                name$="[[ claimsNamePrefix ]][allowCreate]"
+                required
+        ></paper-input>
+    </template>
+    <script>
+        Polymer({
+            is: 'appsco-application-form-saml',
+
+            properties: {
+                claims: {
+                    type: Object,
+                    value: function () { return {}; }
+                },
+
+                claimsNamePrefix: {
+                    type: String,
+                    value: "claims_saml"
+                }
+            },
+
+            isValid: function() {
+                var valid = true;
+                Polymer.dom(this.root).querySelectorAll('[data-field]').forEach(function(item, key) {
+                        item.validate();
+                        valid = valid && !item.invalid;
+                }.bind(this));
+
+                return valid;
+            },
+
+            encodedBodyValues: function () {
+                var body = '';
+
+                Polymer.dom(this.root).querySelectorAll('[data-field]').forEach(function(item, key) {
+                    if(item.value) {
+                        body += body === '' ? '' : '&';
+                        body += encodeURIComponent(item.getAttribute('name')) + '=' + encodeURIComponent(item.value)
+                    }
+                }.bind(this));
+
+                return body;
+            },
+
+            didFieldsChanged: function() {
+                var fieldChanged = false,
+                    claimsExist = false;
+                for ( var prop in this.claims ) {
+                    claimsExist = true;
+                }
+                if(!claimsExist) {
+                    Polymer.dom(this.root).querySelectorAll('[data-field]').forEach(function(item, key) {
+                        fieldChanged = fieldChanged || (item.value && '' !== item.value);
+                    }.bind(this));
+
+                    return fieldChanged;
+                }
+
+                Polymer.dom(this.root).querySelectorAll('[data-field]').forEach(function(item, key) {
+                    fieldChanged = fieldChanged || this.claims[item.getAttribute('id')] !== item.value;
+                }.bind(this));
+
+                return fieldChanged;
+            }
+        });
+    </script>
+</dom-module>

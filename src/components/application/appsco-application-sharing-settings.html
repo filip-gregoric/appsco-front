@@ -21,6 +21,7 @@
 <link rel="import" href="appsco-application-form-login.html">
 <link rel="import" href="appsco-application-form-securenote.html">
 <link rel="import" href="appsco-application-form-softwarelicence.html">
+<link rel="import" href="appsco-application-form-saml.html">
 
 <!--
 `appsco-application-sharing-settings`
@@ -157,6 +158,13 @@ Custom property | Description | Default
                         claims="[[ application.claims ]]"
                 ></appsco-application-form-softwarelicence>
             </template>
+            <template is="dom-if" if="[[ _samlAuth ]]" restamp>
+                <appsco-application-form-saml
+                        data-claims
+                        claims-name-prefix="application_claims[claims]"
+                        claims="[[ application.claims ]]"
+                ></appsco-application-form-saml>
+            </template>
 
             <paper-button class="submit-button"
                           on-tap="_submit">Save</paper-button>
@@ -243,6 +251,10 @@ Custom property | Description | Default
                 _softwareLicenceAuth: {
                     type: Boolean,
                     computed: "_computeAuthType(application, 'softwarelicence')"
+                },
+                _samlAuth: {
+                    type: Boolean,
+                    computed: "_computeAuthType(application, 'saml')"
                 },
 
                 /**

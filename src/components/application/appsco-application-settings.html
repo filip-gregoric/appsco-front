@@ -15,6 +15,7 @@
 <link rel="import" href="appsco-application-form-passport.html">
 <link rel="import" href="appsco-application-form-securenote.html">
 <link rel="import" href="appsco-application-form-softwarelicence.html">
+<link rel="import" href="appsco-application-form-saml.html">
 
 <!--
 `appsco-application-settings`
@@ -119,6 +120,9 @@ Custom property | Description | Default
         </template>
         <template is="dom-if" if="[[ _softwareLicenceAuth ]]" restamp>
             <appsco-application-form-softwarelicence data-claims claims="[[ _claims ]]"></appsco-application-form-softwarelicence>
+        </template>
+        <template is="dom-if" if="[[ _samlAuth ]]" restamp>
+            <appsco-application-form-saml data-claims claims="[[ _claims ]]"></appsco-application-form-saml>
         </template>
 
         <template is="dom-if" if="[[ formSubmitAction ]]" restamp>
@@ -232,6 +236,10 @@ Custom property | Description | Default
                 _softwareLicenceAuth: {
                     type: Boolean,
                     computed: "_computeAuthType(application, company, 'softwarelicence', applicationTpl)"
+                },
+                _samlAuth: {
+                    type: Boolean,
+                    computed: "_computeAuthType(application, company, 'saml', applicationTpl)"
                 },
 
                 _supportedAuthTypes: {

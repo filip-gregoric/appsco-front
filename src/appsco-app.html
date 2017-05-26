@@ -43,6 +43,7 @@
 <link rel="import" href="components/application/appsco-application-subscriber-revoke.html">
 <link rel="import" href="components/application/appsco-application-revoke.html">
 <link rel="import" href="components/application/company/appsco-company-application-add.html">
+<link rel="import" href="components/application/company/appsco-company-sso-application-add.html">
 <link rel="import" href="components/application/company/appsco-company-application-share.html">
 <link rel="import" href="components/application/company/appsco-company-application-remove.html">
 <link rel="import" href="components/application/company/appsco-application-orgunit.html">
@@ -923,6 +924,15 @@
                 on-application-added="_onCompanyApplicationAdded">
         </appsco-company-application-add>
 
+        <appsco-company-sso-application-add
+                id="appscoCompanySSOApplicationsAdd"
+                authorization-token="[[ authorizationToken ]]"
+                applications-template-api="[[ api.applicationTemplates ]]"
+                add-application-api="[[ companyApplicationsApi ]]"
+                link-api="[[ api.link ]]"
+                item-api="[[ api.item ]]"
+                on-application-added="_onCompanyApplicationAdded">
+        </appsco-company-sso-application-add>
 
         <appsco-application-orgunit
                 id="appscoApplicationOrgunit"
@@ -2460,6 +2470,9 @@
                     applicationTemplate = event.detail.applicationTemplate;
 
                 switch (action) {
+                    case 'sso-application':
+                        this.$.appscoCompanySSOApplicationsAdd.toggle();
+                        break;
                     case 'catalogue-application':
                         this.$.appscoCompanyApplicationsAdd.toggle();
                         break;

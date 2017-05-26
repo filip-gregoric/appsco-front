@@ -411,6 +411,17 @@ Custom property | Description | Default
                 }
             },
 
+            attached: function () {
+                if(this.company) {
+                    this.unshift('_actionList', {
+                        value: 'sso-application',
+                        name: 'SSO Application',
+                        icon: 'icons:apps',
+                        tpl: ''
+                    });
+                }
+            },
+
             behaviors: [
                 Polymer.NeonAnimationRunnerBehavior
             ],
@@ -470,7 +481,6 @@ Custom property | Description | Default
             },
 
             _onAddItemActionSelect: function(event) {
-
                 this.fire('add-item-action', {
                     action: event.detail.item.value,
                     applicationTemplate: event.detail.item.tpl
