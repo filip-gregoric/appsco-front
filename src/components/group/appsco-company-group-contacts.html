@@ -301,6 +301,9 @@ Custom property | Description | Default
             },
 
             _onListApiChanged: function(url) {
+                if (!url) {
+                    return;
+                }
                 this._listApi = ((url.indexOf('extended') != -1) ? url : (url + '?extended=1')) + '&page=1&limit=' + this.size;
                 if (url && url.length > 0) {
                     this._loadContacts();

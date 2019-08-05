@@ -242,294 +242,363 @@
                                 attr-for-selected="name"
                                 on-neon-animation-finish="_onPageActionsAnimationFinish">
 
-                            <appsco-home-page-actions
-                                    id="appscoHomePageActions"
-                                    name="home"
-                                    account="[[ account ]]"
-                                    authorization-token="[[ authorizationToken ]]"
-                                    page-config-api="[[ api.pageConfigApi ]]"
-                                    page-config="[[ _pageConfig ]]"
-                                    page="[[ page ]]"
-                                    api-errors="[[ _apiErrors ]]"
-                                    on-add-item-action="_onAddItemAction"
-                                    on-search="_onSearchApplications"
-                                    on-search-clear="_onSearchApplicationsClear"
-                                    on-filter-items="_onFilterItemsAction"
-                                    on-add-new-folder="_onAddNewFolderAction"
-                                    disable-upgrade$="[[!api.me]]"></appsco-home-page-actions>
 
-                            <appsco-resource-page-actions
-                                    id="appscoApplicationPageActions"
-                                    name="resource"
-                                    on-back="_showHomePage"
-                                    on-resource-section="_onResourceActionApplicationPage"
-                                    on-search-subscribers="_onSearchSubscribers"
-                                    on-search-subscribers-clear="_onSearchSubscribersClear"
-                                    disable-upgrade$="[[!api.me]]"></appsco-resource-page-actions>
+                            <template is="dom-if" if="[[ _homePage ]]">
 
-                            <appsco-account-page-actions
-                                    id="appscoAccountPageActions"
-                                    name="account"
-                                    on-back="_onBackFromAccountAction"
-                                    on-resource-section="_onResourceActionPage"
-                                    on-advanced-settings="_onAccountAdvancedSettings"
-                                    disable-upgrade$="[[!api.me]]"></appsco-account-page-actions>
+                                <appsco-home-page-actions
+                                        id="appscoHomePageActions"
+                                        name="home"
+                                        account="[[ account ]]"
+                                        authorization-token="[[ authorizationToken ]]"
+                                        page-config-api="[[ api.pageConfigApi ]]"
+                                        page-config="[[ _pageConfig ]]"
+                                        page="[[ page ]]"
+                                        api-errors="[[ _apiErrors ]]"
+                                        on-add-item-action="_onAddItemAction"
+                                        on-search="_onSearchApplications"
+                                        on-search-clear="_onSearchApplicationsClear"
+                                        on-filter-items="_onFilterItemsAction"
+                                        on-add-new-folder="_onAddNewFolderAction"
+                                        disable-upgrade$="[[!api.me]]"></appsco-home-page-actions>
+                            </template>
 
-                            <appsco-company-account-page-actions
-                                    id="appscoCompanyAccountPageActions"
-                                    name="company-account"
-                                    on-back="_onBackFromAccountAction"
-                                    on-resource-section="_onResourceActionPage"
-                                    on-advanced-settings="_onAccountAdvancedSettings"
-                                    disable-upgrade$="[[!api.me]]"></appsco-company-account-page-actions>
+                            <template is="dom-if" if="[[ _resourcePage ]]">
+                                <appsco-resource-page-actions
+                                        id="appscoApplicationPageActions"
+                                        name="resource"
+                                        on-back="_showHomePage"
+                                        on-resource-section="_onResourceActionApplicationPage"
+                                        on-search-subscribers="_onSearchSubscribers"
+                                        on-search-subscribers-clear="_onSearchSubscribersClear"
+                                        disable-upgrade$="[[!api.me]]"></appsco-resource-page-actions>
+                            </template>
+                            
+                            <template is="dom-if" if="[[ _accountPage ]]">
+                                <appsco-account-page-actions
+                                        id="appscoAccountPageActions"
+                                        name="account"
+                                        on-back="_onBackFromAccountAction"
+                                        on-resource-section="_onResourceActionPage"
+                                        on-advanced-settings="_onAccountAdvancedSettings"
+                                        disable-upgrade$="[[!api.me]]"></appsco-account-page-actions>
+                            </template>
 
-                            <appsco-upgrade-page-actions
-                                    name="upgrade"
-                                    authorization-token="[[ authorizationToken ]]"
-                                    on-toggle-pricing="_onUpgradeTogglePricing"
-                                    disable-upgrade$="[[!api.me]]"></appsco-upgrade-page-actions>
+                            <template is="dom-if" if="[[ _companyAccountPage ]]">
+                                <appsco-company-account-page-actions
+                                        id="appscoCompanyAccountPageActions"
+                                        name="company-account"
+                                        on-back="_onBackFromAccountAction"
+                                        on-resource-section="_onResourceActionPage"
+                                        on-advanced-settings="_onAccountAdvancedSettings"
+                                        disable-upgrade$="[[!api.me]]"></appsco-company-account-page-actions>
+                            </template>
+                            
+                            <template is="dom-if" if="[[ _tryBusinessPage ]]">
+                                <appsco-upgrade-page-actions
+                                        name="upgrade"
+                                        authorization-token="[[ authorizationToken ]]"
+                                        on-toggle-pricing="_onUpgradeTogglePricing"
+                                        disable-upgrade$="[[!api.me]]"></appsco-upgrade-page-actions>
+                            </template>
 
-                            <appsco-company-home-page-actions id="appscoCompanyHomePageActions"
-                                                      name="company-home"
-                                                      authorization-token="[[ authorizationToken ]]"
-                                                      page-config-api="[[ api.pageConfigApi ]]"
-                                                      page-config="[[ _pageConfig ]]"
-                                                      page="[[ page ]]"
-                                                      api-errors="[[ _apiErrors ]]"
-                                                      on-search="_onSearchApplications"
-                                                      on-search-clear="_onSearchApplicationsClear"
-                                                      on-add-new-folder="_onAddNewFolderAction"
-                                                      disable-upgrade$="[[!api.me]]"></appsco-company-home-page-actions>
+                            <template is="dom-if" if="[[ _companyHomePage ]]">
+                                <appsco-company-home-page-actions id="appscoCompanyHomePageActions"
+                                                          name="company-home"
+                                                          authorization-token="[[ authorizationToken ]]"
+                                                          page-config-api="[[ api.pageConfigApi ]]"
+                                                          page-config="[[ _pageConfig ]]"
+                                                          page="[[ page ]]"
+                                                          api-errors="[[ _apiErrors ]]"
+                                                          on-search="_onSearchApplications"
+                                                          on-search-clear="_onSearchApplicationsClear"
+                                                          on-add-new-folder="_onAddNewFolderAction"
+                                                          disable-upgrade$="[[!api.me]]"></appsco-company-home-page-actions>
+                            </template>
 
-                            <appsco-contact-home-page-actions id="appscoContactHomePageActions"
-                                                              name="contact-home"
-                                                              authorization-token="[[ authorizationToken ]]"
-                                                              page-config-api="[[ api.pageConfigApi ]]"
-                                                              page-config="[[ _pageConfig ]]"
-                                                              page="[[ page ]]"
-                                                              api-errors="[[ _apiErrors ]]"
-                                                              on-search="_onSearchApplications"
-                                                              on-search-clear="_onSearchApplicationsClear"
-                                                              disable-upgrade$="[[!api.me]]"></appsco-contact-home-page-actions>
-
-                            <appsco-resources-page-actions id="appscoResourcesPageActions"
-                                    name="resources"
-                                    authorization-token="[[ authorizationToken ]]"
-                                    filter-api="[[ api.dashboards ]]?extended=1"
-                                    page-config-api="[[ api.pageConfigApi ]]"
-                                    page-config="[[ _pageConfig ]]"
-                                    page="[[ page ]]"
-                                    api-errors="[[ _apiErrors ]]"
-                                    resource-admin="[[ _resourceAdmin ]]"
-                                    on-add-item-action="_onAddCompanyItemAction"
-                                    on-import-resources="_onImportResourcesAction"
-                                    on-search="_onSearchCompanyApplications"
-                                    on-search-clear="_onSearchCompanyApplicationsClear"
-                                    on-select-all-resources="_onSelectAllResourcesAction"
-                                    on-share="_onShareResources"
-                                    on-remove="_onRemoveApplications"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-resources-page-actions>
-
-
-                            <appsco-manage-resource-page-actions
-                                    id="appscoManageApplicationPageActions"
-                                    name="manage-resource"
-                                    resource-admin="[[ _resourceAdmin ]]"
-                                    on-back="_showCompanyResourcesPage"
-                                    on-resource-section="_onResourceActionManageApplicationPage"
-                                    on-search-assignees="_onSearchAssignees"
-                                    on-search-assignees-clear="_onSearchAssigneesClear"
-                                    on-advanced-settings="_showAdvancedManageResourcePageOptions"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-manage-resource-page-actions>
-
-                            <appsco-directory-page-actions
-                                    id="appscoDirectoryPageActions"
-                                    name="directory"
-                                    authorization-token="[[ authorizationToken ]]"
-                                    on-add-account="_onCompanyAddAccount"
-                                    on-import-accounts="_onCompanyImportAccounts"
-                                    on-search="_onSearchAccounts"
-                                    on-search-clear="_onSearchAccountsClear"
-                                    on-upgrade="_fireUpgrade"
-                                    on-remove="_onRemoveAccounts"
-                                    on-select-all-company-roles="_onSelectAllCompanyRolesAction"
-                                    on-add-groups-to-company-roles="_onAddGroupsToCompanyRoles"
-                                    on-orgunits="_onAddAccountsToOrgunit"
-                                    on-manage-domains="_onManageDomains"
-                                    on-filter-roles="_onFilterRoles"
-                                    on-send-notification="_onSendNotificationToCompanyRoles"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-directory-page-actions>
-
-                            <appsco-manage-account-page-actions
-                                    name="manage-account"
-                                    on-back="_showCompanyDirectoryPage"
-                                    on-resource-section="_onResourceActionManageAccountPage"
-                                    on-advanced-settings="_showAdvancedManageAccountPageOptions"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-manage-account-page-actions>
-
-                            <appsco-contacts-page-actions
-                                    id="appscoContactsPageActions"
-                                    name="contacts"
-                                    on-add-contact="_onAddContactAction"
-                                    on-import-contacts="_onImportContactsAction"
-                                    on-delete-contacts="_onDeleteContactsAction"
-                                    on-add-groups-to-contacts="_onAddGroupsToContactsAction"
-                                    on-select-all-contacts="_onSelectAllContactsAction"
-                                    on-page-selected="_onContactsPageSelected"
-                                    on-search="_onSearchContacts"
-                                    on-search-clear="_onSearchContactsClear"
-                                    on-send-notification="_onSendNotificationToContacts"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-contacts-page-actions>
-
-                            <appsco-groups-page-actions id="appscoGroupsPageActions"
-                                                           name="groups"
-                                                           authorization-token="[[ authorizationToken ]]"
-                                                           on-add-company-group="_onAddCompanyGroupAction"
-                                                           on-search="_onSearchCompanyGroupAction"
-                                                           on-search-clear="_onSearchCompanyGroupClear"
-                                                           on-select-all-groups="_onSelectAllGroupsAction"
-                                                           on-remove-groups="_onRemoveGroupsAction"
-                                                           on-notify-groups="_onNotifyGroupsAction"
-                                                           disable-upgrade$="[[!api.me]]"
-                            ></appsco-groups-page-actions>
-
-                            <appsco-manage-contact-page-actions
-                                    name="manage-contact"
-                                    on-back="_showContactsPage"
-                                    on-resource-section="_onResourceActionPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-manage-contact-page-actions>
-
-                            <appsco-manage-customer-page-actions
-                                    name="manage-customer"
-                                    on-back="_showCustomersPage"
-                                    on-resource-section="_onResourceActionPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-manage-customer-page-actions>
-
-                            <appsco-manage-group-page-actions
-                                    name="manage-group"
-                                    on-back="_showGroupsPage"
-                                    on-resource-section="_onResourceActionPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-manage-group-page-actions>
-
-                            <appsco-manage-integration-page-actions
-                                    name="manage-integration"
-                                    on-back="_showCompanyProvisioningPage"
-                                    disable-upgrade$="[[!api.me]]">
-                            </appsco-manage-integration-page-actions>
-
-                            <appsco-customers-page-actions
-                                    id="appscoCustomersPageActions"
-                                    name="customers"
-                                    on-search="_onSearchCustomersAction"
-                                    on-search-clear="_onSearchCustomersClearAction"
-                                    on-add-customer="_onAddCustomerAction"
-                                    on-remove-customers="_onRemoveCustomersAction"
-                                    on-add-partner-admin="_onAddPartnerAdminToCustomersAction"
-                                    on-select-all-customers="_onSelectAllCustomersAction"
-                                    on-import-customers="_onImportCustomersAction"
-                                    on-import-customer-resources="_onImportCustomerResources"
-                                    on-export-customers="_onExportCustomersAction"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-customers-page-actions>
-
-                            <appsco-audit-log-page-actions
-                                    id="appscoAuditLogPageActions"
-                                    name="audit-log"
-                                    on-resource-section="_onResourceActionAuditLogPage"
-                                    on-export-audit-log="_onExportAuditLogAction"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-audit-log-page-actions>
-
-                            <appsco-access-on-boarding-page-actions
-                                    id="appscoAccessOnBoardingPageActions"
-                                    name="access-on-boarding"
-                                    on-resource-section="_onResourceActionPage"
-                                    on-export-access-on-boarding="_onExportAccessOnBoardingAction"
-                                    disable-upgrade$="[[!api.me]]"
-                            ></appsco-access-on-boarding-page-actions>
-
-                            <appsco-billing-page-actions
-                                    name="billing"
-                                    on-resource-section="_onResourceActionBillingPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-billing-page-actions>
-
-                            <appsco-company-page-actions
-                                    id="appscoCompanyPageActions"
-                                    name="company"
-                                    on-resource-section="_onResourceActionCompanyPage"
-                                    on-add-domain="_onAddDomain"
-                                    on-search-groups="_onSearchGroups"
-                                    on-search-groups-clear="_onSearchGroupsClear"
-                                    disable-upgrade$="[[!api.me]]"></appsco-company-page-actions>
-
-                            <appsco-reports-page-actions id="appscoReportsPageActions"
-                                                        name="reports"
-                                                        disable-upgrade$="[[!api.me]]"></appsco-reports-page-actions>
-
-                            <appsco-access-report-page-actions
-                                    id="appscoAccessReportPageActions"
-                                    name="access-report"
-                                    on-back="_showReportsPage"
-                                    on-resource-section="_onResourceActionPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-access-report-page-actions>
-
-                            <appsco-compliance-report-page-actions
-                                    id="appscoComplianceReportPageActions"
-                                    name="compliance-report"
-                                    on-back="_showReportsPage"
-                                    on-resource-section="_onResourceActionPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-compliance-report-page-actions>
-
-                            <appsco-billing-report-page-actions
-                                    id="appscoBillingReportPageActions"
-                                    name="billing-report"
-                                    disable-upgrade$="[[!api.me]]"></appsco-billing-report-page-actions>
-
-                            <appsco-provisioning-page-actions id="appscoProvisioningPageActions"
-                                                              name="provisioning"
-                                                              on-add-integration="_onAddIntegrationAction"
-                                                              disable-upgrade$="[[!api.me]]"></appsco-provisioning-page-actions>
-
-                            <appsco-oauth-applications-page-actions
-                                    id="appscoOAuthApplicationsPageActions"
-                                    name="oauth-applications"
-                                    disable-upgrade$="[[!_applicationsApi]]"
-                                    on-add-oauth-application="_onAddOAuthApplicationAction"
-                                    disable-upgrade$="[[!api.me]]"></appsco-oauth-applications-page-actions>
-
-                            <appsco-manage-oauth-application-page-actions
-                                    id="appscoManageOAuthApplicationPageActions"
-                                    name="manage-oauth-application"
-                                    on-back="_showOAuthApplicationsPage"
-                                    disable-upgrade$="[[!api.me]]"></appsco-manage-oauth-application-page-actions>
-
-                            <appsco-dashboard-folder-page-actions id="appscoDashboardFolderPageActions"
-                                                                  name="dashboard-folder"
+                            <template is="dom-if" if="[[ _contactPage ]]">
+                                <appsco-contact-home-page-actions id="appscoContactHomePageActions"
+                                                                  name="contact-home"
+                                                                  authorization-token="[[ authorizationToken ]]"
+                                                                  page-config-api="[[ api.pageConfigApi ]]"
+                                                                  page-config="[[ _pageConfig ]]"
+                                                                  page="[[ page ]]"
+                                                                  api-errors="[[ _apiErrors ]]"
                                                                   on-search="_onSearchApplications"
                                                                   on-search-clear="_onSearchApplicationsClear"
-                                                                  on-back="_backFromFolderPage"
-                                                                  disable-upgrade$="[[!api.me]]"></appsco-dashboard-folder-page-actions>
+                                                                  disable-upgrade$="[[!api.me]]"></appsco-contact-home-page-actions>
+                            </template>
 
-                            <appsco-policies-page-actions id="appscoPoliciesPageActions"
-                                                          name="policies"
-                                                          disable-upgrade$="[[!api.me]]"></appsco-policies-page-actions>
+                            <template is="dom-if" if="[[ _resourcesPage ]]">
+                                <appsco-resources-page-actions id="appscoResourcesPageActions"
+                                        name="resources"
+                                        authorization-token="[[ authorizationToken ]]"
+                                        filter-api="[[ api.dashboards ]]?extended=1"
+                                        page-config-api="[[ api.pageConfigApi ]]"
+                                        page-config="[[ _pageConfig ]]"
+                                        page="[[ page ]]"
+                                        api-errors="[[ _apiErrors ]]"
+                                        resource-admin="[[ _resourceAdmin ]]"
+                                        on-add-item-action="_onAddCompanyItemAction"
+                                        on-import-resources="_onImportResourcesAction"
+                                        on-search="_onSearchCompanyApplications"
+                                        on-search-clear="_onSearchCompanyApplicationsClear"
+                                        on-select-all-resources="_onSelectAllResourcesAction"
+                                        on-share="_onShareResources"
+                                        on-remove="_onRemoveApplications"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-resources-page-actions>
+                            </template>
 
-                            <appsco-policy-report-page-actions id="appscoPolicyReportPageActions"
-                                                               name="policies-report"
-                                                               on-back="_showReportsPage"
-                                                               on-resource-section="_onResourceActionPage"
-                                                               disable-upgrade$="[[!api.me]]"></appsco-policy-report-page-actions>
+                            <template is="dom-if" if="[[ _manageResourcePage ]]">
 
-                            <appsco-additional-options-page-actions id="appscoPolicyReportPageActions"
-                                                                    name="additional-options"
-                                                                    on-back="_showCompanyResourcesPage"
-                                                                    on-resource-section="_onResourceActionPage"
-                                                                    disable-upgrade$="[[!api.me]]"></appsco-additional-options-page-actions>
+                                <appsco-manage-resource-page-actions
+                                        id="appscoManageApplicationPageActions"
+                                        name="manage-resource"
+                                        resource-admin="[[ _resourceAdmin ]]"
+                                        on-back="_showCompanyResourcesPage"
+                                        on-resource-section="_onResourceActionManageApplicationPage"
+                                        on-search-assignees="_onSearchAssignees"
+                                        on-search-assignees-clear="_onSearchAssigneesClear"
+                                        on-advanced-settings="_showAdvancedManageResourcePageOptions"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-manage-resource-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _directoryPage ]]">
+                                <appsco-directory-page-actions
+                                        id="appscoDirectoryPageActions"
+                                        name="directory"
+                                        authorization-token="[[ authorizationToken ]]"
+                                        on-add-account="_onCompanyAddAccount"
+                                        on-import-accounts="_onCompanyImportAccounts"
+                                        on-search="_onSearchAccounts"
+                                        on-search-clear="_onSearchAccountsClear"
+                                        on-upgrade="_fireUpgrade"
+                                        on-remove="_onRemoveAccounts"
+                                        on-select-all-company-roles="_onSelectAllCompanyRolesAction"
+                                        on-add-groups-to-company-roles="_onAddGroupsToCompanyRoles"
+                                        on-orgunits="_onAddAccountsToOrgunit"
+                                        on-manage-domains="_onManageDomains"
+                                        on-filter-roles="_onFilterRoles"
+                                        on-send-notification="_onSendNotificationToCompanyRoles"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-directory-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageAccountPage ]]">
+                                <appsco-manage-account-page-actions
+                                        name="manage-account"
+                                        on-back="_showCompanyDirectoryPage"
+                                        on-resource-section="_onResourceActionManageAccountPage"
+                                        on-advanced-settings="_showAdvancedManageAccountPageOptions"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-manage-account-page-actions>
+
+                            </template>
+
+                            <template is="dom-if" if="[[ _contactsPage ]]">
+                                <appsco-contacts-page-actions
+                                        id="appscoContactsPageActions"
+                                        name="contacts"
+                                        on-add-contact="_onAddContactAction"
+                                        on-import-contacts="_onImportContactsAction"
+                                        on-delete-contacts="_onDeleteContactsAction"
+                                        on-add-groups-to-contacts="_onAddGroupsToContactsAction"
+                                        on-select-all-contacts="_onSelectAllContactsAction"
+                                        on-page-selected="_onContactsPageSelected"
+                                        on-search="_onSearchContacts"
+                                        on-search-clear="_onSearchContactsClear"
+                                        on-send-notification="_onSendNotificationToContacts"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-contacts-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _groupsPage ]]">
+                                <appsco-groups-page-actions id="appscoGroupsPageActions"
+                                                               name="groups"
+                                                               authorization-token="[[ authorizationToken ]]"
+                                                               on-add-company-group="_onAddCompanyGroupAction"
+                                                               on-search="_onSearchCompanyGroupAction"
+                                                               on-search-clear="_onSearchCompanyGroupClear"
+                                                               on-select-all-groups="_onSelectAllGroupsAction"
+                                                               on-remove-groups="_onRemoveGroupsAction"
+                                                               on-notify-groups="_onNotifyGroupsAction"
+                                                               disable-upgrade$="[[!api.me]]"
+                                ></appsco-groups-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageContactPage ]]">
+                                <appsco-manage-contact-page-actions
+                                        name="manage-contact"
+                                        on-back="_showContactsPage"
+                                        on-resource-section="_onResourceActionPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-manage-contact-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageCustomerPage ]]">
+                                <appsco-manage-customer-page-actions
+                                        name="manage-customer"
+                                        on-back="_showCustomersPage"
+                                        on-resource-section="_onResourceActionPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-manage-customer-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageGroupPage ]]">
+                                <appsco-manage-group-page-actions
+                                        name="manage-group"
+                                        on-back="_showGroupsPage"
+                                        on-resource-section="_onResourceActionPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-manage-group-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageIntegrationPage ]]">
+                                <appsco-manage-integration-page-actions
+                                        name="manage-integration"
+                                        on-back="_showCompanyProvisioningPage"
+                                        disable-upgrade$="[[!api.me]]">
+                                </appsco-manage-integration-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _customersPage ]]">
+                                <appsco-customers-page-actions
+                                        id="appscoCustomersPageActions"
+                                        name="customers"
+                                        on-search="_onSearchCustomersAction"
+                                        on-search-clear="_onSearchCustomersClearAction"
+                                        on-add-customer="_onAddCustomerAction"
+                                        on-remove-customers="_onRemoveCustomersAction"
+                                        on-add-partner-admin="_onAddPartnerAdminToCustomersAction"
+                                        on-select-all-customers="_onSelectAllCustomersAction"
+                                        on-import-customers="_onImportCustomersAction"
+                                        on-import-customer-resources="_onImportCustomerResources"
+                                        on-export-customers="_onExportCustomersAction"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-customers-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _auditLogPage ]]">
+                                <appsco-audit-log-page-actions
+                                        id="appscoAuditLogPageActions"
+                                        name="audit-log"
+                                        on-resource-section="_onResourceActionAuditLogPage"
+                                        on-export-audit-log="_onExportAuditLogAction"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-audit-log-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _accessOnBoardingPage ]]">
+                                <appsco-access-on-boarding-page-actions
+                                        id="appscoAccessOnBoardingPageActions"
+                                        name="access-on-boarding"
+                                        on-resource-section="_onResourceActionPage"
+                                        on-export-access-on-boarding="_onExportAccessOnBoardingAction"
+                                        disable-upgrade$="[[!api.me]]"
+                                ></appsco-access-on-boarding-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _billingPage ]]">
+                                <appsco-billing-page-actions
+                                        name="billing"
+                                        on-resource-section="_onResourceActionBillingPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-billing-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _companySettingsPage ]]">
+                                <appsco-company-page-actions
+                                        id="appscoCompanyPageActions"
+                                        name="company"
+                                        on-resource-section="_onResourceActionCompanyPage"
+                                        on-add-domain="_onAddDomain"
+                                        on-search-groups="_onSearchGroups"
+                                        on-search-groups-clear="_onSearchGroupsClear"
+                                        disable-upgrade$="[[!api.me]]"></appsco-company-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _reportsPage ]]">
+                                <appsco-reports-page-actions id="appscoReportsPageActions"
+                                                            name="reports"
+                                                            disable-upgrade$="[[!api.me]]"></appsco-reports-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _accessReportPage ]]">
+                                <appsco-access-report-page-actions
+                                        id="appscoAccessReportPageActions"
+                                        name="access-report"
+                                        on-back="_showReportsPage"
+                                        on-resource-section="_onResourceActionPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-access-report-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _complianceReportPage ]]">
+                                <appsco-compliance-report-page-actions
+                                        id="appscoComplianceReportPageActions"
+                                        name="compliance-report"
+                                        on-back="_showReportsPage"
+                                        on-resource-section="_onResourceActionPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-compliance-report-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _billingReportPage ]]">
+                                <appsco-billing-report-page-actions
+                                        id="appscoBillingReportPageActions"
+                                        name="billing-report"
+                                        disable-upgrade$="[[!api.me]]"></appsco-billing-report-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _provisioningPage ]]">
+                                <appsco-provisioning-page-actions id="appscoProvisioningPageActions"
+                                                                  name="provisioning"
+                                                                  on-add-integration="_onAddIntegrationAction"
+                                                                  disable-upgrade$="[[!api.me]]"></appsco-provisioning-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _oauthApplicationsPage ]]">
+                                <appsco-oauth-applications-page-actions
+                                        id="appscoOAuthApplicationsPageActions"
+                                        name="oauth-applications"
+                                        disable-upgrade$="[[!_applicationsApi]]"
+                                        on-add-oauth-application="_onAddOAuthApplicationAction"
+                                        disable-upgrade$="[[!api.me]]"></appsco-oauth-applications-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _manageOauthApplicationPage ]]">
+                                <appsco-manage-oauth-application-page-actions
+                                        id="appscoManageOAuthApplicationPageActions"
+                                        name="manage-oauth-application"
+                                        on-back="_showOAuthApplicationsPage"
+                                        disable-upgrade$="[[!api.me]]"></appsco-manage-oauth-application-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _dashboardFolderPage ]]">
+                                <appsco-dashboard-folder-page-actions id="appscoDashboardFolderPageActions"
+                                                                      name="dashboard-folder"
+                                                                      on-search="_onSearchApplications"
+                                                                      on-search-clear="_onSearchApplicationsClear"
+                                                                      on-back="_backFromFolderPage"
+                                                                      disable-upgrade$="[[!api.me]]"></appsco-dashboard-folder-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _policiesPage ]]">
+                                <appsco-policies-page-actions id="appscoPoliciesPageActions"
+                                                              name="policies"
+                                                              disable-upgrade$="[[!api.me]]"></appsco-policies-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _policiesReportPage ]]">
+                                <appsco-policy-report-page-actions id="appscoPolicyReportPageActions"
+                                                                   name="policies-report"
+                                                                   on-back="_showReportsPage"
+                                                                   on-resource-section="_onResourceActionPage"
+                                                                   disable-upgrade$="[[!api.me]]"></appsco-policy-report-page-actions>
+                            </template>
+
+                            <template is="dom-if" if="[[ _additionalOptionsPage ]]">
+                                <appsco-additional-options-page-actions id="appscoAdditionalOptionsPageActions"
+                                                                        name="additional-options"
+                                                                        on-back="_showCompanyResourcesPage"
+                                                                        on-resource-section="_onResourceActionPage"
+                                                                        disable-upgrade$="[[!api.me]]"></appsco-additional-options-page-actions>
+                            </template>
                         </neon-animated-pages>
 
                     </app-toolbar>
@@ -1141,25 +1210,649 @@
             </app-header-layout>
         </app-drawer-layout>
 
-        <appsco-application-add
-                id="appscoApplicationAdd"
-                authorization-token="[[ authorizationToken ]]"
-                applications-template-api="[[ api.applicationTemplates ]]"
-                dashboard-api="[[ _addAppApi ]]"
-                item="[[ _copyObject(item) ]]"
-                on-application-added="_onApplicationAdded"
-                on-link-added="_onApplicationAdded"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-application-add>
+        <!--region Personal-->
 
-        <appsco-application-share
-                id="appscoApplicationShare"
-                application="[[ application ]]"
+        <template is="dom-if" if="[[ _homePage ]]">
+            <appsco-application-add
+                    id="appscoApplicationAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    applications-template-api="[[ api.applicationTemplates ]]"
+                    dashboard-api="[[ _addAppApi ]]"
+                    item="[[ _copyObject(item) ]]"
+                    on-application-added="_onApplicationAdded"
+                    on-link-added="_onApplicationAdded">
+            </appsco-application-add>
+
+            <appsco-application-share
+                    id="appscoApplicationShare"
+                    application="[[ application ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    accounts-api="[[ api.accounts ]]"
+                    on-application-shared="_onApplicationShared"
+            ></appsco-application-share>
+        </template>
+
+        <template is="dom-if" if="[[ _anyAccountPage ]]">
+            <appsco-account-authorized-app-revoke
+                    id="appscoAccountAuthorizedAppRevoke"
+                    application="[[ _authorizedApplication ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-application-revoked="_onAuthorizedApplicationRevoked"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-authorized-app-revoke>
+
+            <appsco-account-disable-2fa
+                    id="appscoAccountDisableTwoFa"
+                    two-fa-api="[[ api.twoFA ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-disable-2fa>
+
+            <appsco-account-orgunit
+                    id="appscoAccountOrgunit"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-orgunits-api="[[ _companyOrgunitsApi ]]"
+                    accounts="[[ _selectedAccounts ]]"
+                    on-added-to-orgunit="_onAccountsAddedToOrgunit"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-orgunit>
+
+            <appsco-account-remove-orgunit
+                    id="appscoAccountRemoveOrgunit"
+                    authorization-token="[[ authorizationToken ]]"
+                    account="[[ _role ]]"
+                    on-account-removed-from-orgunit="_onAccountRemovedFromOrgunit"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove-orgunit>
+
+            <appsco-account-remove-group
+                    id="appscoAccountRemoveGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    account="[[ _role ]]"
+                    on-account-removed-from-group="_onAccountRemovedFromGroup"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove-group>
+        </template>
+
+        <template is="dom-if" if="[[ _anyProvisioningPage ]]">
+            <appsco-add-integration
+                    id="appscoAddIntegration"
+                    authorization-token="[[ authorizationToken ]]"
+                    available-integrations-api="[[ _getAvailableIntegrationsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-requested="_onIntegrationRequested"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-add-integration>
+
+            <appsco-add-integration-rule
+                    id="appscoAddIntegrationRule"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-add-integration-rule>
+
+            <appsco-edit-integration-rule
+                    id="appscoEditIntegrationRule"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-rule-edited="_onIntegrationRuleEdited"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-edit-integration-rule>
+
+            <appsco-run-integration-rule
+                    id="appscoRunIntegrationRule"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-rule-run="_onIntegrationRuleRun"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-run-integration-rule>
+
+            <appsco-run-integration-force-sync
+                    id="appscoRunIntegrationForceSync"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-force-sync-done="_onForceSyncRun"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            >
+            </appsco-run-integration-force-sync>
+
+            <appsco-remove-integration-rule
+                    id="appscoRemoveIntegrationRule"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-rule-removed="_onIntegrationRuleRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-remove-integration-rule>
+
+            <appsco-register-integration-webhook
+                    id="appscoRegisterIntegrationWebhook"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-register-integration-webhook>
+
+            <appsco-unregister-integration-webhook
+                    id="appscoUnegisterIntegrationWebhook"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-webhook-unregistered="_onIntegrationWebhookUnregistered"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-unregister-integration-webhook>
+
+            <appsco-remove-integration
+                    id="appscoRemoveIntegration"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-integration-removed="_onIntegrationRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-integration>
+        </template>
+
+        <template is="dom-if" if="[[ _directoryPage ]]">
+            <appsco-account-remove
+                    id="appscoAccountsRemove"
+                    accounts="[[ _selectedAccounts ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-accounts-removed="_onAccountsRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove>
+
+            <appsco-directory-add-account
+                    id="appscoDirectoryAccountAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    add-company-role-api="[[ _companyRolesApi ]]"
+                    add-invitation-api="[[ _companyInvitationsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-company-role-created="_onCompanyRoleCreated"
+                    on-invitation-created="_onInvitationCreated"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-directory-add-account>
+
+            <appsco-import-accounts
+                    id="appscoDirectoryImportAccounts"
+                    authorization-token="[[ authorizationToken ]]"
+                    import-api="[[ _companyImportAccountsApi ]]"
+                    domain="[[ domain ]]"
+                    on-import-finished="_onAccountImportFinished"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-import-accounts>
+
+            <appsco-orgunit-modify
+                    id="appscoOrgunitModify"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-orgunit-added="_onOrgunitAdded"
+                    on-orgunit-modified="_onOrgunitModified"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-orgunit-modify>
+
+            <appsco-orgunit-remove
+                    id="appscoOrgunitRemove"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-orgunit-removed="_onOrgunitRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-orgunit-remove>
+        </template>
+
+        <template is="dom-if" if="[[ _companySettingsPage ]]">
+
+            <appsco-company-add-domain
+                    id="appscoCompanyAddDomain"
+                    authorization-token="[[ authorizationToken ]]"
+                    add-domain-api="[[ _companyDomainsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-domain-added="_onDomainAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-company-add-domain>
+
+            <appsco-company-add-certificate id="appscoCompanyAddCertificate"></appsco-company-add-certificate>
+
+            <appsco-company-remove-domain
+                    id="appscoCompanyRemoveDomain"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-domain-removed="_onDomainRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-company-remove-domain>
+
+        </template>
+
+        <template is="dom-if" if="[[ _anyResourcePage ]]">
+            <appsco-company-application-add
+                    id="appscoCompanyApplicationsAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    applications-template-api="[[ api.applicationTemplates ]]"
+                    add-application-api="[[ _companyApplicationsApi ]]"
+                    link="[[ _copyObject(link) ]]"
+                    item="[[ _copyObject(item) ]]"
+                    on-application-added="_onCompanyApplicationAdded"
+                    on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-company-application-add>
+
+            <appsco-company-sso-application-add
+                    id="appscoCompanySSOApplicationsAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    applications-template-api="[[ api.applicationTemplates ]]"
+                    add-application-api="[[ _companyApplicationsApi ]]"
+                    link="[[ _copyObject(link) ]]"
+                    item="[[ _copyObject(item) ]]"
+                    on-application-added="_onCompanyApplicationAdded"
+                    on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-company-sso-application-add>
+
+            <appsco-company-application-remove
+                    id="appscoCompanyApplicationsRemove"
+                    applications="[[ _selectedApplications ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    api-errors="[[ apiErrors ]]"
+                    on-applications-removed="_onApplicationsRemoved"
+                    on-applications-remove-failed="_onApplicationsRemoveFailed"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-company-application-remove>
+
+            <appsco-company-resource-settings-dialog
+                    id="appscoCompanyResourceSettingsDialog"
+                    account="[[ account ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    application="[[ application ]]"
+                    domain="[[ domain ]]"
+                    on-application-settings-saved="_onApplicationSettingsSaved"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-company-resource-settings-dialog>
+
+            <appsco-add-resource-admin
+                    id="appscoAddResourceAdmin"
+                    resources="[[ _applicationsToShare ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    get-roles-api="[[ _companyRolesApi ]]"
+                    get-contacts-api="[[ _companyContactsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-resources-shared="_onResourceAdminAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-add-resource-admin>
+
+            <appsco-resource-admin-revoke
+                    id="appscoResourceAdminRevoke"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-access-revoked="_onResourceAdminRevoked"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-resource-admin-revoke>
+
+            <appsco-import-resources
+                    id="appscoImportResources"
+                    authorization-token="[[ authorizationToken ]]"
+                    import-api="[[ _companyImportResourcesApi ]]"
+                    on-import-finished="_onImportCompanyResourcesFinished"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-import-resources>
+        </template>
+
+        <template is="dom-if" if="[[ _anyGroupPage ]]">
+            <appsco-company-add-group
+                    id="appscoCompanyAddGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-groups-api="[[ _companyGroupsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-company-add-group>
+
+            <appsco-delete-groups
+                    id="appscoGroupsRemove"
+                    groups="[[ _selectedGroups ]]"
+                    company-api="[[ _companyApi ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-groups-removed="_onRemovedGroups"
+                    on-groups-remove-failed="_onGroupsRemoveFailed"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-delete-groups>
+
+            <appsco-company-remove-group
+                    id="appscoCompanyRemoveGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-group-removed="_onGroupRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-company-remove-group>
+
+            <appsco-company-group-notification-dialog
+                    id="appscoNotifyGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-groups-api="[[ _companyGroupsApi ]]"
+                    company-notifications-api="[[ _companyNotificationsApi ]]"
+                    on-notification-sent="_onNotificationSent"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-company-group-notification-dialog>
+        </template>
+
+        <template is="dom-if" if="[[ _anyContactPage ]]">
+            <appsco-add-contact
+                    id="appscoAddContact"
+                    authorization-token="[[ authorizationToken ]]"
+                    add-contact-api="[[ _companyContactsApi ]]"
+                    add-invitation-api="[[ _companyInvitationsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-contact-created="_onContactCreated"
+                    on-invitation-created="_onInvitationCreated"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-add-contact>
+
+            <appsco-import-contacts
+                    id="appscoImportContacts"
+                    authorization-token="[[ authorizationToken ]]"
+                    import-api="[[ _companyImportContactsApi ]]"
+                    domain="[[ domain ]]"
+                    on-import-finished="_onImportContactsFinished"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-import-contacts>
+            <appsco-delete-contact
+                    id="appscoDeleteContact"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-contact-deleted="_onContactDeleted"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-delete-contact>
+
+            <appsco-delete-contacts
+                    id="appscoContactsRemove"
+                    contacts="[[ _selectedContacts ]]"
+                    company-api="[[ _companyApi ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-contacts-removed="_onDeletedContacts"
+                    on-contacts-remove-failed="_onDeleteContactsFailed"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-delete-contacts>
+        </template>
+
+        <template is="dom-if" if="[[ _oauthApplicationPage ]]">
+            <appsco-add-oauth-application-certificate
+                    id="appscoAddOauthApplicationCertificate"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-oauth-application-certificate-added="_onOauthApplicationCertificateAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-add-oauth-application-certificate>
+
+            <appsco-remove-oauth-application-certificate
+                    id="appscoRemoveCertificate"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-oauth-application-certificate-removed="_onOAuthApplicationCertificateRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-oauth-application-certificate>
+
+            <appsco-add-oauth-application
+                    id="appscoAddOauthApplication"
+                    authorization-token="[[ authorizationToken ]]"
+                    oauth-applications-api="[[ _companyOAuthApplicationsApi ]]"
+                    company="[[ currentCompany.company ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-oauth-application-added="_onOauthApplicationAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-add-oauth-application>
+
+            <appsco-remove-oauth-application
+                    id="appscoRemoveOAuthApplication"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-oauth-application-removed="_onOAuthApplicationRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-oauth-application>
+        </template>
+
+        <template is="dom-if" if="[[ _anyCustomersPage ]]">
+            <appsco-add-partner-admin
+                    id="appscoAddPartnerAdmin"
+                    customers="[[ _selectedCustomers ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    get-roles-api="[[ _companyRolesApi ]]"
+                    add-partner-admin-api="[[ _addPartnerAdminToCustomerApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-partner-admins-added="_onPartnerAdminsAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-add-partner-admin>
+
+            <appsco-import-customer-resources
+                    id="appscoImportCustomerResources"
+                    authorization-token="[[ authorizationToken ]]"
+                    import-api="[[ _importCustomerResourcesApi ]]"
+                    domain="[[ domain ]]"
+                    on-import-finished="_onCustomerResourcesImportFinished"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-import-customer-resources>
+
+            <appsco-add-customer
+                    id="appscoAddCustomer"
+                    authorization-token="[[ authorizationToken ]]"
+                    customers-api="[[ _companyCustomersApi ]]"
+                    company-convert-to-customer-api="[[ _companyConvertToCustomerApi ]]"
+                    roles-api="[[ _companyRolesApi ]]"
+                    check-if-customer-exists-api="[[ _checkIfCustomerExistsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-customer-added="_onCustomerAdded"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-add-customer>
+
+            <appsco-remove-customers
+                    id="appscoCustomersRemove"
+                    customers="[[ _selectedCustomers ]]"
+                    customers-api="[[ _companyCustomersApi ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-customers-removed="_onRemovedCustomers"
+                    on-customers-remove-failed="_onRemovedCustomersFailed"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-remove-customers>
+
+            <appsco-import-customers
+                    id="appscoImportCustomers"
+                    authorization-token="[[ authorizationToken ]]"
+                    import-api="[[ _importCustomersApi ]]"
+                    domain="[[ domain ]]"
+                    on-import-finished="_onCustomersImportFinished"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-import-customers>
+
+            <appsco-remove-customer
+                    id="appscoRemoveCustomer"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-customer-removed="_onCustomerRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-customer>
+
+            <appsco-manage-customer-subscription
+                    id="appscoManageCustomerSubscription"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    partner="[[ currentCompany.company ]]"
+                    on-customer-licences-managed="_onCustomerLicencesManaged"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-manage-customer-subscription>
+
+            <appsco-customer-partner-admin-remove
+                    id="appscoCustomerPartnerAdminRemove"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-partner-admin-removed-from-customer="_onPartnerAdminRemovedFromCustomer"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-customer-partner-admin-remove>
+        </template>
+
+        <template is="dom-if" if="[[ _anyBillingPage ]]">
+            <appsco-credit-card
+                    id="appscoCreditCard"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    on-credit-card-added="_onCreditCardAdded"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-credit-card>
+
+            <appsco-upgrade-action
+                    id="appscoUpgradeAction"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    on-subscription-changed="_onSubscriptionChanged"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-upgrade-action>
+
+            <appsco-update-subscription-action
+                    id="appscoUpdateSubscriptionAction"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    on-subscription-updated="_onSubscriptionUpdated"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-update-subscription-action>
+
+            <appsco-subscription-cancel
+                    id="appscoSubscriptionCancel"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    on-subscription-canceled="_onSubscriptionCanceled"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-subscription-cancel>
+
+            <appsco-billing-send-invoice
+                    id="appscoBillingSendInvoice"
+                    company="[[ currentCompany ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-api="[[ _companyApi ]]"
+                    on-invoice-sent="_onInvoiceSent"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-billing-send-invoice>
+        </template>
+
+        <template is="dom-if" if="[[ _companyPage ]]">
+            <appsco-add-resource-to-resource-admin
+                    id="appscoAddResourceToResourceAdmin"
+                    authorization-token="[[ authorizationToken ]]"
+                    get-resources-api="[[ _companyApplicationsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-resource-admin-assigned="_onResourceAdminAssigned"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-add-resource-to-resource-admin>
+
+            <appsco-application-assignee-claims
+                    id="appscoApplicationAssigneeClaims"
+                    application="[[ _companyApplication ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-claims-changed="_onAssigneeClaimsChanged"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-application-assignee-claims>
+
+            <appsco-application-assignee-revoke
+                    id="appscoApplicationAssigneeRevoke"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-access-revoked="_onAssigneeAccessRevoked"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-application-assignee-revoke>
+
+            <appsco-invitation-remove
+                    id="appscoInvitationRemove"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-invitation-removed="_onInvitationRemoved"
+                    on-invitation-already-removed="_onInvitationAlreadyRemoved"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-invitation-remove>
+
+            <appsco-application-remove-group
+                    id="appscoApplicationRemoveGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    application="[[ application ]]"
+                    on-application-removed-from-group="_onApplicationRemovedFromGroup"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-application-remove-group>
+
+            <appsco-account-approve-device
+                    id="appscoAccountApproveDevice"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-device-approve-finished="_onDeviceApproveFinished"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-account-approve-device>
+
+            <appsco-account-disapprove-device
+                    id="appscoAccountDisapproveDevice"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-device-disapprove-finished="_onDeviceDisapproveFinished"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-account-disapprove-device>
+
+            <appsco-contact-remove-group
+                    id="appscoContactRemoveGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-contact-removed-from-group="_onContactRemovedFromGroup"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-contact-remove-group>
+
+            <appsco-dialog-application-company-add
+                    id="appscoDialogApplicationCompanyAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    add-application-api="[[ _companyApplicationsApi ]]"
+                    on-application-added="_onCompanyApplicationAdded"
+                    on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-dialog-application-company-add>
+
+            <appsco-company-domain-token
+                    id="appscoCompanyDomainToken"></appsco-company-domain-token>
+
+            <appsco-resource-add-groups
+                    id="appscoShareToGroupDialog"
+                    authorization-token="[[ authorizationToken ]]"
+                    groups-api="[[ _companyGroupsApi ]]"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-resource-add-groups>
+
+            <appsco-resource-remove-from-group
+                    id="appscoResourceRemoveFromGroup"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-resource-removed-from-group="_onResourceRemovedFromGroup"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-resource-remove-from-group>
+
+            <appsco-convert-contact
+                    id="appscoConvertContact"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-contact-converted="_onContactConverted"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-convert-contact>
+
+            <appsco-deactivate-idp-settings
+                    id="appscoDeactivateIdPSettings"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-idp-settings-deactivated="_onIdPSettingsDeactivated"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-deactivate-idp-settings>
+
+            <appsco-group-add-resource
+                    id="appscoGroupAddResource"
+                    group="[[ _group ]]"
+                    authorization-token="[[ authorizationToken ]]"
+                    on-resources-added-to-group="_onResourcesAddedToGroup"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-group-add-resource>
+
+            <appsco-role-reset-two-fa
+                    id="appscoRoleResetTwoFA"
+                    authorization-token="[[ authorizationToken ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-role-two-fa-reset="_onRoleTwoFAReset"
+                    disable-upgrade$="[[!_applicationsApi]]"></appsco-role-reset-two-fa>
+
+            <appsco-send-notification
+                    id="appscoSendNotification"
+                    authorization-token="[[ authorizationToken ]]"
+                    company-notifications-api="[[ _companyNotificationsApi ]]"
+                    get-roles-api="[[ _companyRolesApi ]]"
+                    get-contacts-api="[[ _companyContactsApi ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-notification-sent="_onNotificationSent"
+                    disable-upgrade$="[[!_applicationsApi]]"
+            ></appsco-send-notification>
+
+            <appsco-company-notice
+                    id="appscoCompanyNotice"></appsco-company-notice>
+
+            <appsco-change-policy-status id="appscoChangePolicyStatus"
+                                         authorization-token="[[ authorizationToken ]]"
+                                         api-errors="[[ _apiErrors ]]"
+                                         on-policy-status-changed="_onPolicyStatusChanged"
+                                         disable-upgrade$="[[!_applicationsApi]]"></appsco-change-policy-status>
+
+            <appsco-idp-resource-add
+                    id="appscoIdpResourceAdd"
+                    authorization-token="[[ authorizationToken ]]"
+                    add-resource-api="[[ _companyApplicationsApi ]]"
+                    link="[[ _copyObject(link) ]]"
+                    api-errors="[[ _apiErrors ]]"
+                    on-resource-added="_onIdpResourceAdded"
+                    disable-upgrade$="[[!_applicationsApi]]">
+            </appsco-idp-resource-add>
+
+        </template>
+
+        <!--region Shared-->
+        <appsco-import-personal-resources
+                id="appscoImportPersonalResources"
                 authorization-token="[[ authorizationToken ]]"
-                accounts-api="[[ api.accounts ]]"
-                on-application-shared="_onApplicationShared"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-application-share>
+                application-template-api="[[ api.applicationTemplates ]]"
+                on-import-finished="_onImportPersonalResourcesFinished"
+                disable-upgrade$="[[!_applicationsApi]]"></appsco-import-personal-resources>
 
         <appsco-application-settings-dialog
                 id="appscoApplicationSettingsDialog"
@@ -1170,29 +1863,12 @@
                 disable-upgrade$="[[!_applicationsApi]]"
         ></appsco-application-settings-dialog>
 
-        <appsco-company-resource-settings-dialog
-                id="appscoCompanyResourceSettingsDialog"
-                account="[[ account ]]"
-                authorization-token="[[ authorizationToken ]]"
-                application="[[ application ]]"
-                domain="[[ domain ]]"
-                on-application-settings-saved="_onApplicationSettingsSaved"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-company-resource-settings-dialog>
-
         <appsco-application-remove
                 id="appscoApplicationRemove"
                 application="[[ application ]]"
                 authorization-token="[[ authorizationToken ]]"
                 on-application-removed="_onApplicationRemoved"
                 disable-upgrade$="[[!_applicationsApi]]"></appsco-application-remove>
-
-        <appsco-account-authorized-app-revoke
-                id="appscoAccountAuthorizedAppRevoke"
-                application="[[ _authorizedApplication ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-application-revoked="_onAuthorizedApplicationRevoked"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-authorized-app-revoke>
 
         <appsco-application-subscriber-revoke
                 id="appscoApplicationSubscriberRevoke"
@@ -1216,6 +1892,15 @@
                 disable-upgrade$="[[!_applicationsApi]]">
         </appsco-folders-application-add>
 
+        <appsco-add-folder id="appscoAddFolder"
+                           authorization-token="[[ authorizationToken ]]"
+                           folders-api="[[ api.foldersApi ]]"
+                           company="[[ currentCompany.company ]]"
+                           api-errors="[[ _apiErrors ]]"
+                           on-folder-added="_onFolderAdded"
+                           disable-upgrade$="[[!_applicationsApi]]">
+        </appsco-add-folder>
+
         <appsco-folders-rename
                 id="appscoFoldersRename"
                 authorization-token="[[ authorizationToken ]]"
@@ -1234,59 +1919,6 @@
                 disable-upgrade$="[[!_applicationsApi]]">
         </appsco-folders-remove>
 
-        <appsco-orgunit-modify
-                id="appscoOrgunitModify"
-                authorization-token="[[ authorizationToken ]]"
-                on-orgunit-added="_onOrgunitAdded"
-                on-orgunit-modified="_onOrgunitModified"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-orgunit-modify>
-
-        <appsco-orgunit-remove
-                id="appscoOrgunitRemove"
-                authorization-token="[[ authorizationToken ]]"
-                on-orgunit-removed="_onOrgunitRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-orgunit-remove>
-
-        <appsco-company-application-add
-                id="appscoCompanyApplicationsAdd"
-                authorization-token="[[ authorizationToken ]]"
-                applications-template-api="[[ api.applicationTemplates ]]"
-                add-application-api="[[ _companyApplicationsApi ]]"
-                link="[[ _copyObject(link) ]]"
-                item="[[ _copyObject(item) ]]"
-                on-application-added="_onCompanyApplicationAdded"
-                on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-company-application-add>
-
-        <appsco-company-sso-application-add
-                id="appscoCompanySSOApplicationsAdd"
-                authorization-token="[[ authorizationToken ]]"
-                applications-template-api="[[ api.applicationTemplates ]]"
-                add-application-api="[[ _companyApplicationsApi ]]"
-                link="[[ _copyObject(link) ]]"
-                item="[[ _copyObject(item) ]]"
-                on-application-added="_onCompanyApplicationAdded"
-                on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-company-sso-application-add>
-
-        <appsco-import-resources
-                id="appscoImportResources"
-                authorization-token="[[ authorizationToken ]]"
-                import-api="[[ _companyImportResourcesApi ]]"
-                on-import-finished="_onImportCompanyResourcesFinished"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-import-resources>
-
-        <appsco-import-personal-resources
-                id="appscoImportPersonalResources"
-                authorization-token="[[ authorizationToken ]]"
-                application-template-api="[[ api.applicationTemplates ]]"
-                on-import-finished="_onImportPersonalResourcesFinished"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-import-personal-resources>
-
         <appsco-share-resource
                 id="appscoShareResource"
                 resources="[[ _applicationsToShare ]]"
@@ -1298,554 +1930,13 @@
                 on-resources-shared="_onResourcesShared"
                 items-loaded="{{ shareResourceDialogAccountsLoaded }}"
                 disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-share-resource>
-
-        <appsco-add-resource-admin
-                id="appscoAddResourceAdmin"
-                resources="[[ _applicationsToShare ]]"
-                authorization-token="[[ authorizationToken ]]"
-                get-roles-api="[[ _companyRolesApi ]]"
-                get-contacts-api="[[ _companyContactsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-resources-shared="_onResourceAdminAdded"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-add-resource-admin>
-
-        <appsco-add-resource-to-resource-admin
-                id="appscoAddResourceToResourceAdmin"
-                authorization-token="[[ authorizationToken ]]"
-                get-resources-api="[[ _companyApplicationsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-resource-admin-assigned="_onResourceAdminAssigned"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-add-resource-to-resource-admin>
-
-        <appsco-company-group-notification-dialog
-                id="appscoNotifyGroup"
-                authorization-token="[[ authorizationToken ]]"
-                company-groups-api="[[ _companyGroupsApi ]]"
-                company-notifications-api="[[ _companyNotificationsApi ]]"
-                on-notification-sent="_onNotificationSent"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-company-group-notification-dialog>
-
-        <appsco-add-partner-admin
-                id="appscoAddPartnerAdmin"
-                customers="[[ _selectedCustomers ]]"
-                authorization-token="[[ authorizationToken ]]"
-                get-roles-api="[[ _companyRolesApi ]]"
-                add-partner-admin-api="[[ _addPartnerAdminToCustomerApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-partner-admins-added="_onPartnerAdminsAdded"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-add-partner-admin>
-
-        <appsco-application-assignee-claims
-                id="appscoApplicationAssigneeClaims"
-                application="[[ _companyApplication ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-claims-changed="_onAssigneeClaimsChanged"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-application-assignee-claims>
-
-        <appsco-application-assignee-revoke
-                id="appscoApplicationAssigneeRevoke"
-                authorization-token="[[ authorizationToken ]]"
-                on-access-revoked="_onAssigneeAccessRevoked"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-application-assignee-revoke>
-
-        <appsco-resource-admin-revoke
-                id="appscoResourceAdminRevoke"
-                authorization-token="[[ authorizationToken ]]"
-                on-access-revoked="_onResourceAdminRevoked"
-                disable-upgrade$="[[!_applicationsApi]]"
-                ></appsco-resource-admin-revoke>
-
-        <appsco-company-application-remove
-                id="appscoCompanyApplicationsRemove"
-                applications="[[ _selectedApplications ]]"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                api-errors="[[ apiErrors ]]"
-                on-applications-removed="_onApplicationsRemoved"
-                on-applications-remove-failed="_onApplicationsRemoveFailed"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-company-application-remove>
-
-        <appsco-invitation-remove
-                id="appscoInvitationRemove"
-                authorization-token="[[ authorizationToken ]]"
-                on-invitation-removed="_onInvitationRemoved"
-                on-invitation-already-removed="_onInvitationAlreadyRemoved"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-invitation-remove>
-
-        <appsco-directory-add-account
-                id="appscoDirectoryAccountAdd"
-                authorization-token="[[ authorizationToken ]]"
-                add-company-role-api="[[ _companyRolesApi ]]"
-                add-invitation-api="[[ _companyInvitationsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-company-role-created="_onCompanyRoleCreated"
-                on-invitation-created="_onInvitationCreated"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-directory-add-account>
-
-        <appsco-import-accounts
-                id="appscoDirectoryImportAccounts"
-                authorization-token="[[ authorizationToken ]]"
-                import-api="[[ _companyImportAccountsApi ]]"
-                domain="[[ domain ]]"
-                on-import-finished="_onAccountImportFinished"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-import-accounts>
-
-        <appsco-import-customer-resources
-                id="appscoImportCustomerResources"
-                authorization-token="[[ authorizationToken ]]"
-                import-api="[[ _importCustomerResourcesApi ]]"
-                domain="[[ domain ]]"
-                on-import-finished="_onCustomerResourcesImportFinished"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-import-customer-resources>
-
-        <appsco-account-orgunit
-                id="appscoAccountOrgunit"
-                authorization-token="[[ authorizationToken ]]"
-                company-orgunits-api="[[ _companyOrgunitsApi ]]"
-                accounts="[[ _selectedAccounts ]]"
-                on-added-to-orgunit="_onAccountsAddedToOrgunit"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-orgunit>
-
-        <appsco-account-remove-orgunit
-                id="appscoAccountRemoveOrgunit"
-                authorization-token="[[ authorizationToken ]]"
-                account="[[ _role ]]"
-                on-account-removed-from-orgunit="_onAccountRemovedFromOrgunit"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove-orgunit>
-
-        <appsco-account-remove-group
-                id="appscoAccountRemoveGroup"
-                authorization-token="[[ authorizationToken ]]"
-                account="[[ _role ]]"
-                on-account-removed-from-group="_onAccountRemovedFromGroup"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove-group>
-
-        <appsco-application-remove-group
-                id="appscoApplicationRemoveGroup"
-                authorization-token="[[ authorizationToken ]]"
-                application="[[ application ]]"
-                on-application-removed-from-group="_onApplicationRemovedFromGroup"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-application-remove-group>
-
-        <appsco-account-approve-device
-                id="appscoAccountApproveDevice"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-device-approve-finished="_onDeviceApproveFinished"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-account-approve-device>
-
-        <appsco-account-disapprove-device
-                id="appscoAccountDisapproveDevice"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-device-disapprove-finished="_onDeviceDisapproveFinished"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-account-disapprove-device>
-
-        <appsco-account-remove
-                id="appscoAccountsRemove"
-                accounts="[[ _selectedAccounts ]]"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-accounts-removed="_onAccountsRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-remove>
-
-        <appsco-contact-remove-group
-                id="appscoContactRemoveGroup"
-                authorization-token="[[ authorizationToken ]]"
-                on-contact-removed-from-group="_onContactRemovedFromGroup"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-contact-remove-group>
-
-        <appsco-upgrade-action
-                id="appscoUpgradeAction"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                on-subscription-changed="_onSubscriptionChanged"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-upgrade-action>
-
-        <appsco-update-subscription-action
-                id="appscoUpdateSubscriptionAction"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                on-subscription-updated="_onSubscriptionUpdated"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-update-subscription-action>
-
-        <appsco-subscription-cancel
-                id="appscoSubscriptionCancel"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                on-subscription-canceled="_onSubscriptionCanceled"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-subscription-cancel>
-
-        <appsco-credit-card
-                id="appscoCreditCard"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                on-credit-card-added="_onCreditCardAdded"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-credit-card>
-
-        <appsco-billing-send-invoice
-                id="appscoBillingSendInvoice"
-                company="[[ currentCompany ]]"
-                authorization-token="[[ authorizationToken ]]"
-                company-api="[[ _companyApi ]]"
-                on-invoice-sent="_onInvoiceSent"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-billing-send-invoice>
-
-        <appsco-add-integration
-                id="appscoAddIntegration"
-                authorization-token="[[ authorizationToken ]]"
-                available-integrations-api="[[ _getAvailableIntegrationsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-requested="_onIntegrationRequested"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-add-integration>
-
-        <appsco-add-integration-rule
-                id="appscoAddIntegrationRule"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-add-integration-rule>
-
-        <appsco-edit-integration-rule
-                id="appscoEditIntegrationRule"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-rule-edited="_onIntegrationRuleEdited"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-edit-integration-rule>
-
-        <appsco-run-integration-rule
-                id="appscoRunIntegrationRule"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-rule-run="_onIntegrationRuleRun"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-run-integration-rule>
-
-        <appsco-run-integration-force-sync
-                id="appscoRunIntegrationForceSync"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-force-sync-done="_onForceSyncRun"
-                disable-upgrade$="[[!_applicationsApi]]"
-        >
-        </appsco-run-integration-force-sync>
-
-        <appsco-remove-integration-rule
-                id="appscoRemoveIntegrationRule"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-rule-removed="_onIntegrationRuleRemoved"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-remove-integration-rule>
-
-        <appsco-register-integration-webhook
-                id="appscoRegisterIntegrationWebhook"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-register-integration-webhook>
-
-        <appsco-unregister-integration-webhook
-                id="appscoUnegisterIntegrationWebhook"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-webhook-unregistered="_onIntegrationWebhookUnregistered"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-unregister-integration-webhook>
-
-        <appsco-remove-integration
-                id="appscoRemoveIntegration"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-integration-removed="_onIntegrationRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-integration>
-
-        <appsco-company-add-domain
-                id="appscoCompanyAddDomain"
-                authorization-token="[[ authorizationToken ]]"
-                add-domain-api="[[ _companyDomainsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-domain-added="_onDomainAdded"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-company-add-domain>
-
-        <appsco-company-add-certificate id="appscoCompanyAddCertificate"></appsco-company-add-certificate>
-
-        <appsco-company-remove-domain
-                id="appscoCompanyRemoveDomain"
-                authorization-token="[[ authorizationToken ]]"
-                on-domain-removed="_onDomainRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-company-remove-domain>
-
-        <appsco-dialog-application-add
-                id="appscoDialogApplicationAdd"
-                authorization-token="[[ authorizationToken ]]"
-                dashboard-api="[[ _addAppApi ]]"
-                on-application-added="_onApplicationAdded"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-dialog-application-add>
-
-        <appsco-dialog-application-company-add
-                id="appscoDialogApplicationCompanyAdd"
-                authorization-token="[[ authorizationToken ]]"
-                add-application-api="[[ _companyApplicationsApi ]]"
-                on-application-added="_onCompanyApplicationAdded"
-                on-application-claims-updated="_onCompanyApplicationClaimsUpdated"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-dialog-application-company-add>
-
-        <appsco-company-domain-token
-                id="appscoCompanyDomainToken"></appsco-company-domain-token>
-
-        <appsco-company-remove-group
-                id="appscoCompanyRemoveGroup"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-group-removed="_onGroupRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-company-remove-group>
-
-        <appsco-remove-customer
-                id="appscoRemoveCustomer"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-customer-removed="_onCustomerRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-customer>
-
-        <appsco-manage-customer-subscription
-                id="appscoManageCustomerSubscription"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                partner="[[ currentCompany.company ]]"
-                on-customer-licences-managed="_onCustomerLicencesManaged"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-manage-customer-subscription>
-
-        <appsco-resource-add-groups
-                id="appscoShareToGroupDialog"
-                authorization-token="[[ authorizationToken ]]"
-                groups-api="[[ _companyGroupsApi ]]"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-resource-add-groups>
-
-        <appsco-group-add-resource
-                id="appscoGroupAddResource"
-                group="[[ _group ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-resources-added-to-group="_onResourcesAddedToGroup"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-group-add-resource>
-
-        <appsco-resource-remove-from-group
-                id="appscoResourceRemoveFromGroup"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-resource-removed-from-group="_onResourceRemovedFromGroup"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-resource-remove-from-group>
-
-        <appsco-customer-partner-admin-remove
-                id="appscoCustomerPartnerAdminRemove"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-partner-admin-removed-from-customer="_onPartnerAdminRemovedFromCustomer"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-customer-partner-admin-remove>
-
-        <appsco-add-contact
-                id="appscoAddContact"
-                authorization-token="[[ authorizationToken ]]"
-                add-contact-api="[[ _companyContactsApi ]]"
-                add-invitation-api="[[ _companyInvitationsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-contact-created="_onContactCreated"
-                on-invitation-created="_onInvitationCreated"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-add-contact>
-
-        <appsco-import-contacts
-                id="appscoImportContacts"
-                authorization-token="[[ authorizationToken ]]"
-                import-api="[[ _companyImportContactsApi ]]"
-                domain="[[ domain ]]"
-                on-import-finished="_onImportContactsFinished"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-import-contacts>
-
-        <appsco-company-add-group
-                id="appscoCompanyAddGroup"
-                authorization-token="[[ authorizationToken ]]"
-                company-groups-api="[[ _companyGroupsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-company-add-group>
-
-        <appsco-convert-contact
-                id="appscoConvertContact"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-contact-converted="_onContactConverted"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-convert-contact>
-
-        <appsco-delete-contact
-                id="appscoDeleteContact"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-contact-deleted="_onContactDeleted"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-delete-contact>
-
-        <appsco-delete-contacts
-                id="appscoContactsRemove"
-                contacts="[[ _selectedContacts ]]"
-                company-api="[[ _companyApi ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-contacts-removed="_onDeletedContacts"
-                on-contacts-remove-failed="_onDeleteContactsFailed"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-delete-contacts>
-
-        <appsco-delete-groups
-                id="appscoGroupsRemove"
-                groups="[[ _selectedGroups ]]"
-                company-api="[[ _companyApi ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-groups-removed="_onRemovedGroups"
-                on-groups-remove-failed="_onGroupsRemoveFailed"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-delete-groups>
-
-        <appsco-deactivate-idp-settings
-                id="appscoDeactivateIdPSettings"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-idp-settings-deactivated="_onIdPSettingsDeactivated"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-deactivate-idp-settings>
-
-        <appsco-account-disable-2fa
-                id="appscoAccountDisableTwoFa"
-                two-fa-api="[[ api.twoFA ]]"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-account-disable-2fa>
-
-        <appsco-add-customer
-                id="appscoAddCustomer"
-                authorization-token="[[ authorizationToken ]]"
-                customers-api="[[ _companyCustomersApi ]]"
-                company-convert-to-customer-api="[[ _companyConvertToCustomerApi ]]"
-                roles-api="[[ _companyRolesApi ]]"
-                check-if-customer-exists-api="[[ _checkIfCustomerExistsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-customer-added="_onCustomerAdded"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-add-customer>
-
-        <appsco-remove-customers
-                id="appscoCustomersRemove"
-                customers="[[ _selectedCustomers ]]"
-                customers-api="[[ _companyCustomersApi ]]"
-                authorization-token="[[ authorizationToken ]]"
-                on-customers-removed="_onRemovedCustomers"
-                on-customers-remove-failed="_onRemovedCustomersFailed"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-remove-customers>
-
-        <appsco-role-reset-two-fa
-                id="appscoRoleResetTwoFA"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-role-two-fa-reset="_onRoleTwoFAReset"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-role-reset-two-fa>
-
-        <appsco-import-customers
-                id="appscoImportCustomers"
-                authorization-token="[[ authorizationToken ]]"
-                import-api="[[ _importCustomersApi ]]"
-                domain="[[ domain ]]"
-                on-import-finished="_onCustomersImportFinished"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-import-customers>
-
-        <appsco-send-notification
-                id="appscoSendNotification"
-                authorization-token="[[ authorizationToken ]]"
-                company-notifications-api="[[ _companyNotificationsApi ]]"
-                get-roles-api="[[ _companyRolesApi ]]"
-                get-contacts-api="[[ _companyContactsApi ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-notification-sent="_onNotificationSent"
-                disable-upgrade$="[[!_applicationsApi]]"
-        ></appsco-send-notification>
-
-        <appsco-company-notice
-                id="appscoCompanyNotice"></appsco-company-notice>
+        ></appsco-share-resource>
 
         <appsco-role-save-client-data account="[[ account ]]"
                                       save-api="[[ api.saveClientDataApi ]]"
                                       authorization-token="[[ authorizationToken ]]"></appsco-role-save-client-data>
 
-        <appsco-add-oauth-application
-                id="appscoAddOauthApplication"
-                authorization-token="[[ authorizationToken ]]"
-                oauth-applications-api="[[ _companyOAuthApplicationsApi ]]"
-                company="[[ currentCompany.company ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-oauth-application-added="_onOauthApplicationAdded"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-add-oauth-application>
-
-        <appsco-remove-oauth-application
-                id="appscoRemoveOAuthApplication"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-oauth-application-removed="_onOAuthApplicationRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-oauth-application>
-
-        <appsco-add-oauth-application-certificate
-                id="appscoAddOauthApplicationCertificate"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-oauth-application-certificate-added="_onOauthApplicationCertificateAdded"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-add-oauth-application-certificate>
-
-        <appsco-remove-oauth-application-certificate
-                id="appscoRemoveCertificate"
-                authorization-token="[[ authorizationToken ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-oauth-application-certificate-removed="_onOAuthApplicationCertificateRemoved"
-                disable-upgrade$="[[!_applicationsApi]]"></appsco-remove-oauth-application-certificate>
-
-        <appsco-add-folder id="appscoAddFolder"
-                           authorization-token="[[ authorizationToken ]]"
-                           folders-api="[[ api.foldersApi ]]"
-                           company="[[ currentCompany.company ]]"
-                           api-errors="[[ _apiErrors ]]"
-                           on-folder-added="_onFolderAdded"
-                           disable-upgrade$="[[!_applicationsApi]]"></appsco-add-folder>
-        
-        <appsco-change-policy-status id="appscoChangePolicyStatus"
-                                     authorization-token="[[ authorizationToken ]]"
-                                     api-errors="[[ _apiErrors ]]"
-                                     on-policy-status-changed="_onPolicyStatusChanged"
-                                     disable-upgrade$="[[!_applicationsApi]]"></appsco-change-policy-status>
-
-        <appsco-idp-resource-add
-                id="appscoIdpResourceAdd"
-                authorization-token="[[ authorizationToken ]]"
-                add-resource-api="[[ _companyApplicationsApi ]]"
-                link="[[ _copyObject(link) ]]"
-                api-errors="[[ _apiErrors ]]"
-                on-resource-added="_onIdpResourceAdded"
-                disable-upgrade$="[[!_applicationsApi]]">
-        </appsco-idp-resource-add>
+        <!--endRegion Shared-->
 
         <template is="dom-if" if="[[ api.me ]]">
 
@@ -1914,6 +2005,211 @@
                 _contactPage: {
                     type: Boolean,
                     computed: '_computeContactPage(page)'
+                },
+
+                _contactsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "contacts")'
+                },
+
+                _homePage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "home")'
+                },
+
+                _resourcePage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "resource")'
+                },
+
+                _resourcesPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "resources")'
+                },
+
+                _manageResourcePage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-resource")'
+                },
+
+                _accountPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "account")'
+                },
+
+                _companyAccountPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "company-account")'
+                },
+
+                _companyHomePage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "company-home")'
+                },
+
+                _tryBusinessPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "trybusiness")'
+                },
+
+                _directoryPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "directory")'
+                },
+
+                _manageAccountPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-account")'
+                },
+
+                _manageContactPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-contact")'
+                },
+
+                _manageCustomerPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-customer")'
+                },
+
+                _manageGroupPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-group")'
+                },
+
+                _manageIntegrationPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-integration")'
+                },
+
+                _groupsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "groups")'
+                },
+
+                _anyGroupPage: {
+                    type: Boolean,
+                    computed: '_computeAnyGroupPage(page)'
+                },
+
+                _customersPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "customers")'
+                },
+
+                _auditLogPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "audit-log")'
+                },
+
+                _accessOnBoardingPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "access-on-boarding")'
+                },
+
+                _billingPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "billing")'
+                },
+
+                _customerBillingPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "customer-billing")'
+                },
+
+                _companySettingsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "company")'
+                },
+
+                _reportsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "reports")'
+                },
+
+                _accessReportPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "access-report")'
+                },
+
+                _complianceReportPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "compliance-report")'
+                },
+
+                _billingReportPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "billing-report")'
+                },
+
+                _policiesReportPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "policies-report")'
+                },
+
+                _provisioningPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "provisioning")'
+                },
+
+                _anyProvisioningPage: {
+                    type: Boolean,
+                    computed: '_computeAnyProvisioningPage(page)'
+                },
+
+                _anyResourcePage: {
+                    type: Boolean,
+                    computed: '_computeAnyResourcePage(page)'
+                },
+
+                _anyContactPage: {
+                    type: Boolean,
+                    computed: '_computeAnyContactPage(page)'
+                },
+
+                _anyCustomersPage: {
+                    type: Boolean,
+                    computed: '_computeAnyCustomerPage(page)'
+                },
+
+                _anyBillingPage: {
+                    type: Boolean,
+                    computed: '_computeAnyBillingPage(page)'
+                },
+
+                _anyAccountPage: {
+                    type: Boolean,
+                    computed: '_computeAnyAccountPage(page)'
+                },
+
+                _oauthApplicationsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "oauth-applications")'
+                },
+
+                _manageOauthApplicationPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "manage-oauth-application")'
+                },
+
+                _oauthApplicationPage: {
+                    type: Boolean,
+                    computed: '_computeOAuthPage(page)'
+                },
+
+                _policiesPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "policies")'
+                },
+
+                _dashboardFolderPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "dashboard-folder")'
+                },
+
+                _additionalOptionsPage: {
+                    type: Boolean,
+                    computed: '_computePage(page, "additional-options")'
                 },
 
                 page: {
@@ -3423,7 +3719,7 @@
             },
 
             _showUserSessionExpiredInfo: function() {
-                var appscoCompanyNoticeComponent = this.$.appscoCompanyNotice;
+                var appscoCompanyNoticeComponent = this.$$('#appscoCompanyNotice');
 
                 appscoCompanyNoticeComponent.setNotice('Your session has expired. You will be redirected in order to login again.');
                 appscoCompanyNoticeComponent.setNoticeEvent('user-session-expired');
@@ -3626,7 +3922,7 @@
 
                 switch (this.page) {
                     case 'home':
-                        return this.$.appscoHomePageActions;
+                        return this.$$('#appscoHomePageActions');
                         break;
 
                     case 'resources':
@@ -3634,55 +3930,55 @@
                         break;
 
                     case 'directory':
-                        return this.$.appscoDirectoryPageActions;
+                        return this.$$('#appscoDirectoryPageActions');
                         break;
 
                     case 'contacts':
-                        return this.$.appscoContactsPageActions;
+                        return this.$$('#appscoContactsPageActions');
                         break;
 
                     case 'groups':
-                        return this.$.appscoGroupsPageActions;
+                        return this.$$('#appscoGroupsPageActions');
                         break;
 
                     case 'account':
-                        return this.$.appscoAccountPageActions;
+                        return this.$$('#appscoAccountPageActions');
                         break;
 
                     case 'company-account':
-                        return this.$.appscoCompanyAccountPageActions;
+                        return this.$$('#appscoCompanyAccountPageActions');
                         break;
 
                     case 'customers':
-                        return this.$.appscoCustomersPageActions;
+                        return this.$$('#appscoCustomersPageActions');
                         break;
 
                     case 'provisioning':
-                        return this.$.appscoProvisioningPageActions;
+                        return this.$$('#appscoProvisioningPageActions');
                         break;
 
                     case 'oauth-applications':
-                        return this.$.appscoOAuthApplicationsPageActions;
+                        return this.$$('#appscoOAuthApplicationsPageActions');
                         break;
 
                     case 'manage-oauth-application':
-                        return this.$.appscoManageOAuthApplicationPageActions;
+                        return this.$$('#appscoManageOAuthApplicationPageActions');
                         break;
 
                     case 'dashboard-folder':
-                        return this.$.appscoDashboardFolderPageActions;
+                        return this.$$('#appscoDashboardFolderPageActions');
                         break;
 
                     case 'policies':
-                        return this.$.appscoPoliciesPageActions;
+                        return this.$$('#appscoPoliciesPageActions');
                         break;
 
                     case 'policies-report':
-                        return this.$.appscoPolicyReportPageActions;
+                        return this.$$('#appscoPolicyReportPageActions');
                         break;
 
                     case 'company-home':
-                        return this.$.appscoCompanyHomePageActions;
+                        return this.$$('#appscoCompanyHomePageActions');
                         break;
                 }
 
@@ -3709,11 +4005,11 @@
             },
 
             _onHideContactBulkActions: function() {
-                this.$.appscoContactsPageActions.hideBulkActions();
+                this.$$('#appscoContactsPageActions').hideBulkActions();
             },
 
             _onHideDirectoryBulkActions: function() {
-                this.$.appscoDirectoryPageActions.hideBulkActions();
+                this.$$('#appscoDirectoryPageActions').hideBulkActions();
             },
 
             _showBulkSelectAll: function() {
@@ -3776,7 +4072,7 @@
 
                 switch (action) {
                     case 'catalogue-application':
-                        this.$.appscoApplicationAdd.toggle();
+                        this.$$('#appscoApplicationAdd').toggle();
                         break;
                     default:
                         var request = document.createElement('iron-request'),
@@ -3792,8 +4088,8 @@
                         request.send(options).then(function() {
 
                             if (200 == request.status) {
-                                this.$.appscoDialogApplicationAdd.setApplicationTemplate(request.response.application);
-                                this.$.appscoDialogApplicationAdd.toggle();
+                                this.$$('#appscoApplicationAdd').setApplicationTemplate(request.response.application);
+                                this.$$('#appscoApplicationAdd').toggle();
                             }
 
                         }.bind(this));
@@ -3825,13 +4121,13 @@
             },
 
             _onEditSharedApplication: function(event) {
-                this.$.appscoCompanyResourceSettingsDialog.setApplication(event.detail.application);
-                this.$.appscoCompanyResourceSettingsDialog.toggle();
+                this.$$('#appscoCompanyResourceSettingsDialog').setApplication(event.detail.application);
+                this.$$('#appscoCompanyResourceSettingsDialog').toggle();
             },
 
             _onEditApplicationCredentials: function(event) {
-                this.$.appscoApplicationSettingsDialog.setApplication(event.detail.application);
-                this.$.appscoApplicationSettingsDialog.toggle();
+                this.$$('#appscoApplicationSettingsDialog').setApplication(event.detail.application);
+                this.$$('#appscoApplicationSettingsDialog').toggle();
             },
 
             _onResourcesLoadForbidden: function(event) {
@@ -3930,11 +4226,11 @@
             },
 
             _onEnableSubscribersSearchAction: function() {
-                this.$.appscoApplicationPageActions.enableSubscribersSearchAction();
+                this.$$('#appscoApplicationPageActions').enableSubscribersSearchAction();
             },
 
             _onDisableSubscribersSearchAction: function() {
-                this.$.appscoApplicationPageActions.disableSubscribersSearchAction();
+                this.$$('#appscoApplicationPageActions').disableSubscribersSearchAction();
             },
 
             _searchSubscribers: function(term) {
@@ -3952,7 +4248,7 @@
 
             _onShareApplication: function(event) {
                 this.set('application', event.detail.application);
-                this.$.appscoApplicationShare.toggle();
+                this.$$('#appscoApplicationShare').toggle();
             },
 
             _onApplicationShared: function(event) {
@@ -3993,7 +4289,7 @@
 
 
             _onRemoveApplication: function() {
-                this.$.appscoApplicationRemove.open();
+                this.$$('#appscoApplicationRemove').open();
             },
 
             _onApplicationRemoved: function(event) {
@@ -4083,15 +4379,17 @@
             },
 
             _onSubscriptionRevoke: function(event) {
-                this.$.appscoApplicationSubscriberRevoke.application =   event.detail.application;
-                this.$.appscoApplicationSubscriberRevoke.revokeAccount = event.detail.account;
+                var dialog = this.$$('#appscoApplicationSubscriberRevoke');
+                dialog.application =   event.detail.application;
+                dialog.revokeAccount = event.detail.account;
 
-                this.$.appscoApplicationSubscriberRevoke.open();
+                dialog.open();
             },
 
             _onRevokeApplication: function(event) {
-                this.$.appscoApplicationRevoke.applicationInstance = event.detail.application;
-                this.$.appscoApplicationRevoke.open();
+                var dialog = this.$$('#appscoApplicationRevoke');
+                dialog.applicationInstance = event.detail.application;
+                dialog.open();
             },
 
             _onSelfSubscriptionRevoked: function(event) {
@@ -4224,7 +4522,7 @@
 
             _onRevokeAuthorizedApplication: function(event) {
                 this._authorizedApplication = event.detail.application;
-                this.$.appscoAccountAuthorizedAppRevoke.open();
+                this.$$('#appscoAccountAuthorizedAppRevoke').open();
             },
 
             _onAuthorizedApplicationRevoked: function(event) {
@@ -4261,7 +4559,7 @@
             },
 
             _onDisableTwoFaAction: function() {
-                this.$.appscoAccountDisableTwoFa.open();
+                this.$$('#appscoAccountDisableTwoFa').open();
             },
 
             _setupAfterTwoFaDisabled: function() {
@@ -4388,7 +4686,7 @@
             },
 
             _onAddOrgunit: function(event) {
-                var orgunitAddDialog = this.$.appscoOrgunitModify;
+                var orgunitAddDialog = this.$$('#appscoOrgunitModify');
 
                 orgunitAddDialog.parent = event.detail.orgUnit;
                 orgunitAddDialog.orgUnit = {};
@@ -4410,7 +4708,7 @@
             },
 
             _onModifyOrgunit: function(event) {
-                var orgunitModifyDialog = this.$.appscoOrgunitModify;
+                var orgunitModifyDialog = this.$$('#appscoOrgunitModify');
 
                 orgunitModifyDialog.parent = {};
                 orgunitModifyDialog.orgUnit = event.detail.orgUnit;
@@ -4432,7 +4730,7 @@
             },
 
             _onRemoveOrgunit: function(event) {
-                var orgunitRemoveDialog = this.$.appscoOrgunitRemove;
+                var orgunitRemoveDialog = this.$$('#appscoOrgunitRemove');
 
                 orgunitRemoveDialog.orgUnit = event.detail.orgUnit;
                 orgunitRemoveDialog.open();
@@ -4458,12 +4756,12 @@
 
                 switch (action) {
                     case 'sso-application':
-                        this.$.appscoCompanySSOApplicationsAdd.setAction(action);
-                        this.$.appscoCompanySSOApplicationsAdd.toggle();
+                        this.$$('#appscoCompanySSOApplicationsAdd').setAction(action);
+                        this.$$('#appscoCompanySSOApplicationsAdd').toggle();
                         break;
                     case 'catalogue-application':
-                        this.$.appscoCompanyApplicationsAdd.setAction(action);
-                        this.$.appscoCompanyApplicationsAdd.toggle();
+                        this.$$('#appscoCompanyApplicationsAdd').setAction(action);
+                        this.$$('#appscoCompanyApplicationsAdd').toggle();
                         break;
                     default:
                         var request = document.createElement('iron-request'),
@@ -4479,9 +4777,9 @@
                         request.send(options).then(function() {
 
                             if (200 == request.status) {
-                                this.$.appscoDialogApplicationCompanyAdd.setApplicationTemplate(request.response.application);
-                                this.$.appscoDialogApplicationCompanyAdd.setAction(action);
-                                this.$.appscoDialogApplicationCompanyAdd.toggle();
+                                this.$$('#appscoDialogApplicationCompanyAdd').setApplicationTemplate(request.response.application);
+                                this.$$('#appscoDialogApplicationCompanyAdd').setAction(action);
+                                this.$$('#appscoDialogApplicationCompanyAdd').toggle();
                             }
 
                         }.bind(this));
@@ -4505,11 +4803,11 @@
             },
 
             _onImportResourcesAction: function() {
-                this.$.appscoImportResources.toggle();
+                this.$$('#appscoImportResources').toggle();
             },
 
             _onImportPersonalResourcesAction: function() {
-                this.$.appscoImportPersonalResources.toggle();
+                this.$$('#appscoImportPersonalResources').toggle();
             },
 
             _onImportCompanyResourcesFinished: function(event) {
@@ -4586,25 +4884,25 @@
 
                 if (selectedApplications.length > 0) {
                     this.set('_applicationsToShare', selectedApplications);
-                    this.$.appscoShareResource.toggle();
+                    this.$$('#appscoShareResource').toggle();
                 }
             },
 
             _onShareCompanyResource: function(event) {
                 this.set('_applicationsToShare', []);
                 this.set('_applicationsToShare', [event.detail.resource]);
-                this.$.appscoShareResource.toggle();
+                this.$$('#appscoShareResource').toggle();
             },
 
             _onAddResourceAdmin: function(event) {
                 this.set('_applicationsToShare', []);
                 this.set('_applicationsToShare', [event.detail.resource]);
-                this.$.appscoAddResourceAdmin.toggle();
+                this.$$('#appscoAddResourceAdmin').toggle();
             },
 
             _onResourceAdminAdded: function(event) {
-                if (this.$.appscoManageApplicationPage.$) {
-                    this.$.appscoManageApplicationPage.reloadResourceAdmins();
+                if (this.$$('#appscoManageApplicationPage').$) {
+                    this.$$('#appscoManageApplicationPage').reloadResourceAdmins();
                 }
                 this._notify('Resource admin successfully added.');
                 this._notifyReloadApplications();
@@ -4612,12 +4910,12 @@
 
             _onAddResourceToResourceAdmin: function(event) {
                 var role = event.detail.role;
-                this.$.appscoAddResourceToResourceAdmin.setRole(role);
-                this.$.appscoAddResourceToResourceAdmin.toggle();
+                this.$$('#appscoAddResourceToResourceAdmin').setRole(role);
+                this.$$('#appscoAddResourceToResourceAdmin').toggle();
             },
 
             _onResourceAdminAssigned: function(event) {
-                this.$.appscoManageAccountPage.reloadResourceAdmins();
+                this.$$('#appscoManageAccountPage').reloadResourceAdmins();
             },
 
             _onResourcesShared: function(event) {
@@ -4640,8 +4938,8 @@
                 this._notifyReloadApplications();
                 this._notifyReloadAccessOnBoarding();
 
-                if (this.$.appscoAccessOnBoardingPage.$) {
-                    this.$.appscoAccessOnBoardingPage.reloadRoles();
+                if (this.$$('#appscoAccessOnBoardingPage').$) {
+                    this.$$('#appscoAccessOnBoardingPage').reloadRoles();
                 }
             },
 
@@ -4651,8 +4949,8 @@
 
             resetApplicationAssigneesPage: function() {
 
-                if (this.$.appscoManageApplicationPageActions.$) {
-                    this.$.appscoManageApplicationPageActions.resetApplicationAssigneesPageActions();
+                if (this.$$('#appscoManageApplicationPageActions').$) {
+                    this.$$('#appscoManageApplicationPageActions').resetApplicationAssigneesPageActions();
                 }
             },
 
@@ -4692,7 +4990,7 @@
             },
 
             _onChangeAssigneeClaims: function(event) {
-                var assigneeClaimsComponent = this.$.appscoApplicationAssigneeClaims;
+                var assigneeClaimsComponent = this.$$('#appscoApplicationAssigneeClaims');
 
                 assigneeClaimsComponent.setApplication(event.detail.application);
                 assigneeClaimsComponent.setAssignee(event.detail.assignee);
@@ -4706,14 +5004,14 @@
             },
 
             _onRevokeAssigneeAccess: function(event) {
-                var assigneeRevokeComponent = this.$.appscoApplicationAssigneeRevoke;
+                var assigneeRevokeComponent = this.$$('#appscoApplicationAssigneeRevoke');
 
                 assigneeRevokeComponent.setAssignee(event.detail.assignee);
                 assigneeRevokeComponent.toggle();
             },
 
             _onRevokeResourceAdmin: function(event) {
-                var resourceAdminRevokeComponent = this.$.appscoResourceAdminRevoke;
+                var resourceAdminRevokeComponent = this.$$('#appscoResourceAdminRevoke');
 
                 resourceAdminRevokeComponent.setAssignee(event.detail.assignee);
                 resourceAdminRevokeComponent.setApplication(event.detail.application);
@@ -4772,7 +5070,7 @@
 
                 if (applications.length > 0) {
                     this.set('_selectedApplications', applications);
-                    this.$.appscoCompanyApplicationsRemove.toggle();
+                    this.$$('#appscoCompanyApplicationsRemove').toggle();
                 }
             },
 
@@ -4809,9 +5107,9 @@
             },
 
             _onRemoveApplicationFromGroup: function(event) {
-                this.$.appscoApplicationRemoveGroup.setGroup(event.detail.group);
-                this.$.appscoApplicationRemoveGroup.setApplication(event.detail.application);
-                this.$.appscoApplicationRemoveGroup.toggle();
+                this.$$('#appscoApplicationRemoveGroup').setGroup(event.detail.group);
+                this.$$('#appscoApplicationRemoveGroup').setApplication(event.detail.application);
+                this.$$('#appscoApplicationRemoveGroup').toggle();
             },
 
             _onApplicationRemovedFromGroup: function(event) {
@@ -4838,11 +5136,11 @@
             },
 
             _onEnableAssigneesSearchAction: function() {
-                this.$.appscoManageApplicationPageActions.enableAssigneesSearchAction();
+                this.$$('#appscoManageApplicationPageActions').enableAssigneesSearchAction();
             },
 
             _onDisableAssigneesSearchAction: function() {
-                this.$.appscoManageApplicationPageActions.disableAssigneesSearchAction();
+                this.$$('#appscoManageApplicationPageActions').disableAssigneesSearchAction();
             },
 
             _onResourceImageChanged: function() {
@@ -4865,10 +5163,12 @@
                 }
                 var applicationIcon = event.detail.applicationIcon,
                     currentFolder = event.detail.currentFolder;
-                this.$.appscoFoldersApplicationAdd.setApplicationIcon(applicationIcon);
-                this.$.appscoFoldersApplicationAdd.setCurrentFolder(currentFolder);
-                this.$.appscoFoldersApplicationAdd.setCompany(company);
-                this.$.appscoFoldersApplicationAdd.toggle();
+
+                var dialog = this.$$('#appscoFoldersApplicationAdd');
+                dialog.setApplicationIcon(applicationIcon);
+                dialog.setCurrentFolder(currentFolder);
+                dialog.setCompany(company);
+                dialog.toggle();
             },
 
             _onOpenRenameFolderDialog: function(event) {
@@ -4877,9 +5177,11 @@
                     company = this.currentCompany;
                 }
                 var folderItem = event.detail.folderItem;
-                this.$.appscoFoldersRename.setFolderItem(folderItem);
-                this.$.appscoFoldersRename.setCompany(company);
-                this.$.appscoFoldersRename.toggle();
+                var dialog = this.$$('#appscoFoldersRename');
+
+                dialog.setFolderItem(folderItem);
+                dialog.setCompany(company);
+                dialog.toggle();
             },
 
             _onOpenRemoveFolderDialog: function(event) {
@@ -4888,9 +5190,10 @@
                     company = this.currentCompany;
                 }
                 var folderItem = event.detail.folderItem;
-                this.$.appscoFoldersRemove.setFolderItem(folderItem);
-                this.$.appscoFoldersRemove.setCompany(company);
-                this.$.appscoFoldersRemove.toggle();
+                var dialog = this.$$('#appscoFoldersRemove');
+                dialog.setFolderItem(folderItem);
+                dialog.setCompany(company);
+                dialog.toggle();
             },
 
             _onPageSettingsChanged: function(event) {
@@ -4924,7 +5227,7 @@
             },
 
             _onRemoveInvitationAction: function(event) {
-                var invitationDeleteComponent = this.$.appscoInvitationRemove;
+                var invitationDeleteComponent = this.$$('#appscoInvitationRemove');
 
                 invitationDeleteComponent.setInvitation(event.detail.invitation);
                 invitationDeleteComponent.open();
@@ -4978,11 +5281,11 @@
             },
 
             _onCompanyAddAccount: function() {
-                this.$.appscoDirectoryAccountAdd.toggle();
+                this.$$('#appscoDirectoryAccountAdd').toggle();
             },
 
             _onCompanyImportAccounts: function() {
-                this.$.appscoDirectoryImportAccounts.toggle();
+                this.$$('#appscoDirectoryImportAccounts').toggle();
             },
 
             _onInvitationCreated: function(event) {
@@ -5045,7 +5348,7 @@
 
                 if (accounts.length > 0) {
                     this.set('_selectedAccounts', accounts);
-                    this.$.appscoAccountOrgunit.toggle();
+                    this.$$('#appscoAccountOrgunit').toggle();
                 }
                 else {
                     this._onHideDirectoryBulkActions();
@@ -5089,7 +5392,7 @@
 
                 if (selectedAccounts.length > 0) {
                     this.set('_selectedAccounts', selectedAccounts);
-                    this.$.appscoAccountsRemove.toggle();
+                    this.$$('#appscoAccountsRemove').toggle();
                 }
                 else {
                     this._onHideDirectoryBulkActions()
@@ -5156,12 +5459,13 @@
             },
 
             _onResetDirectoryTypeFilter: function() {
-                this.$.appscoDirectoryPageActions.resetTypeFilter();
+                this.$$('#appscoDirectoryPageActions').resetTypeFilter();
             },
 
             _onSendNotificationToCompanyRoles: function() {
-                this.$.appscoSendNotification.setFilterType('user');
-                this.$.appscoSendNotification.toggle();
+                var dialog = this.$$('#appscoSendNotification');
+                dialog.setFilterType('user');
+                dialog.toggle();
             },
 
             /**
@@ -5172,19 +5476,19 @@
              * Manage Account page START
              */
             _onShowSubscriptionLimitReachedInfo: function(event) {
-                this.$.appscoDirectoryPageActions.showSubscriptionLimitReachedInfo(event.detail.subscription);
+                this.$$('#appscoDirectoryPageActions').showSubscriptionLimitReachedInfo(event.detail.subscription);
             },
 
             _onHideSubscriptionLimitReachedInfo: function() {
-                this.$.appscoDirectoryPageActions.hideSubscriptionLimitReachedInfo();
+                this.$$('#appscoDirectoryPageActions').hideSubscriptionLimitReachedInfo();
             },
 
             _onShowDomainNotVerifiedInfo: function() {
-                this.$.appscoDirectoryPageActions.showDomainNotVerifiedInfo();
+                this.$$('#appscoDirectoryPageActions').showDomainNotVerifiedInfo();
             },
 
             _onHideDomainNotVerifiedInfo: function() {
-                this.$.appscoDirectoryPageActions.hideDomainNotVerifiedInfo();
+                this.$$('#appscoDirectoryPageActions').hideDomainNotVerifiedInfo();
             },
 
             _onEditAccount: function(event) {
@@ -5205,7 +5509,7 @@
             },
 
             _onResetRoleTwoFA: function(event) {
-                var component = this.$.appscoRoleResetTwoFA;
+                var component = this.$$('#appscoRoleResetTwoFA');
 
                 component.setRole(event.detail.role);
                 component.open();
@@ -5225,21 +5529,21 @@
             },
 
             _onRemoveAccountFromOrgunit: function(event) {
-                this.$.appscoAccountRemoveOrgunit.orgunit = event.detail.orgunit;
+                this.$$('#appscoAccountRemoveOrgunit').orgunit = event.detail.orgunit;
                 this._role = event.detail.account;
-                this.$.appscoAccountRemoveOrgunit.toggle();
+                this.$$('#appscoAccountRemoveOrgunit').toggle();
             },
 
             _onRemoveAccountFromGroup: function(event) {
-                this.$.appscoAccountRemoveGroup.group = event.detail.group;
+                this.$$('#appscoAccountRemoveGroup').group = event.detail.group;
                 this._role = event.detail.account;
-                this.$.appscoAccountRemoveGroup.toggle();
+                this.$$('#appscoAccountRemoveGroup').toggle();
             },
 
             _onRemoveContactFromGroup: function(event) {
-                this.$.appscoContactRemoveGroup.setGroup(event.detail.group);
-                this.$.appscoContactRemoveGroup.setContact(event.detail.contact);
-                this.$.appscoContactRemoveGroup.toggle();
+                this.$$('#appscoContactRemoveGroup').setGroup(event.detail.group);
+                this.$$('#appscoContactRemoveGroup').setContact(event.detail.contact);
+                this.$$('#appscoContactRemoveGroup').toggle();
             },
 
             _onAccountRemovedFromOrgunit: function(event) {
@@ -5320,7 +5624,7 @@
              * Contacts page START
              */
             _onAddContactAction: function() {
-                this.$.appscoAddContact.toggle();
+                this.$$('#appscoAddContact').toggle();
             },
 
             _onContactCreated: function(event) {
@@ -5331,7 +5635,7 @@
             },
 
             _onImportContactsAction: function() {
-                this.$.appscoImportContacts.toggle();
+                this.$$('#appscoImportContacts').toggle();
             },
 
             _onImportContactsFinished: function(event) {
@@ -5372,7 +5676,7 @@
 
                 if (selectedContacts.length > 0) {
                     this.set('_selectedContacts', selectedContacts);
-                    this.$.appscoContactsRemove.toggle();
+                    this.$$('#appscoContactsRemove').toggle();
                 }
                 else {
                     this._onHideContactBulkActions()
@@ -5391,7 +5695,7 @@
 
                 if (selectedGroups.length > 0) {
                     this.set('_selectedGroups', selectedGroups);
-                    this.$.appscoGroupsRemove.toggle();
+                    this.$$('#appscoGroupsRemove').toggle();
                 }
                 else {
                     this._onHideGroupsBulkActions()
@@ -5399,12 +5703,12 @@
             },
 
             _onNotifyGroupsAction: function() {
-                this.$.appscoNotifyGroup.toggle();
+                this.$$('appscoNotifyGroup').toggle();
             },
 
             _onRemovedGroups: function() {
-                this.$.appscoGroupsPage.removeGroups(this._selectedGroups);
-                this.$.appscoGroupsPage.hideBulkActions();
+                this.$$('#appscoGroupsPage').removeGroups(this._selectedGroups);
+                this.$$('#appscoGroupsPage').hideBulkActions();
                 this._notify('Selected groups were successfully removed from company.');
             },
 
@@ -5414,8 +5718,8 @@
             },
 
             _onDeletedContacts: function() {
-                this.$.appscoContactsPage.removeContacts(this._selectedContacts);
-                this.$.appscoContactsPage.hideBulkActions();
+                this.$$('#appscoContactsPage').removeContacts(this._selectedContacts);
+                this.$$('#appscoContactsPage').hideBulkActions();
                 this._notify('Selected contacts were successfully removed from company.');
             },
 
@@ -5456,8 +5760,9 @@
             },
 
             _onSendNotificationToContacts: function() {
-                this.$.appscoSendNotification.setFilterType('contact');
-                this.$.appscoSendNotification.toggle();
+                var dialog = this.$$('#appscoSendNotification');
+                dialog.setFilterType('contact');
+                dialog.toggle();
             },
             /**
              * Contacts page END
@@ -5467,7 +5772,7 @@
              * Groups page START
              */
             _onAddCompanyGroupAction: function() {
-                this.$.appscoCompanyAddGroup.open();
+                this.$$('#appscoCompanyAddGroup').open();
             },
 
             _onSearchCompanyGroupAction: function(event) {
@@ -5508,12 +5813,12 @@
             },
 
             _onHideContactsBulkActions: function() {
-                this.$.appscoContactsPageActions.hideBulkActions();
+                this.$$('#appscoContactsPageActions').hideBulkActions();
             },
 
             _onConvertContactToUserAction: function(event) {
                 var contact = event.detail.contact,
-                    convertContact = this.$.appscoConvertContact;
+                    convertContact = this.$$('#appscoConvertContact');
 
                 convertContact.setContact(contact);
                 convertContact.toggle();
@@ -5536,15 +5841,15 @@
 
             _onDeleteContactAction: function(event) {
                 var contact = event.detail.contact,
-                    deleteContact = this.$.appscoDeleteContact;
+                    deleteContact = this.$$('#appscoDeleteContact');
 
                 deleteContact.setContact(contact);
                 deleteContact.toggle();
             },
 
             _onDeleteCustomerAction: function(event) {
-                this.$.appscoRemoveCustomer.setCustomer(event.detail.customer);
-                this.$.appscoRemoveCustomer.open();
+                this.$$('#appscoRemoveCustomer').setCustomer(event.detail.customer);
+                this.$$('#appscoRemoveCustomer').open();
             },
 
             _onCustomerRemoved: function(event) {
@@ -5647,16 +5952,17 @@
             },
 
             _fireUpgrade: function(event) {
-                this.$.appscoUpgradeAction.setSubscription(event.detail.subscription);
-                this.$.appscoUpgradeAction.setPlans(event.detail.plans);
-                this.$.appscoUpgradeAction.initializePage();
-                this.$.appscoUpgradeAction.toggle();
+                var dialog = this.$$('#appscoUpgradeAction');
+                dialog.setSubscription(event.detail.subscription);
+                dialog.setPlans(event.detail.plans);
+                dialog.initializePage();
+                dialog.toggle();
             },
 
             _onUpdateSubscription: function(event) {
-                if (this.$.appscoUpdateSubscriptionAction.$) {
-                    this.$.appscoUpdateSubscriptionAction.setSubscription(event.detail.subscription);
-                    this.$.appscoUpdateSubscriptionAction.toggle();
+                if (this.$$('#appscoUpdateSubscriptionAction').$) {
+                    this.$$('#appscoUpdateSubscriptionAction').setSubscription(event.detail.subscription);
+                    this.$$('#appscoUpdateSubscriptionAction').toggle();
                 }
             },
 
@@ -5696,8 +6002,8 @@
             },
 
             _onCancelSubscription: function(event) {
-                this.$.appscoSubscriptionCancel.setSubscription(event.detail.subscription);
-                this.$.appscoSubscriptionCancel.toggle();
+                this.$$('#appscoSubscriptionCancel').setSubscription(event.detail.subscription);
+                this.$$('#appscoSubscriptionCancel').toggle();
             },
 
             _onSubscriptionCanceled: function(event) {
@@ -5707,7 +6013,7 @@
             },
 
             _onManageCreditCard: function() {
-                this.$.appscoCreditCard.toggle();
+                this.$$('#appscoCreditCard').toggle();
             },
 
             _onCreditCardAdded: function(event) {
@@ -5721,9 +6027,9 @@
             },
 
             _onSendInvoice: function(event) {
-                this.$.appscoBillingSendInvoice.setInvoice(event.detail.invoice);
-                this.$.appscoBillingSendInvoice.setSubscription(event.detail.subscription);
-                this.$.appscoBillingSendInvoice.toggle();
+                this.$$('#appscoBillingSendInvoice').setInvoice(event.detail.invoice);
+                this.$$('#appscoBillingSendInvoice').setSubscription(event.detail.subscription);
+                this.$$('#appscoBillingSendInvoice').toggle();
             },
 
             _onInvoiceSent: function(event) {
@@ -5737,7 +6043,7 @@
              * Provisioning page START
              */
             _onAddIntegrationAction: function() {
-                this.$.appscoAddIntegration.open();
+                this.$$('#appscoAddIntegration').open();
             },
 
             _onIntegrationRequested: function(event) {
@@ -5768,8 +6074,8 @@
             },
 
             _onRemoveIntegrationAction: function(event) {
-                this.$.appscoRemoveIntegration.setIntegration(event.detail.integration);
-                this.$.appscoRemoveIntegration.open();
+                this.$$('#appscoRemoveIntegration').setIntegration(event.detail.integration);
+                this.$$('#appscoRemoveIntegration').open();
             },
 
             _onIntegrationSetup: function(event) {
@@ -5778,7 +6084,7 @@
             },
 
             _onAddIntegrationRuleAction: function(event) {
-                var addIntegrationRuleComponent = this.$.appscoAddIntegrationRule;
+                var addIntegrationRuleComponent = this.$$('#appscoAddIntegrationRule');
 
                 addIntegrationRuleComponent.setIntegration(event.detail.integration);
                 addIntegrationRuleComponent.open();
@@ -5799,7 +6105,7 @@
             },
 
             _onEditIntegrationRuleAction: function(event) {
-                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$.appscoEditIntegrationRule);
+                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$$('#appscoEditIntegrationRule'));
             },
 
             _onIntegrationRuleEdited: function(event) {
@@ -5811,12 +6117,12 @@
             },
 
             _onRunIntegrationRuleAction: function(event) {
-                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$.appscoRunIntegrationRule);
+                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$$('#appscoRunIntegrationRule'));
             },
 
             _onIntegrationForceSync: function(event) {
-                this.$.appscoRunIntegrationForceSync.setIntegration(event.detail.integration);
-                this.$.appscoRunIntegrationForceSync.open();
+                this.$$('#appscoRunIntegrationForceSync').setIntegration(event.detail.integration);
+                this.$$('#appscoRunIntegrationForceSync').open();
             },
 
             _onIntegrationRuleRun: function(event) {
@@ -5828,7 +6134,7 @@
             },
 
             _onRemoveIntegrationRuleAction: function(event) {
-                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$.appscoRemoveIntegrationRule);
+                this._triggerIntegrationRuleAction(event.detail.integration, event.detail.rule, this.$$('#appscoRemoveIntegrationRule'));
             },
 
             _onIntegrationRuleRemoved: function(event) {
@@ -5840,7 +6146,7 @@
             },
 
             _onRegisterIntegrationWebhookAction: function(event) {
-                var component = this.$.appscoRegisterIntegrationWebhook;
+                var component = this.$$('#appscoRegisterIntegrationWebhook');
 
                 component.setIntegration(event.detail.integration);
                 component.setIntegrationWebhook(event.detail.webhook);
@@ -5856,7 +6162,7 @@
             },
 
             _onUnregisterIntegrationWebhookAction: function(event) {
-                var component = this.$.appscoUnegisterIntegrationWebhook;
+                var component = this.$$('#appscoUnegisterIntegrationWebhook');
 
                 component.setIntegration(event.detail.integration);
                 component.setIntegrationWebhook(event.detail.webhook);
@@ -5934,20 +6240,20 @@
             },
 
             _onShowDomainsPageActions: function() {
-                this.$.appscoCompanyPageActions.showDomainsPageActions();
+                this.$$('#appscoCompanyPageActions').showDomainsPageActions();
             },
 
             _onHideDomainsPageActions: function() {
-                this.$.appscoCompanyPageActions.hideDomainsPageActions();
+                this.$$('#appscoCompanyPageActions').hideDomainsPageActions();
             },
 
             _onAddDomain: function() {
-                this.$.appscoCompanyAddDomain.open();
+                this.$$('#appscoCompanyAddDomain').open();
             },
 
             _onAddIdpCertificate: function(event) {
-                this.$.appscoCompanyAddCertificate.setSource(event);
-                this.$.appscoCompanyAddCertificate.open();
+                this.$$('#appscoCompanyAddCertificate').setSource(event);
+                this.$$('#appscoCompanyAddCertificate').open();
             },
 
             _onDomainAdded: function(event) {
@@ -5967,8 +6273,8 @@
             },
 
             _onRemoveDomain: function(event) {
-                this.$.appscoCompanyRemoveDomain.setDomain(event.detail.domain);
-                this.$.appscoCompanyRemoveDomain.open();
+                this.$$('#appscoCompanyRemoveDomain').setDomain(event.detail.domain);
+                this.$$('#appscoCompanyRemoveDomain').open();
             },
 
             _onIntegrationRemoved: function(event) {
@@ -5993,8 +6299,8 @@
             },
 
             _onDomainGetToken: function(event) {
-                this.$.appscoCompanyDomainToken.setDomain(event.detail.domain);
-                this.$.appscoCompanyDomainToken.open();
+                this.$$('#appscoCompanyDomainToken').setDomain(event.detail.domain);
+                this.$$('#appscoCompanyDomainToken').open();
             },
 
             _onDomainVerified: function(event) {
@@ -6023,8 +6329,9 @@
             },
 
             _onDeactivateDomainIdPSettings: function(event) {
-                this.$.appscoDeactivateIdPSettings.setDomain(event.detail.domain);
-                this.$.appscoDeactivateIdPSettings.open();
+                var dialog = this.$$('#appscoDeactivateIdPSettings');
+                dialog.setDomain(event.detail.domain);
+                dialog.open();
             },
 
             _onIdPSettingsDeactivated: function(event) {
@@ -6049,7 +6356,7 @@
              * Company Home page START
              */
             _onAddNewFolderAction: function(event) {
-                var component = this.$.appscoAddFolder;
+                var component = this.$$('#appscoAddFolder');
 
                 if (component.$) {
                     if (event.detail.personal == true) {
@@ -6211,11 +6518,11 @@
              * Groups page START
              */
             _onShowGroupsPageActions: function() {
-                this.$.appscoCompanyPageActions.showGroupsPageActions();
+                this.$$('#appscoCompanyPageActions').showGroupsPageActions();
             },
 
             _onHideGroupsPageActions: function() {
-                this.$.appscoCompanyPageActions.hideGroupsPageActions();
+                this.$$('#appscoCompanyPageActions').hideGroupsPageActions();
             },
 
             _addGroup: function(group) {
@@ -6259,8 +6566,8 @@
             },
 
             _onRemoveGroupAction: function(event) {
-                this.$.appscoCompanyRemoveGroup.setGroup(event.detail.group);
-                this.$.appscoCompanyRemoveGroup.open();
+                this.$$('#appscoCompanyRemoveGroup').setGroup(event.detail.group);
+                this.$$('#appscoCompanyRemoveGroup').open();
             },
 
             _onGroupRemoved: function(event) {
@@ -6305,9 +6612,9 @@
             _shareToGroup: function(items, type) {
 
                 if (items.length > 0) {
-                    this.$.appscoShareToGroupDialog.setItems(items);
-                    this.$.appscoShareToGroupDialog.setType(type);
-                    this.$.appscoShareToGroupDialog.open();
+                    this.$$('#appscoShareToGroupDialog').setItems(items);
+                    this.$$('#appscoShareToGroupDialog').setType(type);
+                    this.$$('#appscoShareToGroupDialog').open();
                 }
             },
 
@@ -6392,7 +6699,7 @@
             },
 
             _onAddItemToGroupAction: function(event) {
-                var addToGroupComponent = this.$.appscoGroupAddResource,
+                var addToGroupComponent = this.$$('#appscoGroupAddResource'),
                     resourceType = event.detail.resourceType;
 
                 addToGroupComponent.setType(resourceType);
@@ -6422,17 +6729,18 @@
             },
 
             _removeResourceFromGroup: function(group, item, type) {
-                this.$.appscoResourceRemoveFromGroup.setGroup(group);
-                this.$.appscoResourceRemoveFromGroup.setItem(item);
-                this.$.appscoResourceRemoveFromGroup.setType(type);
-                this.$.appscoResourceRemoveFromGroup.open();
+                var dialog = this.$$('#appscoResourceRemoveFromGroup');
+                dialog.setGroup(group);
+                dialog.setItem(item);
+                dialog.setType(type);
+                dialog.open();
             },
 
             _removePartnerAdminFromCustomer: function(customer, partnerAdmin) {
-                this.$.appscoCustomerPartnerAdminRemove.setCustomer(customer);
-                this.$.appscoCustomerPartnerAdminRemove.setPartnerAdminRole(partnerAdmin);
-                this.$.appscoCustomerPartnerAdminRemove.open();
-
+                var dialog = this.$$('#appscoCustomerPartnerAdminRemove');
+                dialog.setCustomer(customer);
+                dialog.setPartnerAdminRole(partnerAdmin);
+                dialog.open();
             },
 
             _onRemoveCompanyRoleFromGroup: function(event) {
@@ -6535,7 +6843,7 @@
              *  Devices page start
              */
             _onApproveDevice: function(event) {
-                var component = this.$.appscoAccountApproveDevice;
+                var component = this.$$('#appscoAccountApproveDevice');
 
                 component.setDevice(event.detail.device);
                 component.setAccount(event.detail.account);
@@ -6543,7 +6851,7 @@
             },
 
             _onDisapproveDevice: function(event) {
-                var component = this.$.appscoAccountDisapproveDevice;
+                var component = this.$$('#appscoAccountDisapproveDevice');
 
                 component.setDevice(event.detail.device);
                 component.setAccount(event.detail.account);
@@ -6572,11 +6880,11 @@
             },
 
             _onHideCustomersBulkActions: function() {
-                this.$.appscoCustomersPageActions.hideBulkActions();
+                this.$$('#appscoCustomersPageActions').hideBulkActions();
             },
 
             _onHideGroupsBulkActions: function() {
-                this.$.appscoGroupsPageActions.hideBulkActions();
+                this.$$('#appscoGroupsPageActions').hideBulkActions();
             },
 
             _searchCustomers: function(term) {
@@ -6593,11 +6901,11 @@
             },
 
             _onImportCustomerResources: function() {
-                this.$.appscoImportCustomerResources.toggle();
+                this.$$('#appscoImportCustomerResources').toggle();
             },
 
             _onAddCustomerAction: function() {
-                this.$.appscoAddCustomer.open();
+                this.$$('#appscoAddCustomer').open();
             },
 
             _onExportCustomersAction: function() {
@@ -6611,7 +6919,7 @@
 
             _onAddPartnerAdminAction: function(event) {
                 this.set('_selectedCustomers', [event.detail.customer]);
-                this.$.appscoAddPartnerAdmin.open();
+                this.$$('#appscoAddPartnerAdmin').open();
             },
 
             _addCustomer: function(customer) {
@@ -6673,7 +6981,7 @@
 
                 if (selectedCustomers.length > 0) {
                     this.set('_selectedCustomers', selectedCustomers);
-                    this.$.appscoCustomersRemove.toggle();
+                    this.$$('#appscoCustomersRemove').toggle();
                 }
                 else {
                     this._onHideCustomersBulkActions();
@@ -6698,7 +7006,7 @@
 
                 if (selectedCustomers.length > 0) {
                     this.set('_selectedCustomers', selectedCustomers);
-                    this.$.appscoAddPartnerAdmin.open();
+                    this.$$('#appscoAddPartnerAdmin').open();
                 }
                 else {
                     this._onHideCustomersBulkActions();
@@ -6721,7 +7029,7 @@
             },
 
             _onImportCustomersAction: function() {
-                this.$.appscoImportCustomers.open();
+                this.$$('#appscoImportCustomers').open();
             },
 
             _onCustomersImportFinished: function(event) {
@@ -6752,9 +7060,9 @@
             _onManageCustomerSubscription: function(event) {
                 var customer = event.detail.customer;
 
-                if (this.$.appscoManageCustomerSubscription.$) {
-                    this.$.appscoManageCustomerSubscription.setCustomer(customer);
-                    this.$.appscoManageCustomerSubscription.toggle();
+                if (this.$$('#appscoManageCustomerSubscription').$) {
+                    this.$$('#appscoManageCustomerSubscription').setCustomer(customer);
+                    this.$$('#appscoManageCustomerSubscription').toggle();
                 }
             },
             /**
@@ -6795,7 +7103,7 @@
             },
 
             _onAddOAuthApplicationAction: function() {
-                this.$.appscoAddOauthApplication.open();
+                this.$$('#appscoAddOauthApplication').open();
             },
 
             _onOauthApplicationAdded: function(event) {
@@ -6825,7 +7133,7 @@
             },
 
             _onRemoveOAuthApplicationAction: function(event) {
-                var removeComponent = this.$.appscoRemoveOAuthApplication;
+                var removeComponent = this.$$('#appscoRemoveOAuthApplication');
 
                 removeComponent.setApplication(event.detail.application);
                 removeComponent.open();
@@ -6839,7 +7147,7 @@
             },
 
             _onAddOAuthApplicationCertificateAction: function(event) {
-                var addComponent = this.$.appscoAddOauthApplicationCertificate;
+                var addComponent = this.$$('#appscoAddOauthApplicationCertificate');
 
                 addComponent.setApplication(event.detail.application);
                 addComponent.open();
@@ -6851,7 +7159,7 @@
             },
 
             _onRemoveOAuthApplicationCertificateAction: function(event) {
-                var removeComponent = this.$.appscoRemoveCertificate;
+                var removeComponent = this.$$('#appscoRemoveCertificate');
 
                 removeComponent.setCertificate(event.detail.certificate);
                 removeComponent.open();
@@ -6869,7 +7177,7 @@
              * Policies page START
              */
             _onChangePolicyStatusAction: function(event) {
-                var statusPolicyComponent = this.$.appscoChangePolicyStatus;
+                var statusPolicyComponent = this.$$('#appscoChangePolicyStatus');
 
                 if (statusPolicyComponent) {
                     statusPolicyComponent.setPolicy(event.detail.policy);
@@ -6909,7 +7217,7 @@
              * Additional Options page START
              */
             _onAddIdPItemAction: function(event) {
-                var component = this.$.appscoIdpResourceAdd;
+                var component = this.$$('#appscoIdpResourceAdd');
 
                 if (component && component.$) {
                     component.setResource(event.detail.item);
@@ -6972,6 +7280,42 @@
 
             _computeContactPage: function(page) {
                 return page === 'contact-home';
+            },
+
+            _computePage: function(page, pageToCompare) {
+                return pageToCompare === page;
+            },
+
+            _computeAnyProvisioningPage: function(page) {
+                return this._provisioningPage || this._manageIntegrationPage;
+            },
+
+            _computeAnyResourcePage: function(page) {
+                return this._resourcePage || this._manageResourcePage;
+            },
+
+            _computeAnyContactPage: function(page) {
+                return this._contactsPage || this._manageContactPage;
+            },
+
+            _computeAnyCustomerPage: function(page) {
+                return this._customersPage || this._manageCustomerPage;
+            },
+
+            _computeAnyBillingPage: function(page) {
+                return this._billingPage || this._customerBillingPage;
+            },
+
+            _computeAnyAccountPage: function(page) {
+                return this._accountPage || this._companyAccountPage || this._manageAccountPage;
+            },
+
+            _computeAnyGroupPage: function(page) {
+                return this._groupsPage || this._manageGroupPage;
+            },
+
+            _computeOAuthPage: function(page) {
+                return this._oauthApplicationsPage || this._manageOauthApplicationPage;
             },
 
             _computePanel: function(company) {
