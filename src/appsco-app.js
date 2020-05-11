@@ -3867,7 +3867,6 @@ class AppscoApp extends mixinBehaviors([
                 a.company.name.toLowerCase() < b.company.name.toLowerCase() ? 1: 0;
         });
 
-        this.set('account.companies', []);
         this.set('account.companies', companies);
     }
 
