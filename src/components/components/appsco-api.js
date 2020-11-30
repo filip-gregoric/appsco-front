@@ -172,6 +172,11 @@ class AppscoApi extends PolymerElement {
                 computed: '_computeLoginURL(index, domain)'
             },
 
+            registerBusinessURL: {
+                type: String,
+                computed: '_computeRegisterBusinessURL(index, domain)'
+            },
+
             setupTwoFAURL: {
                 type: String,
                 computed: '_computeSetupTwoFAURL(index, domain)'
@@ -241,6 +246,7 @@ class AppscoApi extends PolymerElement {
                         isUserLoggedInApi: this.isUserLoggedInApi,
                         isUserPassing2FAVerificationApi: this.isUserPassing2FAVerificationApi,
                         loginURL: this.loginURL,
+                        registerBusinessURL: this.registerBusinessURL,
                         setupTwoFAURL: this.setupTwoFAURL,
                         saveClientDataApi: this.saveClientDataApi,
                         partners: this.partners,
@@ -289,6 +295,7 @@ class AppscoApi extends PolymerElement {
             isUserLoggedInApi: this.isUserLoggedInApi,
             isUserPassing2FAVerificationApi: this.isUserPassing2FAVerificationApi,
             loginURL: this.loginURL,
+            registerBusinessURL: this.registerBusinessURL,
             setupTwoFAURL: this.setupTwoFAURL,
             saveClientDataApi: this.saveClientDataApi,
             partners: this.partners,
@@ -421,6 +428,10 @@ class AppscoApi extends PolymerElement {
 
     _computeLoginURL(index, domain) {
         return domain ? (domain + '/' + (index == '' ? '' : index + '/' ) + 'login') : null;
+    }
+
+    _computeRegisterBusinessURL(index, domain) {
+        return domain ? (domain + '/' + (index === '' ? '' : index + '/' ) + 'login/register_business') : null;
     }
 
     _computeSetupTwoFAURL(index, domain) {

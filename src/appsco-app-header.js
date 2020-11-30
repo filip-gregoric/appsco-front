@@ -224,29 +224,6 @@ $_documentContainer.innerHTML = `<dom-module id="appsco-app-header">
                     width: 300px;
                 };
             }
-            :host div[purchase] {
-                margin-top: 20px;
-                padding: 0 18px;
-                @apply --layout-vertical;
-                @apply --layout-center;
-                @apply --paper-font-body1;
-                color: var(--primary-text-color);
-            }
-            :host div[purchase] a {
-                width: 100%;
-            }
-            :host div[purchase] paper-button {
-                @apply --primary-button;
-                background-color: var(--brand-color);
-                border-color: var(--brand-color);
-                width: 100%;
-                margin-top: 10px;
-            }
-            :host div[purchase] a {
-                display: block;
-                text-decoration: none;
-                outline: none;
-            }
             .toast-close-action {
                 position: absolute;
                 top: 0;
