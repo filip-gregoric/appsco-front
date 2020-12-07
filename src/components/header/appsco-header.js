@@ -56,6 +56,13 @@ class AppscoHeader extends PolymerElement {
             </div>
 
             <div class="layout horizontal center">
+                <template is="dom-if" if="[[ _shouldShowRegisterBusiness ]]">
+                    <div purchase="">                        
+                        <paper-button on-tap="_redirectUserToRegisterBusinessPage">
+                            Try Appsco One
+                        </paper-button>
+                    </div>
+                </template>
 
                 <appsco-header-account-actions
                     id="appscoHeaderAccountActions"
@@ -171,6 +178,19 @@ class AppscoHeader extends PolymerElement {
 
             domain: {
                 type: String
+            },
+
+            registerBusinessUrl: {
+                type: String
+            },
+
+            isOnPersonalPage: {
+                type: Boolean
+            },
+
+            _shouldShowRegisterBusiness: {
+                type: Boolean,
+                computed: '_computeShouldShowRegisterBusiness(account, isOnPersonalPage)'
             }
 
         };
@@ -180,6 +200,16 @@ class AppscoHeader extends PolymerElement {
         if('appsco-partner-product' === event.detail.product) {
             window.location.href = this.domain+'/pp/home';
         }
+    }
+
+    _computeShouldShowRegisterBusiness(account, isOnPersonalPage) {
+        if(!isOnPersonalPage) {
+            return false;
+        }
+        if(account.native_company) {
+            return account.native_company.user_allowed_to_create_company;
+        }
+        return true;
     }
 
     setProduct(product) {
@@ -204,6 +234,10 @@ class AppscoHeader extends PolymerElement {
 
     notifyNotificationsSeen () {
         this.$.appscoHeaderAccountActions.notifyNotificationsSeen();
+    }
+
+    _redirectUserToRegisterBusinessPage() {
+        window.location.href = this.registerBusinessUrl;
     }
 }
 window.customElements.define(AppscoHeader.is, AppscoHeader);

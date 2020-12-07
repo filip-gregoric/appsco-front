@@ -114,11 +114,13 @@ class AppscoApp extends mixinBehaviors([
             authorization-token="[[ authorizationToken ]]"
             notifications-api="[[ api.notifications ]]"
             logout-api="[[ api.logout ]]"
+            register-business-url="[[ api.registerBusinessURL ]]"
             notifications-size="5"
             product-business="[[ _companiesAccountHasPermissionTo ]]"
             product-partner="[[ account.partner ]]"
             domain="{{ domain }}"
             tutorial-action-available="[[ _tutorialsPageVisible ]]"
+            is-on-personal-page="[[ _personalPage ]]" 
             on-brand-action="_onBrandAction"
             on-appsco-product-changed="_onAppscoProductChangeAction"
             on-account-chat="_onAccountChat"
@@ -150,15 +152,6 @@ class AppscoApp extends mixinBehaviors([
                     <a name="home" href="#">
                         <iron-icon icon="icons:home"></iron-icon> <span class="menu-text">Home</span>
                     </a>
-
-                    <template is="dom-if" if="[[ _accountCanCreateCompany ]]">
-                        <div purchase="">
-                            <div>Manage your business applications, employees and get meaningful insights.</div>
-                            <paper-button on-tap="_showTryBusinessPage">
-                                Try Appsco Business
-                            </paper-button>
-                        </div>
-                    </template>
                 </template>
 
                 <template is="dom-if" if="[[ _companyPage ]]">
@@ -1089,11 +1082,6 @@ class AppscoApp extends mixinBehaviors([
                 computed: "_computeCompanyUser(currentCompany)"
             },
 
-            _accountCanCreateCompany: {
-                type: Boolean,
-                computed: "_computeAccountCanCreateCompany(account)"
-            },
-
             _brandLogo: {
                 type: String,
                 computed: '_computeBrandLogo(currentCompany, _companyPage)'
@@ -1186,6 +1174,11 @@ class AppscoApp extends mixinBehaviors([
 
             tutorialResponse: {
                 type: Object
+            },
+
+            _personalPage: {
+                type: Boolean,
+                computed: '_computeIsPersonalPage(page, _companyPageResolved)'
             }
         }
     }
@@ -1607,10 +1600,6 @@ class AppscoApp extends mixinBehaviors([
 
     _showCompanyAccountPage() {
         this._showPage('company-account');
-    }
-
-    _showTryBusinessPage() {
-        this._showPage('trybusiness');
     }
 
     _showCompanyHomePage() {
@@ -2072,13 +2061,6 @@ class AppscoApp extends mixinBehaviors([
 
     _computeAccountManagedState(account) {
         return !!account.native_company;
-    }
-
-    _computeAccountCanCreateCompany(account) {
-        if(account.native_company) {
-            return account.native_company.user_allowed_to_create_company;
-        }
-        return true;
     }
 
     _getIsUserLoggedIn() {
@@ -4075,6 +4057,14 @@ class AppscoApp extends mixinBehaviors([
         if ('company-account' === page && account.self) {
             account.native_company ? this._setNativeCompanyAsCurrent() : this._showHomePage();
         }
+    }
+
+    _computeIsPersonalPage(page, companyPageResolved) {
+        if(!page || !companyPageResolved) {
+            return false;
+        }
+        
+        return this._isPersonalPage(page);
     }
 
     _onBackFromAccountAction() {
