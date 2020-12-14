@@ -391,6 +391,7 @@ class AppscoUpgradeAction extends mixinBehaviors([Appsco.HeadersMixin], PolymerE
         const plansList = JSON.parse(JSON.stringify(this._plans));
         this.set('_plans', []);
         this.set('_plans', plansList);
+        this.set('_selectedPlan', this.$.subscriptionPlan.selected);
     }
 
     _isPlanYearly(plan) {
