@@ -151,6 +151,11 @@ class AppscoDirectoryActions extends mixinBehaviors([NeonAnimationRunnerBehavior
             <paper-tooltip for="removeAction" position="bottom">Remove</paper-tooltip>
         </div>
 
+        <div class="action bulk-action flex-none">
+            <paper-icon-button id="syncUsersAction" icon="icons:cached" alt="Sync users" on-tap="_onSyncUsersAction"></paper-icon-button>
+            <paper-tooltip for="syncUsersAction" position="bottom">Sync users</paper-tooltip>
+        </div>
+
         <template is="dom-if" if="[[ _subscriptionInfo ]]">
             <div class="action flex-none">
                 <paper-icon-button id="infoAction" class="info-icon" icon="icons:info" alt="Show info" on-tap="_onToggleSubscriptionInfo"></paper-icon-button>
@@ -331,6 +336,10 @@ class AppscoDirectoryActions extends mixinBehaviors([NeonAnimationRunnerBehavior
 
     _onRemoveAction() {
         this.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
+    }
+
+    _onSyncUsersAction() {
+        this.dispatchEvent(new CustomEvent('sync-users', { bubbles: true, composed: true }));
     }
 
     _onSelectAllAction() {

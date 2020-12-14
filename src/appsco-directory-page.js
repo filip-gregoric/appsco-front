@@ -23,6 +23,7 @@ import './directory/appsco-directory-page-actions.js';
 import './components/orgunit/appsco-orgunit-modify.js';
 import './components/orgunit/appsco-orgunit-remove.js';
 import './components/account/company/appsco-account-remove.js';
+import './components/account/company/appsco-directory-sync.js';
 import './directory/appsco-directory-add-account.js';
 import './directory/appsco-import-accounts.js';
 import './components/notifications/appsco-send-notification.js';
@@ -216,6 +217,9 @@ class AppscoDirectoryPage extends mixinBehaviors([
 
         <appsco-account-remove id="appscoAccountsRemove" accounts="[[ selectedAccounts ]]" authorization-token="[[ authorizationToken ]]" company-api="[[ companyApi ]]" api-errors="[[ apiErrors ]]" on-accounts-removed="_onAccountsRemoved">
         </appsco-account-remove>
+        
+        <appsco-directory-sync id="appscoDirectorySync" accounts="[[ selectedAccounts ]]" authorization-token="[[ authorizationToken ]]" company-api="[[ companyApi ]]" api-errors="[[ apiErrors ]]" on-directory-synced="_onDirectorySynced">
+        </appsco-directory-sync>
 
         <appsco-directory-add-account id="appscoDirectoryAccountAdd" authorization-token="[[ authorizationToken ]]" add-company-role-api="[[ companyDirectoryRolesApi]]" add-invitation-api="[[ companyInvitationsApi ]]" api-errors="[[ apiErrors ]]" on-company-role-created="_onCompanyRoleCreated" on-invitation-created="_onInvitationCreated">
         </appsco-directory-add-account>
@@ -499,6 +503,7 @@ class AppscoDirectoryPage extends mixinBehaviors([
         this.toolbar.addEventListener('send-notification', this._onSendNotificationToCompanyRoles.bind(this));
         this.toolbar.addEventListener('orgunits', this._onAddAccountsToOrgunit.bind(this));
         this.toolbar.addEventListener('remove', this._onRemoveAccounts.bind(this));
+        this.toolbar.addEventListener('sync-users', this._onDirectorySync.bind(this));
         this.toolbar.addEventListener('select-all-company-roles', this._onSelectAllCompanyRolesAction.bind(this));
         this.toolbar.addEventListener('import-accounts', this._onCompanyImportAccounts.bind(this));
         this.toolbar.addEventListener('add-groups-to-company-roles', this._onAddGroupsToCompanyRoles.bind(this));
@@ -1052,11 +1057,31 @@ class AppscoDirectoryPage extends mixinBehaviors([
         }
     }
 
+    _onDirectorySync() {
+        const selectedAccounts = this.getSelectedAccounts();
+
+        if (selectedAccounts.length > 0) {
+            this.set('selectedAccounts', selectedAccounts);
+            this.shadowRoot.getElementById('appscoDirectorySync').toggle();
+        }
+        else {
+            this._hideBulkActions()
+        }
+    }
+
     _onAccountsRemoved(event) {
         this.removeAccounts(event.detail.accounts);
         this._hideBulkActions();
         this.set('selectedAccounts', []);
         this._notify('Selected accounts were successfully removed from company.');
+    }
+
+    _onDirectorySynced(event) {
+        this._hideBulkActions();
+        this.set('selectedAccounts', []);
+        this._deselectAllItems();
+        this.shadowRoot.getElementById('appscoAccounts').deselectAllItems();
+        this._notify('Selected accounts are in sync process.');
     }
 
     _onCompanyImportAccounts() {
