@@ -48,6 +48,8 @@ class AppscoBillingPage extends mixinBehaviors([
                 --paper-card-actions: {
                     padding: 0;
                     border-color: var(--divider-color);
+                    @apply --layout;
+                    @apply --layout-center-justified;
                 };
                 --paper-card-header-text: {
                     @apply --page-paper-card-header-text;
@@ -62,10 +64,10 @@ class AppscoBillingPage extends mixinBehaviors([
                 height: 20px;
             }
             :host .paper-card-action {
-                padding: 6px 0;
+                padding: 6px 10px;
                 margin: 0;
                 border-radius: 0;
-                width: 100%;
+                /*width: 100%;*/
                 color: var(--primary-text-color);
                 font-weight: 400;
             }
@@ -158,7 +160,7 @@ class AppscoBillingPage extends mixinBehaviors([
                 padding:5px 0 5px 5px;
             }
             :host .subscription-plan {
-                min-width: 350px;
+                min-width: 48%;
                 margin-right: 10px;
             }
             :host .subscription-plan-label {
@@ -220,8 +222,12 @@ class AppscoBillingPage extends mixinBehaviors([
         <iron-ajax id="billingPlansRequest" url="[[ _plansApi ]]" handle-as="json" headers="[[ _headers ]]" auto="" on-response="_handlePlansResponse"></iron-ajax>
 
         <iron-ajax id="upcomingInvoiceCall" url="[[ _upcomingInvoiceApi ]]" handle-as="json" headers="[[ _headers ]]" on-response="_handleUpcomingInvoiceResponse"></iron-ajax>
+        <iron-ajax id="upcomingAppsCoOneInvoiceCall" url="[[ _upcomingAppsCoOneInvoiceApi ]]" handle-as="json" headers="[[ _headers ]]" on-response="_handleUpcomingAppscoOneInvoiceResponse"></iron-ajax>
 
         <iron-ajax id="invoiceListCall" url="[[ _invoiceListApi ]]" handle-as="json" headers="[[ _headers ]]" on-response="_handleInvoicesResponse"></iron-ajax>
+        <iron-ajax id="invoiceListAppscoOneCall" url="[[ _invoiceListAppscoOneApi ]]" handle-as="json" headers="[[ _headers ]]" on-response="_handleInvoicesAppscoOneResponse"></iron-ajax>
+
+        <iron-ajax id="activeIntegrationsRequest" url="[[ _activeIntegrationsApi ]]" auto=""  handle-as="json" headers="[[ _headers ]]" on-response="_handleActiveIntegrationsResponse"></iron-ajax>
 
         <iron-media-query query="(max-width: 1200px)" query-matches="{{ mediumScreen }}"></iron-media-query>
         <iron-media-query query="(max-width: 800px)" query-matches="{{ tabletScreen }}"></iron-media-query>
@@ -280,18 +286,6 @@ class AppscoBillingPage extends mixinBehaviors([
 
             <div content="" slot="content">
                 <div class="content-container">
-                    <template is="dom-if" if="[[ _subscriptionCanceled ]]">
-                        <div class="subscription-info">
-                            Current subscription is canceled. It will remain active until subscription period end.
-                        </div>
-                    </template>
-
-                    <template is="dom-if" if="[[ _trialPeriod ]]">
-                        <div class="subscription-info">
-                            Your subscription is in trial period. Remaining days: [[ account.company.remaining_trial_period ]].
-                        </div>
-                    </template>
-
                     <template is="dom-if" if="[[ _paymentMethodInfo ]]">
                         <div class="subscription-info">
                             Please add payment method before you subscribe to one of AppsCo packages.
@@ -299,11 +293,11 @@ class AppscoBillingPage extends mixinBehaviors([
                     </template>
 
                     <div class="plan-upcoming-invoice flex-horizontal flex-start">
-                        <template is="dom-if" if="[[ _cc.brand ]]">
-                            <paper-card heading="Subscription plan" class="subscription-plan">
+                        
+                            <paper-card heading="Appsco Workplace Subscription" class="subscription-plan">
                                 <appsco-loader active="[[ _subscriptionLoader ]]" loader-alt="Appsco is loading subscription model" multi-color=""></appsco-loader>
                                 <div class="card-content flex-vertical">
-                                    <template is="dom-if" if="[[ _subscription.plan ]]">
+                                    <template is="dom-if" if="[[ _isSubscriptionFor(_subscription.plan.type, 'company') ]]">
                                         <div class="flex-horizontal">
                                             <span class="subscription-plan-label">Started on:</span>
                                             <appsco-date-format date="[[ _subscription.startedAt.date ]]"></appsco-date-format>
@@ -332,52 +326,133 @@ class AppscoBillingPage extends mixinBehaviors([
                                             <span class="subscription-plan-label">Status:</span>
                                             <span>[[ _subscription.status ]]</span>
                                         </div>
+                                        
+                                        <div class="flex-horizontal">
+                                            <appsco-loader active="[[ _upcomingInvoiceLoader ]]" loader-alt="Appsco is loading subscription model" multi-color=""></appsco-loader>
+                                            <div class="card-content flex-vertical">
+                                                <hr/>
+                                                <div class="flex-horizontal">
+                                                    Your next automatic payment is scheduled for&nbsp;
+                                                    <appsco-date-format date="[[ _upcomingInvoice.date.date ]]" options="{&quot;year&quot;: &quot;numeric&quot;, &quot;month&quot;: &quot;long&quot;, &quot;day&quot;: &quot;numeric&quot;}"></appsco-date-format>.
+                                                </div>
+
+                                                <div class="flex-horizontal">
+                                                    Total amount:&nbsp;
+                                                    <appsco-price price="[[ _upcomingInvoice.total ]]" currency="[[ _upcomingInvoice.currency ]]"></appsco-price>.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </template>
 
-                                    <template is="dom-if" if="[[ !_subscription.plan ]]">
+                                    <template is="dom-if" if="[[ !_isSubscriptionFor(_subscription.plan.type, 'company') ]]">
                                         <p class="message">Subscription plan hasn't been added yet. Please go and subscribe.</p>
                                     </template>
                                 </div>
 
                                 <div class="card-actions">
-                                    <template is="dom-if" if="[[ _subscription.plan ]]">
+                                    <template is="dom-if" if="[[ _isSubscriptionFor(_subscription.plan.type, 'company') ]]">
                                         <paper-button on-tap="_onChangePlan" class="paper-card-action">Change Plan</paper-button>
+                                        <paper-button class="paper-card-action" on-tap="_onCancelSubscription">Cancel subscription</paper-button>
                                     </template>
 
-                                    <template is="dom-if" if="[[ !_subscription.plan ]]">
-                                        <paper-button on-tap="_onChangePlan" class="paper-card-action">Subscribe</paper-button>
+                                    <template is="dom-if" if="[[ !_isSubscriptionFor(_subscription.plan.type, 'company') ]]">
+                                        <template is="dom-if" if="[[ _cc.brand ]]">
+                                            <paper-button on-tap="_onChangePlan" class="paper-card-action">Subscribe</paper-button>
+                                        </template>
+                                        <template is="dom-if" if="[[ !_paymentMethod ]]">
+                                            <paper-button class="paper-card-action" on-tap="_onManageCreditCard">
+                                                Add payment method
+                                            </paper-button>
+                                        </template>
+                                    </template>
+                                </div>
+                            </paper-card>
+
+                            <paper-card heading="Appsco One Subscription" class="subscription-plan">
+                                <appsco-loader active="[[ _subscriptionLoader ]]" loader-alt="Appsco is loading subscription model" multi-color=""></appsco-loader>
+                                <div class="card-content flex-vertical">
+                                    <template is="dom-if" if="[[ !_hasAppscoOneHrIntegration ]]">
+                                        <p class="message">There is no integration between Appsco One and Appsco Workplace.</p>
+                                        <p class="message">Integration can be added through Provisioning or contact your partner for the support.</p>
+                                    </template>
+
+                                    <template is="dom-if" if="[[ _hasAppscoOneHrIntegration ]]">
+                                        <template is="dom-if" if="[[ _isSubscriptionFor(_subscriptionAppscoOneHr.plan.type, 'appscoone') ]]">
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">Started on:</span>
+                                                <appsco-date-format date="[[ _subscriptionAppscoOneHr.startedAt.date ]]"></appsco-date-format>
+                                            </div>
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">Activity period:</span>
+                                                <div>
+                                                    <appsco-date-format date="[[ _subscriptionAppscoOneHr.currentPeriodStart.date ]]"></appsco-date-format> /
+                                                    <appsco-date-format date="[[ _subscriptionAppscoOneHr.currentPeriodEnd.date ]]"></appsco-date-format>
+                                                </div>
+                                            </div>
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">Plan:</span>
+                                                <span>[[ _subscriptionAppscoOneHr.plan.display_text ]]</span>
+                                            </div>
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">Price:</span>
+                                                <appsco-price price="[[ _subscriptionAppscoOneHr.plan.amount ]]" currency="[[ _subscriptionAppscoOneHr.plan.currency ]]"></appsco-price>
+                                                <span class="per-user-label">per user</span>
+                                            </div>
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">AppsCo Licences:</span>
+                                                <span>[[ _subscriptionAppscoOneHr.quantity ]]</span>
+                                            </div>
+                                            <div class="flex-horizontal">
+                                                <span class="subscription-plan-label">Status:</span>
+                                                <span>[[ _subscriptionAppscoOneHr.status ]]</span>
+                                            </div>
+
+                                            <div class="flex-horizontal">
+                                                <appsco-loader active="[[ _upcomingInvoiceLoader ]]" loader-alt="Appsco is loading subscription model" multi-color=""></appsco-loader>
+                                                <div class="card-content flex-vertical">
+                                                    <hr/>
+                                                    <div class="flex-horizontal">
+                                                        Your next automatic payment is scheduled for&nbsp;
+                                                        <appsco-date-format date="[[ _upcomingAppsCoOneInvoice.date.date ]]" options="{&quot;year&quot;: &quot;numeric&quot;, &quot;month&quot;: &quot;long&quot;, &quot;day&quot;: &quot;numeric&quot;}"></appsco-date-format>.
+                                                    </div>
+
+                                                    <div class="flex-horizontal">
+                                                        Total amount:&nbsp;
+                                                        <appsco-price price="[[ _upcomingAppsCoOneInvoice.total ]]" currency="[[ _upcomingAppsCoOneInvoice.currency ]]"></appsco-price>.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <template is="dom-if" if="[[ !_isSubscriptionFor(_subscriptionAppscoOneHr.plan.type, 'appscoone') ]]">
+                                            <p class="message">Subscription plan hasn't been added yet. Please go and subscribe.</p>
+                                        </template>
                                     </template>
                                 </div>
 
+                                <div class="card-actions">
+                                    <template is="dom-if" if="[[ _hasAppscoOneHrIntegration ]]">
+                                        <template is="dom-if" if="[[ _isSubscriptionFor(_subscriptionAppscoOneHr.plan.type, 'appscoone') ]]">
+                                            <paper-button on-tap="_onChangeSubscriptionPlan" class="paper-card-action">Change Plan</paper-button>
+                                            <paper-button class="paper-card-action" on-tap="_onCancelAppscoOneSubscription">Cancel subscription</paper-button>
+                                        </template>
+
+                                        <template is="dom-if" if="[[ !_isSubscriptionFor(_subscriptionAppscoOneHr.plan.type, 'appscoone') ]]">
+                                            <template is="dom-if" if="[[ _cc.brand ]]">
+                                                <paper-button on-tap="_onChangeSubscriptionPlan" class="paper-card-action">Subscribe</paper-button>
+                                            </template>
+                                            <template is="dom-if" if="[[ !_paymentMethod ]]">
+                                                <paper-button class="paper-card-action" on-tap="_onManageCreditCard">
+                                                    Add payment method
+                                                </paper-button>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </div>
                             </paper-card>
-
-                            <template is="dom-if" if="[[ _subscription.plan ]]">
-                                <paper-card heading="Upcoming invoice" class="flex">
-                                    <appsco-loader active="[[ _upcomingInvoiceLoader ]]" loader-alt="Appsco is loading subscription model" multi-color=""></appsco-loader>
-                                    <div class="card-content flex-vertical">
-                                        <div class="flex-horizontal">
-                                            Your next automatic payment is scheduled for&nbsp;
-                                            <appsco-date-format date="[[ _upcomingInvoice.date.date ]]" options="{&quot;year&quot;: &quot;numeric&quot;, &quot;month&quot;: &quot;long&quot;, &quot;day&quot;: &quot;numeric&quot;}"></appsco-date-format>.
-                                        </div>
-
-                                        <div class="flex-horizontal">
-                                            Total amount:&nbsp;
-                                            <appsco-price price="[[ _upcomingInvoice.total ]]" currency="[[ _upcomingInvoice.currency ]]"></appsco-price>.
-                                        </div>
-                                        <div class="mt20 flex-horizontal">
-                                            <iron-icon icon="icons:event" class="icon-20"></iron-icon>
-                                            &nbsp;Last payment on&nbsp;
-                                            <appsco-date-format date="[[ lastInvoice.date.date ]]" options="{&quot;year&quot;: &quot;numeric&quot;, &quot;month&quot;: &quot;long&quot;, &quot;day&quot;: &quot;numeric&quot;}"></appsco-date-format>
-                                            &nbsp;for&nbsp;
-                                            <appsco-price price="[[ lastInvoice.total ]]" currency="[[ lastInvoice.currency ]]"></appsco-price>.
-                                        </div>
-                                    </div>
-                                </paper-card>
-                            </template>
-                        </template>
                     </div>
 
-                    <template is="dom-if" if="[[ _subscription.plan ]]">
+                    <template is="dom-if" if="[[ _hasInvoices ]]">
                         <div class="invoice-list flex-vertical">
 
                             <appsco-loader active="[[ _invoiceListLoader ]]" loader-alt="Appsco is loading invoices" multi-color=""></appsco-loader>
@@ -388,16 +463,15 @@ class AppscoBillingPage extends mixinBehaviors([
                                 <template is="dom-repeat" items="[[ _invoices ]]">
                                     <appsco-billing-invoice id="invoiceItem_[[ index ]]" class="appsco-billing-invoice" invoice="[[ item ]]" on-tap="_onInvoiceAction"></appsco-billing-invoice>
                                 </template>
+                                <template is="dom-repeat" items="[[ _invoicesAppscoOne ]]">
+                                    <appsco-billing-invoice id="invoiceItem_[[ index ]]" class="appsco-billing-invoice" invoice="[[ item ]]" on-tap="_onInvoiceAction"></appsco-billing-invoice>
+                                </template>
                             </template>
 
                             <template is="dom-if" if="[[ !_invoicesExists ]]">
                                 <p class="message">There are no invoices yet.</p>
                             </template>
                         </div>
-                    </template>
-
-                    <template is="dom-if" if="[[ _cancelSubscription ]]">
-                        <paper-button class="cancel-subscription-action" on-tap="_onCancelSubscription">Cancel subscription</paper-button>
                     </template>
                 </div>
             </div>
@@ -422,8 +496,24 @@ class AppscoBillingPage extends mixinBehaviors([
 
                         <template is="dom-repeat" items="{{ _selectedInvoice.items }}">
                             <div class="flex-horizontal">
-                                <span class="item-quantity border-bottom font12">[[ item.quantity ]]</span>
-                                <span class="flex item-item border-bottom font12">AppsCo Licences</span>
+                                <template is="dom-if" if="[[ !item.quantity ]]">
+                                    <span class="item-quantity border-bottom font12">&nbsp;</span>
+                                </template>
+                                <template is="dom-if" if="[[ item.quantity ]]">
+                                    <span class="item-quantity border-bottom font12">[[ item.quantity ]]</span>
+                                </template>    
+                                <template is="dom-if" if="[[ _invoiceType(_selectedInvoice.type, 'company') ]]">
+                                    <span class="flex item-item border-bottom font12">Licences</span>
+                                </template>
+                                <template is="dom-if" if="[[ _invoiceType(_selectedInvoice.type, 'appscoone') ]]">
+                                    <template is="dom-if" if="[[ !item.quantity ]]">
+                                        <span class="flex item-item border-bottom font12">Fixed Fee</span>
+                                    </template>
+                                    <template is="dom-if" if="[[ item.quantity ]]">
+                                        <span class="flex item-item border-bottom font12">Licences</span>
+                                    </template>
+                                </template>
+                                
                             <span class="item-price border-bottom font12">
                                 <appsco-price price="[[ item.amount ]]" currency="[[ item.currency ]]"></appsco-price>
                             </span>
@@ -451,6 +541,17 @@ class AppscoBillingPage extends mixinBehaviors([
                         <div class="flex-vertical mt20">
                             <span class="font12">Invoice ID</span>
                             <span class="font12">[[ _selectedInvoice.id ]]</span>
+                        </div>
+                        <div class="flex-vertical mt20">
+                            <span class="font12">Invoice for</span>
+                            <span class="font12">
+                                <template is="dom-if" if="[[ _invoiceType(_selectedInvoice.type, 'company') ]]">
+                                    Appsco Workplace
+                                </template>
+                                <template is="dom-if" if="[[ _invoiceType(_selectedInvoice.type, 'appscoone') ]]">
+                                    Appsco One
+                                </template>
+                            </span>
                         </div>
 
                         <div class="flex-vertical mt10">
@@ -529,14 +630,37 @@ class AppscoBillingPage extends mixinBehaviors([
                 observer: '_onSubscriptionChanged'
             },
 
+            _subscriptionAppscoOneHr: {
+                type: Object,
+                value: function () {
+                    return {};
+                },
+                observer: '_onSubscriptionChanged'
+            },
+
             _upcomingInvoiceApi: {
                 type: String,
                 computed: '_computeUpcomingInvoiceApi(companyApi, _subscription)'
             },
 
+            _upcomingAppsCoOneInvoiceApi: {
+                type: String,
+                computed: '_computeUpcomingInvoiceApi(companyApi, _subscriptionAppscoOneHr)'
+            },
+
             _invoiceListApi: {
                 type: String,
                 computed: '_computeInvoiceListApi(companyApi, _subscription)'
+            },
+
+            _invoiceListAppscoOneApi: {
+                type: String,
+                computed: '_computeInvoiceListApi(companyApi, _subscriptionAppscoOneHr)'
+            },
+
+            _activeIntegrationsApi: {
+                type: String,
+                computed: '_computeActiveIntegrationsApi(companyApi)'
             },
 
             _trialPeriod: {
@@ -551,6 +675,13 @@ class AppscoBillingPage extends mixinBehaviors([
                 }
             },
 
+            _appscoOneHr: {
+                type: Array,
+                value: function () {
+                    return [];
+                }
+            },
+
             _cc: {
                 type: Object,
                 value: function () {
@@ -559,6 +690,13 @@ class AppscoBillingPage extends mixinBehaviors([
             },
 
             _upcomingInvoice: {
+                type: Object,
+                value: function () {
+                    return {};
+                }
+            },
+
+            _upcomingAppsCoOneInvoice: {
                 type: Object,
                 value: function () {
                     return {};
@@ -582,6 +720,24 @@ class AppscoBillingPage extends mixinBehaviors([
                 }
             },
 
+            _invoicesAppscoOne: {
+                type: Array,
+                value: function () {
+                    return [];
+                }
+            },
+
+            _hasInvoices: {
+                type: Boolean,
+                value: false,
+                computed: '_computeHasInvoices(_subscription, _subscriptionAppscoOneHr)'
+            },
+
+            _hasAppscoOneHrIntegration: {
+                type: Boolean,
+                value: false
+            },
+
             _invoicesExists: {
                 type: Boolean,
                 value: false
@@ -597,12 +753,6 @@ class AppscoBillingPage extends mixinBehaviors([
             _selectedIndex: {
                 type: Number,
                 value: -1
-            },
-
-            _subscriptionCanceled: {
-                type: Boolean,
-                computed: '_computeSubscriptionCanceled(_subscription)',
-                observer: '_toggleCancelSubscriptionAction'
             },
 
             _cancelSubscription: {
@@ -688,6 +838,8 @@ class AppscoBillingPage extends mixinBehaviors([
     }
 
     pageSelected() {
+        this.resetPage();
+        this.$.activeIntegrationsRequest.generateRequest();
         this.$.billingCCRequest.generateRequest();
         this.$.billingPlansRequest.generateRequest();
         this.reloadSubscription();
@@ -696,10 +848,13 @@ class AppscoBillingPage extends mixinBehaviors([
     resetPage() {
         this._onCloseInfoAction();
         this.set('_subscription', {});
+        this.set('subscriptionAppscoOneHr', {});
         this.set('_cc', {});
         this.set('_upcomingInvoice', {});
+        this.set('_upcomingAppsCoOneInvoice', {});
         this.set('_selectedInvoice', {});
         this.set('_invoices', []);
+        this.set('_invoicesAppscoOne', []);
         this._paymentMethodInfo = false;
         this._invoicesExists = false;
         this._cancelSubscription = false;
@@ -729,11 +884,21 @@ class AppscoBillingPage extends mixinBehaviors([
     }
 
     _computeUpcomingInvoiceApi(companyApi, subscription) {
+        if(!subscription.id) {
+            return null;
+        }
         return companyApi && subscription && subscription.id ? companyApi + '/billing/invoice/upcoming/' + subscription.id : null;
     }
 
     _computeInvoiceListApi(companyApi, subscription) {
+        if(!subscription.id) {
+            return null;
+        }
         return companyApi ? companyApi + '/billing/invoice/list/' + subscription.id : null;
+    }
+
+    _computeActiveIntegrationsApi(companyApi) {
+        return companyApi ? companyApi + '/integrations/active' : null;
     }
 
     _computeTrialPeriod(account, subscription) {
@@ -745,10 +910,6 @@ class AppscoBillingPage extends mixinBehaviors([
             return true;
         }
         return false;
-    }
-
-    _computeSubscriptionCanceled(subscription) {
-        return subscription.status === 'canceled';
     }
 
     _pageLoaded() {
@@ -781,17 +942,6 @@ class AppscoBillingPage extends mixinBehaviors([
             this._loadInvoiceList();
 
             return false;
-        }
-    }
-
-    _toggleCancelSubscriptionAction() {
-        if (this._subscription.status && !this._subscriptionCanceled) {
-            setTimeout(function() {
-                this._cancelSubscription = true;
-            }.bind(this), 1000);
-        }
-        else {
-            this._cancelSubscription = false;
         }
     }
 
@@ -835,10 +985,14 @@ class AppscoBillingPage extends mixinBehaviors([
 
         const subscriptions = e.detail.response;
         let activeSubscription = '';
+        let activeSubscriptionAppscoOneHr = '';
 
         subscriptions.forEach(function(element) {
             if (element.type === 'company' && element.status === 'active') {
                 this._subscription = activeSubscription = element;
+            }
+            if (element.type === 'appscoone' && element.status === 'active') {
+                this._subscriptionAppscoOneHr = activeSubscriptionAppscoOneHr = element;
             }
         }.bind(this));
 
@@ -846,8 +1000,16 @@ class AppscoBillingPage extends mixinBehaviors([
             this._subscription = {};
             this._cancelSubscription = false;
         }
+        if (!activeSubscriptionAppscoOneHr) {
+            this._subscriptionAppscoOneHr = {};
+            this._cancelSubscription = false;
+        }
 
         this._subscriptionLoader = false;
+    }
+
+    _isSubscriptionFor(planType, subscriptionType) {
+        return planType === subscriptionType;
     }
 
     _handlePlansResponse (e) {
@@ -856,39 +1018,67 @@ class AppscoBillingPage extends mixinBehaviors([
         }
 
         const response = e.detail.response,
-            plans = [];
+            plans = [],
+            appscoOneHr = [];
+
         response.forEach(function (element) {
             if (element.type === 'company') {
                 plans.push(element);
             }
+            if (element.type === 'appscoone') {
+                appscoOneHr.push(element);
+            }
         }.bind(this));
         this._plans = plans;
+        this._appscoOneHr = appscoOneHr;
     }
 
     _loadUpcomingInvoice() {
         this._upcomingInvoiceLoader = true;
         this.$.upcomingInvoiceCall.generateRequest();
+        this.$.upcomingAppsCoOneInvoiceCall.generateRequest();
     }
 
     _handleUpcomingInvoiceResponse(e) {
+        this._upcomingInvoiceLoader = false;
         if (null == e.detail.response) {
             return;
         }
 
         this._upcomingInvoice = e.detail.response;
+    }
+
+    _handleUpcomingAppscoOneInvoiceResponse(e) {
         this._upcomingInvoiceLoader = false;
+        if (null == e.detail.response) {
+            return;
+        }
+
+        this._upcomingAppsCoOneInvoice = e.detail.response;
+    }
+
+    _computeHasInvoices(subscription, subscriptionAppscoOneHr) {
+        return subscription.id || subscriptionAppscoOneHr.id;
     }
 
     _loadInvoiceList() {
         this._invoicesExists = false;
         this._invoiceListLoader = true;
-        this.$.invoiceListCall.generateRequest();
+        if(this._subscription.id) {
+            this.$.invoiceListCall.generateRequest();
+        } else {
+            this.$.invoiceListAppscoOneCall.generateRequest();
+        }
     }
 
     _handleInvoicesResponse(event) {
         const response = event.detail.response;
 
-        this.set('_invoices', []);
+        let invoices = this._invoices.filter(function(item) {
+            return item.type !== 'company'
+        });
+
+        this.set('_invoices', invoices);
 
         if (null == response) {
             this._invoiceListLoader = false;
@@ -902,23 +1092,69 @@ class AppscoBillingPage extends mixinBehaviors([
                 if (0 === index) {
                     this.lastInvoice = el;
                 }
+                el.type='company';
 
-                setTimeout(function() {
-                    this.push('_invoices', el);
+                this.push('_invoices', el);
+                if (index === response.length - 1) {
+                    this._invoiceListLoader = false;
+                }
 
-                    if (index === response.length - 1) {
-                        this._invoiceListLoader = false;
-                        this._toggleCancelSubscriptionAction();
-                    }
+            }.bind(this));
+            this.$.invoiceListAppscoOneCall.generateRequest();
+        }
+        else {
+            this._invoiceListLoader = false;
+        }
+    }
 
-                }.bind(this), (index + 1) * 30);
+    _handleActiveIntegrationsResponse(e) {
+        const response = e.detail.response;
+        this._hasAppscoOneHrIntegration = false;
+        e.detail.response.active_integrations.forEach((integration) => {
+            if(integration.kind === 'pst' && integration.integration.alias == 13) {
+                this._hasAppscoOneHrIntegration = true;
+            }
+        });
+    }
+
+    _handleInvoicesAppscoOneResponse(event) {
+        const response = event.detail.response;
+
+        let invoices = this._invoices.filter(function(item) {
+            return item.type !== 'appscoone'
+        });
+
+        this.set('_invoices', invoices);
+
+        if (null == response) {
+            this._invoiceListLoader = false;
+            return false;
+        }
+
+        if (response.length > 0) {
+            this._invoicesExists = true;
+
+            response.forEach(function(el, index) {
+                if (0 === index) {
+                    this.lastInvoice = el;
+                }
+                el.type='appscoone';
+
+                this.push('_invoices', el);
+
+                if (index === response.length - 1) {
+                    this._invoiceListLoader = false;
+                }
 
             }.bind(this));
         }
         else {
             this._invoiceListLoader = false;
-            this._toggleCancelSubscriptionAction();
         }
+    }
+
+    _invoiceType(selectedType, type) {
+        return selectedType === type;
     }
 
     _onInvoiceAction(event) {
@@ -970,6 +1206,14 @@ class AppscoBillingPage extends mixinBehaviors([
         this._infoShown = false;
     }
 
+    _onChangeSubscriptionPlan() {
+        const dialog = this.shadowRoot.getElementById('appscoUpgradeAction');
+        dialog.setSubscription(this._subscriptionAppscoOneHr);
+        dialog.setPlans(this._appscoOneHr);
+        dialog.initializePage();
+        dialog.toggle();
+    }
+
     _onChangePlan() {
         const dialog = this.shadowRoot.getElementById('appscoUpgradeAction');
         dialog.setSubscription(this._subscription);
@@ -981,6 +1225,12 @@ class AppscoBillingPage extends mixinBehaviors([
     _onCancelSubscription() {
         const dialog = this.shadowRoot.getElementById('appscoSubscriptionCancel');
         dialog.setSubscription(this._subscription);
+        dialog.toggle();
+    }
+
+    _onCancelAppscoOneSubscription() {
+        const dialog = this.shadowRoot.getElementById('appscoSubscriptionCancel');
+        dialog.setSubscription(this._subscriptionAppscoOneHr);
         dialog.toggle();
     }
 
