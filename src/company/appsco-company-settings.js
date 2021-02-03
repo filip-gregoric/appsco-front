@@ -66,7 +66,7 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
         <iron-form id="form" headers="[[ _headers ]]" on-iron-form-presubmit="_onFormPresubmit" on-iron-form-error="_onFormError" on-iron-form-response="_onFormResponse" on-keyup="_onKeyUp">
             <form method="POST" action="[[ settingsApi ]]">
                 <paper-input id="companyName" label="Company name" char-counter="" maxlength="35" value="[[ _format(company.name) ]]" name="company_settings[name]" required="" auto-validate="" error-message="Please type in company name."></paper-input>
-
+                <paper-input id="companyNumber" label="Company number" char-counter="" maxlength="50" value="[[ company.number ]]" name="company_settings[number]" error-message="Please type in company number."></paper-input>
                 <p class="info info-between">
                     Company contact email will be displayed in user profile section and used for contact purposes.
                 </p>

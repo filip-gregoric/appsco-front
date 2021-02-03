@@ -36,6 +36,7 @@
         "1519737987": "Not enough licences are available to complete the operation",
         "1546506588": "Contact with same email exists in company",
         "1555935569": "Resync failed due to missing source PSO records. This can be fixed by re-provisioning records that miss source PSO (most often achievable by running lookup recipes again), or by removing them",
-        "1571039025": "It is not possible to rename a group used by an external system for provisioning. Please create a new group."
+        "1571039025": "It is not possible to rename a group used by an external system for provisioning. Please create a new group.",
+        "1612362496": "Company number is already used by a different company."
     }
 }
