@@ -178,11 +178,11 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
             }
         </style>
 
-        <appsco-accounts hidden="" id="appscoRoles" type="account" size="1000" authorization-token="[[ authorizationToken ]]" list-api="[[ getRolesApi ]]" no-auto-load="" on-list-loaded="_onAccountsLoadFinished" on-filter-done="_onAccountsLoadFinished" on-list-empty="_onAccountsLoadFinished"></appsco-accounts>
+        <appsco-accounts hidden="" id="appscoRoles" type="account" size="25" authorization-token="[[ authorizationToken ]]" list-api="[[ getRolesApi ]]" no-auto-load="" on-list-loaded="_onAccountsLoadFinished" on-filter-done="_onAccountsFilterLoadFinished" on-list-empty="_onAccountsLoadFinished"></appsco-accounts>
 
-        <appsco-contacts hidden="" id="appscoContacts" type="contact" size="1000" authorization-token="[[ authorizationToken ]]" list-api="[[ getContactsApi ]]" no-auto-load="" on-list-loaded="_onContactsLoadFinished" on-list-empty="_onContactsLoadFinished"></appsco-contacts>
+        <appsco-contacts hidden="" id="appscoContacts" type="contact" size="25" authorization-token="[[ authorizationToken ]]" list-api="[[ getContactsApi ]]" no-auto-load="" on-list-loaded="_onContactsLoadFinished" on-list-empty="_onContactsLoadFinished" on-filter-done="_onContactsFilterLoadFinished"></appsco-contacts>
 
-        <appsco-company-groups hidden="" id="appscoGroups" type="group" size="1000" authorization-token="[[ authorizationToken ]]" list-api="[[ getGroupsApi ]]" no-auto-load="" on-list-loaded="_onGroupsLoadFinished" on-list-empty="_onGroupsLoadFinished"></appsco-company-groups>
+        <appsco-company-groups hidden="" id="appscoGroups" type="group" size="25" authorization-token="[[ authorizationToken ]]" list-api="[[ getGroupsApi ]]" no-auto-load="" on-list-loaded="_onGroupsLoadFinished" on-list-empty="_onGroupsLoadFinished"></appsco-company-groups>
 
         <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" on-iron-overlay-opened="_onDialogOpened" on-iron-overlay-closed="_onDialogClosed">
 
@@ -344,7 +344,10 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
                         </div>
                     </div>
                 </neon-animated-pages>
-
+                
+                <template is="dom-if" if="{{ !_selectedTab }}">
+                    <paper-button on-tap="_onLoadMoreAction" id="loadMoreActionBtn">Load More</paper-button>    
+                </template>
                 <paper-button dialog-dismiss="">Cancel</paper-button>
                 <paper-button autofocus="" on-tap="_onShareResourcesAction" id="shareResourceConfirmShareButton">Share</paper-button>
             </div>
@@ -656,11 +659,34 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
         }
     }
 
-    _onAccountsLoadFinished() {
+    _onAccountsLoadFinished(e) {
+        if(e && e.detail && e.detail.items) {
+            e.detail.items.forEach(function (item) {
+                item.account.type = 'user';
+                this.push('_accountList', item.account);
+                this._accountsCount++;
+            }.bind(this));
+        }
+
+        if(this._loadMoreCounter) {
+            this.shadowRoot.getElementById('loadMoreActionBtn').disabled = false;
+        }
+        this._loadMoreCounter = false;
         this._rolesLoaded = true;
     }
 
-    _onContactsLoadFinished() {
+    _onContactsLoadFinished(e) {
+        if(e && e.detail && e.detail.items) {
+            e.detail.items.forEach(function (item) {
+                item.account.type = 'contact';
+                this.push('_accountList', item.account);
+                this._accountsCount++;
+            }.bind(this));
+        }
+        if(this._loadMoreCounter) {
+            this.shadowRoot.getElementById('loadMoreActionBtn').disabled = false;
+        }
+        this._loadMoreCounter = false;
         this._contactsLoaded = true;
     }
 
@@ -811,6 +837,8 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
         this.set('_accountListAll', []);
         this.set('_accountListAll', listAll);
 
+        this.set('_bulkSelectAccount', false);
+
         this._recalculateInfoAccount();
     }
 
@@ -947,14 +975,43 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
     _onSearchAccounts(event) {
         const searchValue = event.detail.term,
             searchLength = searchValue.length;
+        this.filterCount = 0;
 
         this._filterTerm = searchValue;
 
         if (searchLength < 3) {
             this._filterTerm = '';
         }
+        if(this._filterTerm !== '') {
+            this.filterCount = 0;
+            this._deselectAllAccounts();
+            this.shadowRoot.getElementById('appscoRoles').reset();
+            this.shadowRoot.getElementById('appscoContacts').reset();
+            this.shadowRoot.getElementById('appscoRoles').filterByTerm(this._filterTerm);
+            this.shadowRoot.getElementById('appscoContacts').filterByTerm(this._filterTerm);
+        }
+        if(this._filterTerm === '' && searchLength === 0) {
+            this._deselectAllAccounts();
+            this.filterCount = 0;
+            this.shadowRoot.getElementById('appscoRoles').reset();
+            this.shadowRoot.getElementById('appscoContacts').reset();
+            this.shadowRoot.getElementById('appscoRoles').filterByTerm(this._filterTerm);
+            this.shadowRoot.getElementById('appscoContacts').filterByTerm(this._filterTerm);
+        }
+    }
 
-        this._filterAccountList();
+    _onAccountsFilterLoadFinished() {
+        this.filterCount++;
+        if(this.filterCount === 2) {
+            this._setAccountList(true, true);
+        }
+    }
+
+    _onContactsFilterLoadFinished() {
+        this.filterCount++;
+        if(this.filterCount === 2) {
+            this._setAccountList(true, true);
+        }
     }
 
     _onSearchAccountsClear() {
@@ -1146,6 +1203,23 @@ class AppscoShareResource extends mixinBehaviors([Appsco.HeadersMixin, NeonAnima
                 reject(this.apiErrors.getError(request.response.code));
             }.bind(this));
         }.bind(this));
+    }
+
+    _onLoadMoreAction() {
+        this.shadowRoot.getElementById('loadMoreActionBtn').disabled = true;
+        this._loadMoreCounter = true;
+        switch(parseInt(this.$.accountTypeList.selected)) {
+            case 0:
+                this.shadowRoot.getElementById('appscoRoles')._onLoadMoreAction();
+                this.shadowRoot.getElementById('appscoContacts')._onLoadMoreAction();
+                break;
+            case 1:
+                this.shadowRoot.getElementById('appscoRoles')._onLoadMoreAction();
+                break;
+            case 2:
+                this.shadowRoot.getElementById('appscoContacts')._onLoadMoreAction();
+                break;
+        }
     }
 
     _onShareResourcesAction() {

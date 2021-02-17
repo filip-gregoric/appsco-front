@@ -185,8 +185,11 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
             };
 
         appRequest.send(options).then(function() {
-            let packageSelected = 'free';
+            let packageSelected = 'none';
             appRequest.response.packages.forEach((availablePackage) => {
+                if(availablePackage === 'free') {
+                    packageSelected = 'free';
+                }
                 if(availablePackage === 'plus') {
                     packageSelected = 'plus';
                 }
@@ -195,7 +198,6 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
                 }
             })
             this.selectedPackage = packageSelected;
-
         }.bind(this), function() {
             if (appRequest.status !== 200) {
                 this._errorMessage = this.apiErrors.getError(appRequest.response.code);
@@ -227,8 +229,6 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
             };
         this._loader = true;
         appRequest.send(options).then(function() {
-            console.log(appRequest.response);
-
         }.bind(this), function() {
             if (appRequest.status !== 200) {
                 this._errorMessage = this.apiErrors.getError(appRequest.response.code);

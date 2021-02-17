@@ -98,13 +98,18 @@ class AppscoAccounts extends mixinBehaviors([
         this.populateItems(items);
     }
 
+    filterByTerm(term) {
+        this._filterTerm = term;
+        this._filterByType();
+    }
+
     filterByType(filter) {
         this._filterType = filter;
         this._filterByType();
     }
 
     _filterByType() {
-        let filterApi = this.listApi + '?page=1&limit=100&extended=1',
+        let filterApi = this.listApi + '?page=1&limit='+this.size+'&extended=1',
             filterTerm = this._filterTerm,
             filterTermPresent = (filterTerm && 3 <= filterTerm.length),
             filterType = this._filterType;

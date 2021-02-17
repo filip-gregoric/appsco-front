@@ -694,6 +694,13 @@ export const AppscoListBehavior = [
     },
 
     _onLoadMoreAction: function() {
+        if (this._filterTerm.length > this.minSearchTermLength) {
+            this._nextListPageApi += '&term='+this._filterTerm;
+        }
+        if(this.$.getListApiRequest.url === this._nextListPageApi) {
+            return;
+        }
+
         this._showLoadMoreProgressBar();
         this._setListApiRequestUrl(this._nextListPageApi);
         this._generateNewRequest();
