@@ -185,7 +185,9 @@ class AppscoApp extends mixinBehaviors([
                             <a name="provisioning" href="#">
                                 <iron-icon icon="icons:compare-arrows"></iron-icon> <span class="menu-text" id="menuProvisioningText">Provisioning</span>
                             </a>
-
+                            <a name="licences" href="#">
+                                <iron-icon icon="icons:assignment"></iron-icon> <span class="menu-text">Licences</span>
+                            </a>
                             <div class="section">
                                 <span class="menu-text">Management</span>
                             </div>
@@ -304,6 +306,9 @@ class AppscoApp extends mixinBehaviors([
                 advanced-actions=""
                 on-back="_showCompanyDirectoryPage">
             </appsco-manage-account-page-actions>
+
+            <appsco-licences-page-actions id="appscoLicencesPageActions" name="licences">
+            </appsco-licences-page-actions>
 
             <appsco-contacts-page-actions id="appscoContactsPageActions" name="contacts">
             </appsco-contacts-page-actions>
@@ -530,6 +535,16 @@ class AppscoApp extends mixinBehaviors([
 
             <appsco-directory-page name="directory" page="" company-page="" id="appscoDirectoryPage" role="{{ _role }}" authorization-token="[[ authorizationToken ]]" company-invitations-api="[[ _companyInvitationsApi ]]" company-directory-roles-api="[[ _companyRolesApi ]]" company-orgunits-api="[[ _companyOrgunitsApi ]]" company-subscription-api="[[ _companySubscriptionApi ]]" domains-api="[[ _companyDomainsApi ]]" groups-api="[[ _companyGroupsApi ]]" company-notifications-api="[[ _companyNotificationsApi ]]" company-contacts-api="[[ _companyContactsApi ]]" company-import-accounts-api="[[ _companyImportAccountsApi ]]" company-api="[[ _companyApi ]]" api-errors="[[ _apiErrors ]]" domain="[[ domain ]]" toolbar="[[ \$.appscoDirectoryPageActions ]]" on-added-to-orgunit="_onAccountsAddedToOrgunit" on-accounts-removed="_onAccountsRemoved" on-import-finished="_onAccountImportFinished" on-orgunit-added="_onOrgunitChanged" on-orgunit-modified="_onOrgunitChanged" on-orgunit-removed="_onOrgunitChanged" on-edit-account="_onEditAccount" on-info-edit-account="_onEditAccount" on-group-added="_onGroupAdded" on-observable-list-empty="_onObservableListEmpty" on-observable-list-filled="_onObservableListFilled" on-company-subscription-loaded="_onSubscriptionLoaded" on-page-loaded="_onDirectoryPageLoaded">
             </appsco-directory-page>
+
+            <appsco-licences-page name="licences" page="" company-page=""
+                id="appscoLicencesPage"
+                authorization-token="[[ authorizationToken ]]"
+                company-licences-api="[[ _companyLicencesApi ]]"
+                api-errors="[[ _apiErrors ]]"                                  
+                toolbar="[[ \$.appscoLicencesPageActions ]]"
+                on-observable-list-empty="_onObservableListEmpty"
+                on-observable-list-filled="_onObservableListFilled">
+            </appsco-licences-page>
 
             <appsco-contacts-page name="contacts" page="" company-page="" id="appscoContactsPage" authorization-token="[[ authorizationToken ]]" groups-api="[[ _companyGroupsApi ]]" company-invitations-api="[[ _companyInvitationsApi ]]" company-contacts-api="[[ _companyContactsApi ]]" company-api="[[ _companyApi ]]" company-roles-api="[[ _companyRolesApi ]]" company-notifications-api="[[ _companyNotificationsApi ]]" api-errors="[[ _apiErrors ]]" import-contacts-api="[[ _companyImportContactsApi ]]" domain="[[ domain ]]" toolbar="[[ \$.appscoContactsPageActions ]]" on-edit-contact="_onEditContactAction" on-observable-list-empty="_onObservableListEmpty" on-observable-list-filled="_onObservableListFilled">
             </appsco-contacts-page>
@@ -892,6 +907,10 @@ class AppscoApp extends mixinBehaviors([
             },
 
             _companyImportAccountsApi: {
+                type: String
+            },
+
+            _companyLicencesApi: {
                 type: String
             },
 
@@ -1704,6 +1723,7 @@ class AppscoApp extends mixinBehaviors([
             this._companyNotificationsApi = companyApi + '/notification';
             this._companyInvitationsApi = companyApi + '/invitation';
             this._companyImportAccountsApi = companyApi + '/directory/roles/import';
+            this._companyLicencesApi = companyApi + '/licences';
             this._companyContactsApi = companyApi + '/contacts';
             this._companyOrgunitsApi = companyApi + '/org-units?extended=1';
             this._companySubscriptionApi = companyApi + '/billing/subscriptions';
@@ -2173,6 +2193,8 @@ class AppscoApp extends mixinBehaviors([
                 return this.$.appscoDirectoryPage;
             case 'company':
                 return this.$.appscoCompanyPage;
+            case 'licences':
+                return this.$.appscoLicencesPage;
             case 'contacts':
                 return this.$.appscoContactsPage;
             case 'groups':
@@ -2228,6 +2250,8 @@ class AppscoApp extends mixinBehaviors([
                 return this.shadowRoot.getElementById('appscoDirectoryPageActions');
             case 'contacts':
                 return this.shadowRoot.getElementById('appscoContactsPageActions');
+            case 'licences':
+                return this.shadowRoot.getElementById('appscoLicencesPageActions');
             case 'groups':
                 return this.shadowRoot.getElementById('appscoGroupsPageActions');
             case 'account':
