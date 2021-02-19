@@ -10,6 +10,7 @@
     "src/appsco-company-page.js",
     "src/appsco-directory-page.js",
     "src/appsco-contacts-page.js",
+    "src/appsco-licences-page.js",
     "src/appsco-home-page.js",
     "src/appsco-company-home-page.js",
     "src/appsco-manage-account-page.js",

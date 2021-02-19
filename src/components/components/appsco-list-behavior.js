@@ -727,6 +727,9 @@ export const AppscoListBehavior = [
             case 'contact':
                 itemList = response.contacts ? response.contacts : [];
                 break;
+            case 'licence':
+                itemList = response.licences ? response.licences : [];
+                break;
             case 'group':
                 itemList = response.company_groups ? response.company_groups : [];
                 break;
@@ -913,6 +916,9 @@ export const AppscoListBehavior = [
                         case 'account':
                         case 'policy-report':
                             resolve(request.response.company_roles);
+                            break;
+                        case 'licence':
+                            resolve(request.response.licences);
                             break;
                         case 'contact':
                             resolve(request.response.contacts);
