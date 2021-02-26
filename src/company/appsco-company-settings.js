@@ -52,45 +52,167 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
                 text-decoration: none;
                 color: #0b97c4;
             }
+            :host .two-column{
+                /*@apply --layout-horizontal;*/
+            }
+            :host .email-notifications-title-text {
+                padding: 16px;
+                font-size: 24px;
+                font-weight: 400;
+                margin-top: 10px;
+                border-top: 1px solid rgba(65, 64, 66, 0.24);
+            }
         </style>
 
         <appsco-loader active="[[ _loader ]]" loader-alt="Appsco is processing request" multi-color=""></appsco-loader>
 
         <appsco-form-error message="[[ _errorMessage ]]"></appsco-form-error>
 
-        <p class="info">
-            Company name is used to distinguish company resources from users personal resources.
-            It is used in branding and can be displayed in login screen along with company logo.
-        </p>
-
-        <iron-form id="form" headers="[[ _headers ]]" on-iron-form-presubmit="_onFormPresubmit" on-iron-form-error="_onFormError" on-iron-form-response="_onFormResponse" on-keyup="_onKeyUp">
-            <form method="POST" action="[[ settingsApi ]]">
-                <paper-input id="companyName" label="Company name" char-counter="" maxlength="35" value="[[ _format(company.name) ]]" name="company_settings[name]" required="" auto-validate="" error-message="Please type in company name."></paper-input>
-                <paper-input id="companyNumber" label="Company number" char-counter="" maxlength="50" value="[[ company.number ]]" name="company_settings[number]" error-message="Please type in company number."></paper-input>
-                <p class="info info-between">
-                    Company contact email will be displayed in user profile section and used for contact purposes.
+        <div class="two-column">
+            <div>
+                <p class="info">
+                    Company name is used to distinguish company resources from users personal resources.
+                    It is used in branding and can be displayed in login screen along with company logo.
                 </p>
-
-                <paper-input id="contactEmail" type="email" label="Contact email" value="[[ company.contact_email ]]" name="company_settings[contactEmail]" required="" auto-validate="" error-message="Please type in correct email."></paper-input>
-
-                <paper-input id="billingEmail" type="email" label="Billing email" value="[[ company.billing_email ]]" name="company_settings[billingEmail]" required="" auto-validate="" error-message="Please type in correct email."></paper-input>
-
-                <div class="toggle-button-container mt-30">
-                    <paper-toggle-button name="company_settings[sendEmailToAdminOnNewDevice]" id="newDeviceInfoAdminEmail" checked\$="[[ company.mail_admin_on_new_device ]]" on-change="_mailAdminOnNewDeviceChanged">
-                        Send email notification to system admin when managed users log in from a new device
-                    </paper-toggle-button>
-                    <paper-toggle-button name="company_settings[disableCopyPassword]" id="disableCopyButtonOnResources" checked\$="[[ company.disable_resource_copy_button ]]" on-change="_disableResourceCopyButtonChanged">
-                        Disable copy password option on all company resources.
-                    </paper-toggle-button>
-                    <paper-toggle-button name="company_settings[sendEmailToAdminOnNewUser]" id="newUserInfoAdminEmail" checked\$="[[ company.mail_admin_on_new_user ]]" on-change="_mailAdminOnNewUserChanged">
-                        Send email notification to admins when user/contact invite is accepted.
-                    </paper-toggle-button>
-                    <template is="dom-if" if="[[ _showAdminEmailField ]]">
-                        <paper-input id="sendEmailToAdminOnNewDevice" label="Admin email" name="company_settings[newDeviceInfoAdminEmail]" value="[[ company.notify_admin_email ]]" on-keyup="_onKeyUp"></paper-input>
-                    </template>
-                </div>
-            </form>
-        </iron-form>
+                <iron-form id="form" headers="[[ _headers ]]" on-iron-form-presubmit="_onFormPresubmit" on-iron-form-error="_onFormError" on-iron-form-response="_onFormResponse" on-keyup="_onKeyUp">
+                    <form method="POST" action="[[ settingsApi ]]">
+                        <paper-input id="companyName" label="Company name" char-counter="" maxlength="35" value="[[ _format(company.name) ]]" name="company_settings[name]" required="" auto-validate="" error-message="Please type in company name."></paper-input>
+                        <paper-input id="companyNumber" label="Company number" char-counter="" maxlength="50" value="[[ company.number ]]" name="company_settings[number]" error-message="Please type in company number."></paper-input>
+                        <p class="info info-between">
+                            Company contact email will be displayed in user profile section and used for contact purposes.
+                        </p>
+        
+                        <paper-input id="contactEmail" type="email" label="Contact email" value="[[ company.contact_email ]]" name="company_settings[contactEmail]" required="" auto-validate="" error-message="Please type in correct email."></paper-input>
+        
+                        <paper-input id="billingEmail" type="email" label="Billing email" value="[[ company.billing_email ]]" name="company_settings[billingEmail]" required="" auto-validate="" error-message="Please type in correct email."></paper-input>
+        
+                        <div class="toggle-button-container mt-30">
+                            <paper-toggle-button name="company_settings[sendEmailToAdminOnNewDevice]" id="newDeviceInfoAdminEmail" checked\$="[[ company.mail_admin_on_new_device ]]" on-change="_mailAdminOnNewDeviceChanged">
+                                Send email notification to system admin when managed users log in from a new device
+                            </paper-toggle-button>
+                            <paper-toggle-button name="company_settings[disableCopyPassword]" id="disableCopyButtonOnResources" checked\$="[[ company.disable_resource_copy_button ]]" on-change="_disableResourceCopyButtonChanged">
+                                Disable copy password option on all company resources.
+                            </paper-toggle-button>
+                            <paper-toggle-button name="company_settings[sendEmailToAdminOnNewUser]" id="newUserInfoAdminEmail" checked\$="[[ company.mail_admin_on_new_user ]]" on-change="_mailAdminOnNewUserChanged">
+                                Send email notification to admins when user/contact invite is accepted.
+                            </paper-toggle-button>
+                            <template is="dom-if" if="[[ _showAdminEmailField ]]">
+                                <paper-input id="sendEmailToAdminOnNewDevice" label="Admin email" name="company_settings[newDeviceInfoAdminEmail]" value="[[ company.notify_admin_email ]]" on-keyup="_onKeyUp"></paper-input>
+                            </template>
+                        </div>
+                        <input type="hidden" name="company_settings[emailNotificationsSetting]" id="companyNotificationEmailSettingsId" value="[[ company.email_notification_settings ]]">
+                    </form>
+                </iron-form>
+            </div>
+            <div>
+                <div class="email-notifications-title-text">Email Notifications Override</div>
+                <paper-toggle-button id="COMPANY_ROLE_ADDED_WELCOME_EMAIL" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_ROLE_ADDED_WELCOME_EMAIL }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send welcome email when new user is added to company directory
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_ROLE_ADDED_EXISTING_USER" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_ROLE_ADDED_EXISTING_USER }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when newly added user in company directory is already an existing user
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_ROLE_ADDED_NOTIFY_ADMIN" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_ROLE_ADDED_NOTIFY_ADMIN }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email to administrator when user is added to company directory
+                </paper-toggle-button>
+                <paper-toggle-button id="MANAGED_USER_ACTIVATION_NOTIFICATION" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.MANAGED_USER_ACTIVATION_NOTIFICATION }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when newly added user has managed company domain
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_ROLE_PROVISIONED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_ROLE_PROVISIONED }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when user from company directory is provisioned to other systems
+                </paper-toggle-button>
+                <paper-toggle-button id="EMPLOYEE_ADDED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.EMPLOYEE_ADDED }}">
+                    Send email when new user is added to company directory
+                </paper-toggle-button>
+                <paper-toggle-button id="EMPLOYEE_REMOVED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.EMPLOYEE_REMOVED }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when user is removed from company directory
+                </paper-toggle-button>
+                <paper-toggle-button id="APPLICATION_ICON_SHARED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.APPLICATION_ICON_SHARED }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when application is shared
+                </paper-toggle-button>
+                <paper-toggle-button id="APPLICATION_ICON_UPDATED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.APPLICATION_ICON_UPDATED }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when application is updated
+                </paper-toggle-button>
+                <paper-toggle-button id="NOTIFY_USER_NEW_DEVICE" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.NOTIFY_USER_NEW_DEVICE }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when new device is used
+                </paper-toggle-button>
+                <paper-toggle-button id="NOTIFY_NEW_DEVICE" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.NOTIFY_NEW_DEVICE }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    
+                    Send email to company administrator when new device is used
+                </paper-toggle-button>
+                <paper-toggle-button id="NOTIFY_TWO_FACTOR_STATUS_CHANGE" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.NOTIFY_TWO_FACTOR_STATUS_CHANGE }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when two-factor is changed
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_CONTACT_PROVISIONED" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_CONTACT_PROVISIONED }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when company contact is provisioned to other systems
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_INVITATION" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_INVITATION }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when company invitation is created
+                </paper-toggle-button>
+                <paper-toggle-button id="DENIED_SIGNUP_REQUEST" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.DENIED_SIGNUP_REQUEST }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when signup request is denied
+                </paper-toggle-button>
+                <paper-toggle-button id="ACCOUNT_TAKEOVER" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.ACCOUNT_TAKEOVER }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when company takes over an account
+                </paper-toggle-button>
+                <paper-toggle-button id="COMPANY_ACCOUNT_ACTIVATION" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.COMPANY_ACCOUNT_ACTIVATION }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email when company account is activated
+                </paper-toggle-button>
+                <paper-toggle-button id="CONTACT_CREATED_WELCOME" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.CONTACT_CREATED_WELCOME }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send welcome email when company contact is created
+                </paper-toggle-button>
+                <paper-toggle-button id="CONTACT_CREATED_NEW_USER_ADMIN_EMAIL" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.CONTACT_CREATED_NEW_USER_ADMIN_EMAIL }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email that notifies admin about non existing contact
+                </paper-toggle-button>
+                <paper-toggle-button id="CONTACT_CREATED_EXISTING_USER_ADMIN_EMAIL" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.CONTACT_CREATED_EXISTING_USER_ADMIN_EMAIL }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email that notifies admin about existing contact
+                </paper-toggle-button>
+                <paper-toggle-button id="NEW_SIGNUP_REQUEST" style="margin-bottom: 8px;"
+                                     checked\$="{{ companyNotification.NEW_SIGNUP_REQUEST }}"
+                                     on-change="_companyEmailNotificationChanged">
+                    Send email that notifies admin about new signup request
+                </paper-toggle-button>
+            </div>
+        </div>
 
         <div class="toggle-button-container mt-30">
             <p class="info">
@@ -115,6 +237,35 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
                     return {};
                 },
                 observer: '_onCompanyChanged'
+            },
+
+            companyNotification: {
+                type: Object,
+                value: function() {
+                    return {
+                        "COMPANY_ROLE_ADDED_WELCOME_EMAIL": true,
+                        "COMPANY_ROLE_ADDED_NOTIFY_ADMIN": true,
+                        "COMPANY_ROLE_ADDED_EXISTING_USER": true,
+                        "MANAGED_USER_ACTIVATION_NOTIFICATION": true,
+                        "COMPANY_ROLE_PROVISIONED": true,
+                        "EMPLOYEE_ADDED": true,
+                        "EMPLOYEE_REMOVED": true,
+                        "APPLICATION_ICON_SHARED": true,
+                        "APPLICATION_ICON_UPDATED": true,
+                        "NOTIFY_USER_NEW_DEVICE": true,
+                        "NOTIFY_NEW_DEVICE": true,
+                        "NOTIFY_TWO_FACTOR_STATUS_CHANGE": true,
+                        "COMPANY_CONTACT_PROVISIONED": true,
+                        "COMPANY_INVITATION": true,
+                        "DENIED_SIGNUP_REQUEST": true,
+                        "ACCOUNT_TAKEOVER": true,
+                        "COMPANY_ACCOUNT_ACTIVATION": true,
+                        "CONTACT_CREATED_WELCOME": true,
+                        "CONTACT_CREATED_NEW_USER_ADMIN_EMAIL": true,
+                        "CONTACT_CREATED_EXISTING_USER_ADMIN_EMAIL": true,
+                        "NEW_SIGNUP_REQUEST": true
+                    };
+                }
             },
 
             settingsApi: {
@@ -165,7 +316,6 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
 
     ready() {
         super.ready();
-
         this._target = this;
     }
 
@@ -198,6 +348,13 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
     }
 
     _submitSettingsForm() {
+        let companyNotificationEmailSettings = {};
+        for(const property in this.companyNotification) {
+            companyNotificationEmailSettings[property.toLowerCase().replaceAll('_', '-')] = this.companyNotification[property];
+        }
+        this.company.email_notification_settings = JSON.stringify(companyNotificationEmailSettings);
+        this.shadowRoot.getElementById('companyNotificationEmailSettingsId').value = JSON.stringify(companyNotificationEmailSettings);
+
         this.$.form.submit();
     }
 
@@ -254,6 +411,10 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
         this._emailAdminOnNewUser = this.$.newUserInfoAdminEmail.checked;
     }
 
+    _companyEmailNotificationChanged(e) {
+        this.companyNotification[e.currentTarget.id] = e.currentTarget.checked;
+    }
+
     _mailAdminOnNewDeviceChanged() {
         this._emailAdminOnNewDevice = this.$.newDeviceInfoAdminEmail.checked;
     }
@@ -268,6 +429,17 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
 
     setup() {
         this.$.companyName.focus();
+        let settings = JSON.parse(this.company.email_notification_settings);
+        for (const property in settings) {
+            let companyNotificationProperty = property.toUpperCase().replaceAll('-', '_');
+
+            if(this.companyNotification.hasOwnProperty(companyNotificationProperty)) {
+                this.companyNotification[companyNotificationProperty] = settings[property];
+            }
+        }
+        let notifications = this.companyNotification;
+        this.set('companyNotification', {});
+        this.set('companyNotification', notifications);
     }
 
     reset() {
