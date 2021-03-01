@@ -132,7 +132,9 @@ class AppscoCompanySettings extends mixinBehaviors([Appsco.HeadersMixin], Polyme
                     Send email when user from company directory is provisioned to other systems
                 </paper-toggle-button>
                 <paper-toggle-button id="EMPLOYEE_ADDED" style="margin-bottom: 8px;"
-                                     checked\$="{{ companyNotification.EMPLOYEE_ADDED }}">
+                                     checked\$="{{ companyNotification.EMPLOYEE_ADDED }}"
+                                     on-change="_companyEmailNotificationChanged"
+                >
                     Send email when new user is added to company directory
                 </paper-toggle-button>
                 <paper-toggle-button id="EMPLOYEE_REMOVED" style="margin-bottom: 8px;"
