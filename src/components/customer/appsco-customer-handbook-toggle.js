@@ -95,14 +95,10 @@ class AppscoCustomerHandbookToggle extends mixinBehaviors([Appsco.HeadersMixin],
     }
 
     _turnHandbookPackageOn() {
-        this.customer.handbook = true;
-        this.resetCustomer();
         this._callHandbookPackagesApi(1);
     }
 
     _turnHandbookPackageOff() {
-        this.customer.handbook = false;
-        this.resetCustomer();
         this._callHandbookPackagesApi(0);
     }
 
@@ -136,7 +132,6 @@ class AppscoCustomerHandbookToggle extends mixinBehaviors([Appsco.HeadersMixin],
         }.bind(this), function() {
             this._showError(this.apiErrors.getError(request.response.code));
             this.customer.handbook = !status;
-            this.resetCustomer();
         }.bind(this));
     }
 

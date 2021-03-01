@@ -62,18 +62,22 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
 
             <template is="dom-if" if="[[ _isPaidExternally ]]">
                 <paper-input allowed-pattern="\\d+" id="numOfLicences" label="Number of licences" error-message="Please enter number of licences." value="[[ customer.max_subscription_size ]]" auto-validate=""></paper-input>
-                <h3 style="margin-bottom:0;">Packages</h3>
+            </template>
+            <template is="dom-if" if="[[ _hasAppsCoOneHr ]]">
+                <h3 style="margin-bottom:0; border-top: 1px solid #e8e8e8; padding-top: 10px;">Appsco One Packages</h3>
                 <paper-radio-group style="margin-top:5px;" selected="{{ selectedPackage }}">
-                      <paper-radio-button name="none">No Packages</paper-radio-button>
-                      <paper-radio-button name="free">Appsco One People</paper-radio-button>
-                      <paper-radio-button name="plus">Appsco One Plus</paper-radio-button>
-                      <paper-radio-button name="premium">Appsco One Premium</paper-radio-button>
+                    <paper-radio-button name="none">Handbook Only</paper-radio-button>
+                    <paper-radio-button name="free">Appsco One People</paper-radio-button>
+                    <paper-radio-button name="plus">Appsco One Plus</paper-radio-button>
+                    <paper-radio-button name="premium">Appsco One Premium</paper-radio-button>
                 </paper-radio-group>
             </template>
+
+            <template is="dom-if" if="[[ _isNotHandbookOnly ]]">
+                <h3>Handbook</h3>
+                <appsco-customer-handbook-toggle id="appscoCustomerHandbook" customer="[[ customer ]]" partner="[[ partner ]]" authorization-token="[[ authorizationToken ]]" api-errors="[[ apiErrors ]]"></appsco-customer-handbook-toggle>
+            </template>
             
-            <h3>Handbook</h3>
-                
-            <appsco-customer-handbook-toggle id="appscoCustomerHandbook" customer="[[ customer ]]" partner="[[ partner ]]" authorization-token="[[ authorizationToken ]]" api-errors="[[ apiErrors ]]" on-customer-handbook-state-changed="_onManageCustomerState"></appsco-customer-handbook-toggle>
 
             <div class="buttons">
                 <paper-button dialog-dismiss="">Close</paper-button>
@@ -112,10 +116,27 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
                 computed: "_computeIsPaidExternally(customer)"
             },
 
+            _isNotHandbookOnly: {
+                type: Boolean,
+                computed: "_computeIsNotHandbookOnly(selectedPackage, _hasAppsCoOneHr)"
+            },
+
             _activePackage: {
                 type: String,
                 computed: "_computeActivePackage(customer)"
             },
+
+            hasAppscoOneHr: {
+                type: Boolean,
+                value: false
+            },
+
+            _hasAppsCoOneHr: {
+                type: Boolean,
+                value: false,
+                computed: "_computeHasAppsCoOneHr(_isPaidExternally, hasAppscoOneHr)"
+            },
+
             selectedPackage: {
                 type: String,
                 value: 'free'
@@ -172,10 +193,19 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
         return customer && customer.subscription_paid_externally == true;
     }
 
+    _computeHasAppsCoOneHr(_isPaidExternally, hasAppscoOneHr) {
+        return _isPaidExternally && hasAppscoOneHr;
+    }
+
+    _computeIsNotHandbookOnly(selectedPackage, _hasAppsCoOneHr) {
+        return selectedPackage !== 'none' && _hasAppsCoOneHr;
+    }
+
     _computeActivePackage(customer) {
         if(!customer.self) {
             return;
         }
+        this.set('hasAppscoOneHr', false);
         const appRequest = document.createElement('iron-request'),
             options = {
                 url: `${customer.self}/appscoonehr-configuration`,
@@ -197,10 +227,12 @@ class AppscoManageCustomerSubscription extends mixinBehaviors([Appsco.HeadersMix
                     packageSelected = 'premium';
                 }
             })
+            this.set('hasAppscoOneHr', true);
             this.selectedPackage = packageSelected;
         }.bind(this), function() {
+            this.set('hasAppscoOneHr', false);
             if (appRequest.status !== 200) {
-                this._errorMessage = this.apiErrors.getError(appRequest.response.code);
+                this._errorMessage ="Could not retrieve AppsCo One packages!";
             }
             this._loader = false;
         }.bind(this));
