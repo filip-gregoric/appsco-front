@@ -749,12 +749,16 @@ class AppscoEditIntegrationRule extends mixinBehaviors([
             this.set('_fromPSOList', appscoPSOList);
             this.set('_toPSOList', (response && response.psos) ? response.psos : []);
         }
-
+        if(this.$.fromPSOList.selected) {
+            this.set('_fromPSOSelected', this.$.fromPSOList.selected);
+        }
         if (this._fromPSOSelected) {
             this._setFromConditionList(this.$.fromPSOList.selected);
             this._setToPSOAvailableList(this.$.fromPSOList.selected);
         }
-
+        if(this.$.toPSOList.selected) {
+            this.set('_toPSOSelected', this.$.toPSOList.selected);
+        }
         if (this._toPSOSelected) {
             this._setToParamsList(this.$.toPSOList.selected);
         }
