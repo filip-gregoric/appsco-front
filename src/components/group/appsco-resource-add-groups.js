@@ -433,6 +433,47 @@ class AppscoResourceAddGroups extends mixinBehaviors([Appsco.HeadersMixin], Poly
         this.splice('_selectedGroups', this._selectedGroups.indexOf(event.model.item), 1);
     }
 
+    _addGroupsToMultipleCompanyRoles(items) {
+        return new Promise(function(resolve, reject) {
+            let groups = this._selectedGroups,
+                length = groups.length - 1,
+                request = document.createElement('iron-request'),
+                options = {
+                    url: this.groupsApi + '/roles-batch',
+                    method: 'POST',
+                    handleAs: 'json',
+                    headers: this._headers
+                },
+                body = '';
+
+            for(let i =0; i <= items.length-1; i++) {
+                let next = (i === items.length-1) ? '' : '&';
+                body += 'companyRoles[]=' + encodeURIComponent(items[i].self) + next;
+            }
+            for (let i = 0; i <= length; i++) {
+                let next = (i === length) ? '' : '&';
+                if(body !== '' && i === 0) body += "&";
+                body += 'groups[]=' + encodeURIComponent(groups[i].meta.self) + next;
+            }
+
+            options.body = body;
+
+            request.send(options).then(function() {
+                if (200 === request.status) {
+                    switch (this.resourceType) {
+                        case 'role':
+                            resolve(request.response);
+                            break;
+                    }
+                }
+            }.bind(this), function() {
+                if (404 === request.status) {
+                    reject('There was an error while sharing resources to groups. Not all ' + this.resourceType + 's were shared to groups.');
+                }
+            }.bind(this));
+        }.bind(this));
+    }
+
     _addGroupsToResource(item) {
         return new Promise(function(resolve, reject) {
             let groups = this._selectedGroups,
@@ -513,9 +554,30 @@ class AppscoResourceAddGroups extends mixinBehaviors([Appsco.HeadersMixin], Poly
 
         this._hideError();
         this._showDialogLoader();
+        if(this.resourceType === 'role') {
+            this._addGroupsToMultipleCompanyRoles(items).then(function(){
+                this.dispatchEvent(new CustomEvent('groups-added-to-resources', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        groups: this._selectedGroups,
+                        items: this._responseItems,
+                        resourceType: this.resourceType
+                    }
+                }));
+
+                this.close();
+
+                this.set('_selectedGroups', []);
+                this.set('_responseItems', []);
+                this._hideDialogLoader();
+            }.bind(this));
+            return;
+        }
 
         for (let i = 0; i < length; i++) {
             const item = items[i];
+
 
             (function(me) {
                 me._addGroupsToResource(item).then(function(item) {
