@@ -28,7 +28,8 @@ class AppscoLicencesPage extends mixinBehaviors([
     NeonAnimatableBehavior,
     AppscoPageBehavior,
     AppscoListObserverBehavior,
-    Appsco.PageMixin
+    Appsco.PageMixin,
+    Appsco.HeadersMixin
 ], PolymerElement) {
     static get template() {
         return html`
@@ -258,6 +259,10 @@ class AppscoLicencesPage extends mixinBehaviors([
                 type: String
             },
 
+            companyLicencesExportApi: {
+                type: String,
+            },
+
             _licenceExists: {
                 type: Boolean,
                 computed: '_computeLicenceExistence(licence)'
@@ -345,6 +350,7 @@ class AppscoLicencesPage extends mixinBehaviors([
         this.toolbar.addEventListener('search-clear', this._onSearchLicencesClear.bind(this));
         this.toolbar.addEventListener('select-all-licences', this._onSelectAllLicences.bind(this));
         this.toolbar.addEventListener('delete-licences', this._onDeleteLicences.bind(this));
+        this.toolbar.addEventListener('export-licences', this._onExportLicencesAction.bind(this));
     }
 
     pageSelected() {
@@ -479,6 +485,35 @@ class AppscoLicencesPage extends mixinBehaviors([
         this._resetFilter();
         this._resetPageActions();
         this.hideInfo();
+    }
+
+    _onExportLicencesAction() {
+        const request = document.createElement('iron-request'),
+            options = {
+                url: this.companyLicencesExportApi,
+                method: 'GET',
+                handleAs: 'text',
+                headers: this._headers
+            };
+        request.send(options).then(function(response) {
+            const link = document.createElement('a');
+
+            link.href = "data:application/octet-stream," + encodeURIComponent(response.response);
+            link.setAttribute('download', 'licences.csv');
+            document.body.appendChild(link);
+
+            if (link.click) {
+                link.click();
+            }
+            else if (document.createEvent) {
+                const event = document.createEvent('MouseEvents');
+
+                event.initEvent('click', true, true);
+                link.dispatchEvent(event);
+            }
+
+            document.body.removeChild(link);
+        });
     }
 
     _resetFilter () {}

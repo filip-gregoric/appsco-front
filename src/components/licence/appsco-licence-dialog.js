@@ -68,6 +68,16 @@ class AppscoLicenceDialog extends mixinBehaviors([Appsco.HeadersMixin], PolymerE
                             </div>
 
                             <div class="input-container">
+                                <paper-input
+                                        id="productKey"
+                                        data-field=""
+                                        label="Product key"
+                                        name\$="[[ _formNamePrefix ]][productName]"
+                                        value="[[ licence.product_key ]]">
+                                </paper-input>
+                            </div>
+
+                            <div class="input-container">
                                 <paper-textarea
                                         id="licenceKey"
                                         data-field=""
