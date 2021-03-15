@@ -96,7 +96,7 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
             :host .bulk-action[hidden] {
                 display: none !important;
             }
-            :host .add-licence-button {
+            :host .add-licence-button, :host .export-action {
                 @apply --add-item-action;
             }
         </style>
@@ -114,6 +114,10 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
         <div class="action bulk-select-all flex-none">
             <paper-icon-button id="selectAllAction" icon="icons:done-all" alt="Select all" on-tap="_onSelectAllAction"></paper-icon-button>
             <paper-tooltip for="selectAllAction" position="bottom">Select all</paper-tooltip>
+        </div>
+
+        <div class="action flex-none">
+            <paper-button class="export-action removable-button" on-tap="_onExportToCsvAction">Export to CSV</paper-button>
         </div>
 
         <div class="action flex-none">
@@ -263,6 +267,10 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
                 bulkActions[i].style.display = 'none';
             }
         }
+    }
+
+    _onExportToCsvAction() {
+        this.dispatchEvent(new CustomEvent('export-licences', { bubbles: true, composed: true }));
     }
 }
 window.customElements.define(AppscoLicencesActions.is, AppscoLicencesActions);
