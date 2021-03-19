@@ -52,63 +52,85 @@ class AppscoCustomerItem extends mixinBehaviors([
             :host .item-info {
                 padding: 0 10px;
             }
+            :host([preview][activated]) {
+                font-weight: 500;
+                background-color: #e8e8e8;
+            }
+            .info-label.item-title {
+                font-size: 14px;
+                cursor: pointer;
+                margin: 0;
+                padding: 0;
+            }
+            :host([preview]) {
+                display: block;
+                margin: 0;
+                padding: 5px;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
         </style>
 
         <iron-media-query query="(max-width: 600px)" query-matches="{{ mobileScreen }}"></iron-media-query>
+        
+        <template is="dom-if" if="[[ preview ]]">
+            <span class="info-label item-title">[[ item.name ]]</span>
+        </template>
 
-        <div class="item">
-
-            <template is="dom-if" if="[[ selectable ]]">
-                <div class="select-action" on-tap="_onSelectItemAction">
-
+        <template is="dom-if" if="[[ !preview ]]">
+            <div class="item">
+                <template is="dom-if" if="[[ selectable ]]">
+                    <div class="select-action" on-tap="_onSelectItemAction">
+    
+                        <div class="customer-icon-container">
+                            <iron-icon class="customer-icon" icon="icons:social:domain"></iron-icon>
+                        </div>
+    
+                        <div class="icon-action">
+                            <div class="iron-action-inner">
+                                <iron-icon icon="icons:check"></iron-icon>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+    
+                <template is="dom-if" if="[[ !selectable ]]">
                     <div class="customer-icon-container">
                         <iron-icon class="customer-icon" icon="icons:social:domain"></iron-icon>
                     </div>
-
-                    <div class="icon-action">
-                        <div class="iron-action-inner">
-                            <iron-icon icon="icons:check"></iron-icon>
-                        </div>
+                </template>
+    
+                <div class="item-info item-basic-info">
+                    <span class="info-label group-title">[[ item.name ]]</span>
+                    <span class="info-value">[[ item.contact_email ]]</span>
+                </div>
+    
+                <div class="item-info item-additional-info">
+                    <div class="info">
+                        <span class="info-label">Partner admins:&nbsp;</span>
+                        <span class="info-value">[[ _partnerAdminsCount ]]</span>
+                    </div>
+                    <div class="info">
+                        <span class="info-label">Licences:&nbsp;</span>
+                        <span class="info-value">[[ _licencesCount ]]</span>
+                    </div>
+                    <div class="info">
+                        <span class="info-label">Status:&nbsp;</span>
+                        <template is="dom-if" if="[[ !item.trial_period ]]">
+                            <span class="info-value">active</span>
+                        </template>
+    
+                        <template is="dom-if" if="[[ item.trial_period ]]">
+                            <span class="info-value">trial</span>
+                        </template>
                     </div>
                 </div>
-            </template>
-
-            <template is="dom-if" if="[[ !selectable ]]">
-                <div class="customer-icon-container">
-                    <iron-icon class="customer-icon" icon="icons:social:domain"></iron-icon>
-                </div>
-            </template>
-
-            <div class="item-info item-basic-info">
-                <span class="info-label group-title">[[ item.name ]]</span>
-                <span class="info-value">[[ item.contact_email ]]</span>
-            </div>
-
-            <div class="item-info item-additional-info">
-                <div class="info">
-                    <span class="info-label">Partner admins:&nbsp;</span>
-                    <span class="info-value">[[ _partnerAdminsCount ]]</span>
-                </div>
-                <div class="info">
-                    <span class="info-label">Licences:&nbsp;</span>
-                    <span class="info-value">[[ _licencesCount ]]</span>
-                </div>
-                <div class="info">
-                    <span class="info-label">Status:&nbsp;</span>
-                    <template is="dom-if" if="[[ !item.trial_period ]]">
-                        <span class="info-value">active</span>
-                    </template>
-
-                    <template is="dom-if" if="[[ item.trial_period ]]">
-                        <span class="info-value">trial</span>
-                    </template>
+    
+                <div class="actions">
+                    <paper-button on-tap="_onEditItemAction">Edit</paper-button>
                 </div>
             </div>
-
-            <div class="actions">
-                <paper-button on-tap="_onEditItemAction">Edit</paper-button>
-            </div>
-        </div>
+        </template>
 `;
     }
 
@@ -116,6 +138,12 @@ class AppscoCustomerItem extends mixinBehaviors([
 
     static get properties() {
         return {
+            preview: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true
+            },
+
             listApi: {
                 type: String
             },

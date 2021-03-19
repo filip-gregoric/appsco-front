@@ -11,9 +11,13 @@ import './components/components/appsco-copy.js';
 import './components/page/appsco-content.js';
 import './components/page/appsco-page-styles.js';
 import './components/licence/appsco-licences.js';
+import './components/licence/appsco-licence-categories.js';
 import './components/licence/appsco-licence-image.js';
 import './components/licence/appsco-licence-dialog.js';
+import './components/licence/appsco-licence-category-dialog.js';
+import './components/licence/appsco-licence-categories-delete-dialog.js';
 import './components/licence/appsco-delete-licences.js';
+import './components/customer/appsco-customers.js';
 import './components/components/appsco-search.js';
 import { AppscoPageBehavior } from './components/components/appsco-page-behavior.js';
 import './components/licence/appsco-licences-page-actions.js';
@@ -38,6 +42,10 @@ class AppscoLicencesPage extends mixinBehaviors([
                 --item-basic-info: {
                     padding: 0 10px;
                 };
+                --appsco-customer-item: {
+                    margin: 0 0 0 5px;
+                    font-size: 14px;
+                }
             }
             .flex { display: flex; }
             .flex-space-around { justify-content: space-around; }
@@ -45,7 +53,10 @@ class AppscoLicencesPage extends mixinBehaviors([
             .flex-align-center { align-items: center; }
             .flex-align-self-end { align-self: self-end; }
             :host div[resource] .resource-content {
-                padding-top: 20px;
+                padding-top: 10px;
+            }
+            :host .resource-header {
+                border-top: 1px solid var(--divider-color);
             }
             neon-animated-pages .iron-selected:not(.neon-animating) {
                 position: relative; 
@@ -84,6 +95,9 @@ class AppscoLicencesPage extends mixinBehaviors([
                 margin-right: 6px;
                 vertical-align: top;
             }
+            :host appsco-customers {
+                margin-top: 10px;
+            }
         </style>
 
         <iron-media-query query="(max-width: 992px)" query-matches="{{ screen992 }}"></iron-media-query>
@@ -98,6 +112,46 @@ class AppscoLicencesPage extends mixinBehaviors([
                         <span on-tap="_onAllItemsTapped" activated filter="all"><iron-icon icon="icons:home"></iron-icon>All</span>
                         <span on-tap="_onOwnedItemsTapped" filter="owned"><iron-icon icon="social:person"></iron-icon>My licences</span>
                         <span on-tap="_onAssignedToItemsTapped" filter="assigned"><iron-icon icon="social:share"></iron-icon>Shared by partner</span>
+                    </div>
+                </div>
+                <div class="resource-header">Companies</div>
+                <div class="resource-content filters">
+                    <div class="action action-search flex-none">
+                        <appsco-search 
+                            id="appscoSearch"
+                            label="Search"
+                            on-search="_onSearchCompanies"
+                            on-search-clear="_onSearchCompaniesClear">
+                        </appsco-search>
+                    </div>
+                    <appsco-customers
+                        id="appscoCustomers"
+                        type="customer"
+                        size="5"
+                        selectable=""
+                        preview=""
+                        authorization-token="[[ authorizationToken ]]"
+                        list-api="[[ customersApi ]]"
+                        api-errors="[[ apiErrors ]]"
+                        on-item="_onCustomer">
+                    </appsco-customers>
+                </div>
+                <div class="resource-header">Categories</div>
+                <div class="resource-content filters">
+                    <div class="categories">
+                        <appsco-licence-categories
+                            id="appscoLicenceCategories"
+                            name="categories"
+                            type="licence-category"
+                            size="100"
+                            load-more=""
+                            selectable=""
+                            authorization-token="[[ authorizationToken ]]"
+                            list-api="[[ companyLicenceCategoriesApi ]]"
+                            on-modify-category="_onModifyLicenceCategory"
+                            on-remove-category="_onRemoveLicenceCategory"
+                            on-item="_onCategory">
+                        </appsco-licence-categories>
                     </div>
                 </div>
             </div>
@@ -131,11 +185,16 @@ class AppscoLicencesPage extends mixinBehaviors([
                 </div>
 
                 <div class="info-content flex-vertical">
-                    
                     <div label="">Product name</div>
                     <div content="">
                         <div class="flex">
                             [[ displayNullableValue(licence.product_name) ]]
+                        </div>
+                    </div>
+                    <div label="">Product key</div>
+                    <div content="">
+                        <div class="flex">
+                            [[ displayNullableValue(licence.product_key) ]]
                         </div>
                     </div>
                     <div label="">Number of licences</div>
@@ -210,6 +269,15 @@ class AppscoLicencesPage extends mixinBehaviors([
             on-licence-modified="_onLicenceModified">
         </appsco-licence-dialog>
 
+        <appsco-licence-category-dialog
+            id="appscoLicenceCategoryDialog"
+            authorization-token="[[ authorizationToken ]]"
+            company-licence-categories-api="[[ companyLicenceCategoriesApi ]]"
+            api-errors="[[ apiErrors ]]"
+            on-category-added="_onLicenceCategoryAdded"
+            on-category-modified="_onLicenceCategoryModified">
+        </appsco-licence-category-dialog>
+
         <appsco-delete-licences
             id="appscoLicencesDelete"
             authorization-token="[[ authorizationToken ]]"
@@ -217,6 +285,15 @@ class AppscoLicencesPage extends mixinBehaviors([
             api-errors="[[ apiErrors ]]"
             on-licences-removed="_onDeletedLicences">
         </appsco-delete-licences>
+
+        <appsco-licence-categories-delete-dialog
+            id="appscoLicenceCategoriesDeleteDialog"
+            authorization-token="[[ authorizationToken ]]"
+            company-licence-categories-api="[[ companyLicenceCategoriesApi ]]"
+            api-errors="[[ apiErrors ]]"
+            on-categories-removed="_onDeletedLicenceCategories"
+            on-categories-remove-failed="_onDeleteLicenceCategoriesFailed">
+        </appsco-licence-categories-delete-dialog>
 `;
     }
 
@@ -259,7 +336,15 @@ class AppscoLicencesPage extends mixinBehaviors([
                 type: String
             },
 
+            companyLicenceCategoriesApi: {
+                type: String
+            },
+
             companyLicencesExportApi: {
+                type: String,
+            },
+
+            customersApi: {
                 type: String,
             },
 
@@ -346,6 +431,7 @@ class AppscoLicencesPage extends mixinBehaviors([
 
     _addListeners() {
         this.toolbar.addEventListener('add-licence', this._onAddLicence.bind(this));
+        this.toolbar.addEventListener('add-category', this._onAddLicenceCategory.bind(this));
         this.toolbar.addEventListener('search', this._onSearchLicences.bind(this));
         this.toolbar.addEventListener('search-clear', this._onSearchLicencesClear.bind(this));
         this.toolbar.addEventListener('select-all-licences', this._onSelectAllLicences.bind(this));
@@ -369,18 +455,37 @@ class AppscoLicencesPage extends mixinBehaviors([
         this.showOwned();
     }
 
+    resetCategories() {
+        this.shadowRoot.getElementById('appscoLicenceCategories').resetAllItems();
+    }
+
+    resetCustomers() {
+        this.shadowRoot.getElementById('appscoCustomers').resetAllItems();
+    }
+
+    resetFilterComponents() {
+        this.resetCategories();
+        this.resetCustomers();
+    }
+
     showAll() {
         this.activateFilter('all');
+        this.resetFilterComponents();
+        this.resetCustomerSearch();
         this._changeLicenceListApi(this.companyLicencesApi);
     }
 
     showAssignedTo() {
         this.activateFilter('assigned');
+        this.resetFilterComponents();
+        this.resetCustomerSearch();
         this._changeLicenceListApi(this.companyLicencesApi + '/assigned-to');
     }
 
     showOwned() {
         this.activateFilter('owned');
+        this.resetFilterComponents();
+        this.resetCustomerSearch();
         this._changeLicenceListApi(this.companyLicencesApi + '/owned');
     }
 
@@ -458,6 +563,18 @@ class AppscoLicencesPage extends mixinBehaviors([
     removeLicences(licences) {
         this.$.appscoLicences.removeItems(licences);
         this._setDefaultLicence();
+    }
+
+    addLicenceCategories(categories) {
+        this.$.appscoLicenceCategories.addItems(categories);
+    }
+
+    modifyLicenceCategories(categories) {
+        this.$.appscoLicenceCategories.modifyItems(categories);
+    }
+
+    removeLicenceCategories(categories) {
+        this.$.appscoLicenceCategories.removeItems(categories);
     }
 
     filterByTerm(term, page) {
@@ -564,6 +681,32 @@ class AppscoLicencesPage extends mixinBehaviors([
         this.dispatchEvent(new CustomEvent('page-loaded', { bubbles: true, composed: true }));
     }
 
+    _onCategory(event) {
+        if (!event.detail.item.activated) {
+            this.showAll();
+            return;
+        }
+
+        this.deactivateAllFilters();
+        this.resetCustomers();
+        const category = event.detail.item;
+        const listAPi = this.companyLicenceCategoriesApi + '/' + category.id + '/licences';
+        this._changeLicenceListApi(listAPi);
+    }
+
+    _onCustomer(event) {
+        if (!event.detail.item.activated) {
+            this.showAll();
+            return;
+        }
+
+        this.deactivateAllFilters();
+        this.resetCategories();
+        const customer = event.detail.item;
+        const listAPi = this.companyLicencesApi + '/customer/' + customer.alias;
+        this._changeLicenceListApi(listAPi);
+    }
+
     _onLicence(event) {
         if (event.detail.item.activated) {
             this._onViewInfo(event);
@@ -621,6 +764,19 @@ class AppscoLicencesPage extends mixinBehaviors([
         this._searchLicences('');
     }
 
+    _onSearchCompanies(event) {
+        this.$.appscoCustomers.filterByTerm(event.detail.term);
+    }
+
+    _onSearchCompaniesClear() {
+        this.$.appscoCustomers.filterByTerm('');
+    }
+
+    resetCustomerSearch() {
+        this.$.appscoSearch.reset();
+        this.$.appscoCustomers.filterByTerm('');
+    }
+
     _onAddLicence() {
         const dialog = this.shadowRoot.getElementById('appscoLicenceDialog');
         dialog.licence = null;
@@ -643,6 +799,34 @@ class AppscoLicencesPage extends mixinBehaviors([
         const dialog = this.shadowRoot.getElementById('appscoLicenceDialog');
         dialog.setLicence(event.detail.item);
         dialog.open();
+    }
+
+    _onAddLicenceCategory() {
+        const dialog = this.shadowRoot.getElementById('appscoLicenceCategoryDialog');
+        dialog.setCategory(null);
+        dialog.open();
+    }
+
+    _onLicenceCategoryAdded(event) {
+        const category = event.detail.category;
+        this.addLicenceCategories([ category ]);
+        this._notify('Category ' + category.name + ' was successfully saved.');
+        this.licenceListApi = null;
+        this.showAll();
+    }
+
+    _onModifyLicenceCategory(event) {
+        const dialog = this.shadowRoot.getElementById('appscoLicenceCategoryDialog');
+        dialog.setCategory(event.detail.category);
+        dialog.open();
+    }
+
+    _onLicenceCategoryModified(event) {
+        const category = event.detail.category;
+        this.modifyLicenceCategories([ category ]);
+        this._notify('Category ' + category.name + ' was successfully saved.');
+        this.licenceListApi = null;
+        this.showAll();
     }
 
     _onSelectAllLicences() {
@@ -672,6 +856,24 @@ class AppscoLicencesPage extends mixinBehaviors([
     _onDeleteLicencesFailed() {
         this.selectedLicences = [];
         this._notify('An error occurred. Selected licences were not removed from company. Please try again.');
+    }
+
+    _onRemoveLicenceCategory(event) {
+        const dialog = this.shadowRoot.getElementById('appscoLicenceCategoriesDeleteDialog');
+        dialog.setCategories([ event.detail.category ]);
+        dialog.open();
+    }
+
+    _onDeletedLicenceCategories(event) {
+        const categories = event.detail.categories;
+        this.removeLicenceCategories(categories);
+        this._notify('Selected categories were successfully removed from company.');
+        this.licenceListApi = null;
+        this.showAll();
+    }
+
+    _onDeleteLicenceCategoriesFailed() {
+        this._notify('An error occurred. Selected categories were not removed from company. Please try again.');
     }
 
     _companyLicenceListApiChanged(companyLicenceApi) {

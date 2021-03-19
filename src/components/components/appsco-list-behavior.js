@@ -737,6 +737,9 @@ export const AppscoListBehavior = [
             case 'licence':
                 itemList = response.licences ? response.licences : [];
                 break;
+            case 'licence-category':
+                itemList = response.categories ? response.categories : [];
+                break;
             case 'group':
                 itemList = response.company_groups ? response.company_groups : [];
                 break;
@@ -791,36 +794,7 @@ export const AppscoListBehavior = [
             }
 
             if (itemList && itemList.length > 0) {
-                var itemListCount = itemList.length - 1;
-
-                this._listEmpty = false;
-
-                itemList.forEach(function(el, index) {
-                    this._listLoaders.push(setTimeout(function() {
-                        el.activated = false;
-                        el.selected = false;
-                        var items = JSON.parse(JSON.stringify(this._listItems));
-                        this._listItems = [];
-                        items.push(el);
-                        this._listItems = items;
-
-                        this.push('_allListItems', el);
-
-                        if (index === itemListCount) {
-                            this._hideProgressBar();
-                            this._hideLoadMoreProgressBar();
-                            this._setLoadMoreAction();
-
-                            this.dispatchEvent(new CustomEvent('list-loaded', {
-                                bubbles: true,
-                                composed: true,
-                                detail: {
-                                    items: itemList
-                                }
-                            }));
-                        }
-                    }.bind(this), (index + 1) * 30 ));
-                }.bind(this));
+                this._addItems(itemList);
             }
             else {
                 (itemList && !itemList.length) ?
@@ -834,6 +808,39 @@ export const AppscoListBehavior = [
                 this._handleEmptyLoad();
             }
         }
+    },
+
+    _addItems: function(itemList) {
+        var itemListCount = itemList.length - 1;
+
+        this._listEmpty = false;
+
+        itemList.forEach(function(el, index) {
+            this._listLoaders.push(setTimeout(function() {
+                el.activated = false;
+                el.selected = false;
+                var items = JSON.parse(JSON.stringify(this._listItems));
+                this._listItems = [];
+                items.push(el);
+                this._listItems = items;
+
+                this.push('_allListItems', el);
+
+                if (index === itemListCount) {
+                    this._hideProgressBar();
+                    this._hideLoadMoreProgressBar();
+                    this._setLoadMoreAction();
+
+                    this.dispatchEvent(new CustomEvent('list-loaded', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            items: itemList
+                        }
+                    }));
+                }
+            }.bind(this), (index + 1) * 30 ));
+        }.bind(this));
     },
 
     _onListItemAction: function(event) {
@@ -926,6 +933,9 @@ export const AppscoListBehavior = [
                             break;
                         case 'licence':
                             resolve(request.response.licences);
+                            break;
+                        case 'licence-category':
+                            resolve(request.response.categories);
                             break;
                         case 'contact':
                             resolve(request.response.contacts);
