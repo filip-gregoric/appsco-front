@@ -120,23 +120,18 @@ class AppscoLicenceCategories extends mixinBehaviors([
 
     _toggleOptions(event) {
         const options = event.target.parentElement.querySelector('paper-material');
+        const show = options.style.display !== 'block';
 
         this.shadowRoot.querySelectorAll('paper-material.options').forEach(
             function(element) {
-                if(options === element) {
-                    return;
-                }
                 element.style.display = 'none';
+                element.parentElement.classList.remove('show-options');
             }
         )
-        if (options.style.display !== 'block') {
+        if (show) {
             options.style.display = 'block';
             options.parentElement.classList.add('show-options');
-            return;
         }
-
-        options.style.display = 'none';
-        options.parentElement.classList.remove('show-options');
     }
 
     _onModify(event) {
