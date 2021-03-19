@@ -164,6 +164,10 @@ class AppscoLicences extends mixinBehaviors([
                 items: itemList
             }
         }));
+
+        this._hideProgressBar();
+        this._hideLoadMoreProgressBar();
+        this._setLoadMoreAction();
     }
 
     _observeItems(items) {

@@ -114,12 +114,12 @@ class AppscoLicencesPage extends mixinBehaviors([
                         <span on-tap="_onAssignedToItemsTapped" filter="assigned"><iron-icon icon="social:share"></iron-icon>Shared by partner</span>
                     </div>
                 </div>
-                <div class="resource-header">Companies</div>
+                <div class="resource-header">Customers</div>
                 <div class="resource-content filters">
                     <div class="action action-search flex-none">
                         <appsco-search 
                             id="appscoSearch"
-                            label="Search"
+                            label="Search Customers"
                             on-search="_onSearchCompanies"
                             on-search-clear="_onSearchCompaniesClear">
                         </appsco-search>
@@ -252,7 +252,7 @@ class AppscoLicencesPage extends mixinBehaviors([
                     </div>
                 </div>
                 <div class="info-actions flex-horizontal">
-                    <paper-button class="button flex" on-tap="_onEditLicence">
+                    <paper-button class="button flex" on-tap="_onEditSelectedLicence">
                         Edit
                     </paper-button>
                 </div>
@@ -798,6 +798,15 @@ class AppscoLicencesPage extends mixinBehaviors([
     _onEditLicence(event) {
         const dialog = this.shadowRoot.getElementById('appscoLicenceDialog');
         dialog.setLicence(event.detail.item);
+        dialog.open();
+    }
+
+    _onEditSelectedLicence() {
+        if (!this.licence) {
+            return;
+        }
+        const dialog = this.shadowRoot.getElementById('appscoLicenceDialog');
+        dialog.setLicence(this.licence);
         dialog.open();
     }
 
