@@ -154,7 +154,7 @@ class AppscoLicences extends mixinBehaviors([
             el.selected = false;
         });
 
-        this._listItems = itemList;
+        this._listItems = this._listItems.concat(itemList);
         this.push('_allListItems', ...itemList);
 
         this.dispatchEvent(new CustomEvent('list-loaded', {
