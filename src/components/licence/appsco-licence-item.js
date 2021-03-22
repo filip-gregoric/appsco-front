@@ -75,12 +75,12 @@ class AppscoLicenceItem extends mixinBehaviors([
                         <span class="info-value">[[ numberOfLicences ]]</span>
                     </div>
                     <div class="info">
-                        <span class="info-label">Group:&nbsp;</span>
-                        <span class="info-value">[[ groupName ]]</span>
+                        <span class="info-label">Category:&nbsp;</span>
+                        <span class="info-value">[[ categoryName ]]</span>
                     </div>
                     <div class="info">
-                        <span class="info-label">Company:&nbsp;</span>
-                        <span class="info-value">[[ item.owner.name ]]</span>
+                        <span class="info-label">Assigned to:&nbsp;</span>
+                        <span class="info-value">[[ assignedToName ]]</span>
                     </div>
                 </div>
 
@@ -113,10 +113,15 @@ class AppscoLicenceItem extends mixinBehaviors([
                 computed: '_computeNumberOfLicences(item.number_of_licences)'
             },
 
-            groupName: {
+            categoryName: {
                 type: String,
-                computed: '_computeGroupName(item.group)'
-            }
+                computed: '_computeCategoryName(item.categories)'
+            },
+
+            assignedToName: {
+                type: String,
+                computed: '_computeCompanyName(item.assigned_to)'
+            },
         };
     }
 
@@ -132,12 +137,30 @@ class AppscoLicenceItem extends mixinBehaviors([
         this.addEventListener('tap', this._onItemAction);
     }
 
-    _computeNumberOfLicences(groupName) {
+    _computeNumberOfLicences(numberOfLicences) {
+        return Number.isInteger(numberOfLicences) ? numberOfLicences : '-';
+    }
+
+    _computeGroupName(groupName) {
         return groupName ? groupName : '-';
     }
 
-    _computeGroupName(numberOfLicences) {
-        return Number.isInteger(numberOfLicences) ? numberOfLicences : '-';
+    _computeCompanyName(company) {
+        return company ? company.name : '-';
+    }
+
+    _computeCategoryName(categories) {
+        if (!categories || 0 === categories.length) {
+            return '-';
+        }
+
+        const categoryNames = [];
+
+        for (let i = 0; i < categories.length; i++) {
+            categoryNames.push(categories[i].name);
+        }
+
+        return categoryNames.join(', ');
     }
 }
 window.customElements.define(AppscoLicenceItem.is, AppscoLicenceItem);

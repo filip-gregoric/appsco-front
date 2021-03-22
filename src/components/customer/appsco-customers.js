@@ -38,7 +38,7 @@ class AppscoCustomers extends mixinBehaviors([
                 <div class="list">
                     <template is="dom-repeat" items="[[ _listItems ]]" on-dom-change="_onItemsDomChange">
 
-                        <appsco-customer-item id="appscoListItem_[[ index ]]" item="[[ item ]]" type="[[ type ]]" list-api="[[ listApi ]]" authorization-token="[[ authorizationToken ]]" selectable="[[ selectable ]]" on-item="_onListItemAction" on-select-item="_onSelectListItemAction"></appsco-customer-item>
+                        <appsco-customer-item id="appscoListItem_[[ index ]]" item="[[ item ]]" type="[[ type ]]" list-api="[[ listApi ]]" authorization-token="[[ authorizationToken ]]" selectable="[[ selectable ]]" preview="[[ preview ]]" on-item="_onListItemAction" on-select-item="_onSelectListItemAction"></appsco-customer-item>
 
                     </template>
                 </div>
@@ -55,6 +55,16 @@ class AppscoCustomers extends mixinBehaviors([
     }
 
     static get is() { return 'appsco-customers'; }
+
+    static get properties() {
+        return {
+            preview: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true
+            },
+        }
+    }
 
     static get observers() {
         return [

@@ -96,7 +96,7 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
             :host .bulk-action[hidden] {
                 display: none !important;
             }
-            :host .add-licence-button, :host .export-action {
+            :host .action-button, :host .export-action {
                 @apply --add-item-action;
             }
         </style>
@@ -117,11 +117,15 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
         </div>
 
         <div class="action flex-none">
-            <paper-button class="export-action removable-button" on-tap="_onExportToCsvAction">Export to CSV</paper-button>
+            <paper-button class="action-button removable-button" on-tap="_onExportToCsvAction">Export to CSV</paper-button>
         </div>
 
         <div class="action flex-none">
-            <paper-button id="addLicenceAction" class="add-licence-button" toggles="" on-tap="_onAddLicenceAction">Add licence</paper-button>
+            <paper-button id="addCategoryAction" class="action-button" toggles="" on-tap="_onAddCategoryAction">Add category</paper-button>
+        </div>
+
+        <div class="action flex-none">
+            <paper-button id="addLicenceAction" class="action-button" toggles="" on-tap="_onAddLicenceAction">Add licence</paper-button>
         </div>
 `;
     }
@@ -199,7 +203,6 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
 
     reset() {
         this.resetActions();
-        this.shadowRoot.getElementById('pagesListbox').selected = 0;
     }
 
     resetActions() {
@@ -209,6 +212,10 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
 
     _onAddLicenceAction() {
         this.dispatchEvent(new CustomEvent('add-licence', { bubbles: true, composed: true }));
+    }
+
+    _onAddCategoryAction() {
+        this.dispatchEvent(new CustomEvent('add-category', { bubbles: true, composed: true }));
     }
 
     _onDeleteLicencesAction() {
