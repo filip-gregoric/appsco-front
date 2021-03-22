@@ -572,6 +572,8 @@ export const AppscoListBehavior = [
                 return 'unresolved access on-boarding event';
             case 'policy-report':
                 return 'broken policie';
+            case 'licence-category':
+                return 'licence categorie';
             default:
                 return type;
         }
