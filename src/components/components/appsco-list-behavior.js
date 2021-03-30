@@ -325,15 +325,13 @@ export const AppscoListBehavior = [
 
     removeItems: function(items) {
         const currentItems = JSON.parse(JSON.stringify(this._listItems)),
-            length = currentItems.length,
             allListItems = JSON.parse(JSON.stringify(this._allListItems)),
-            allLength = allListItems.length,
             lengthModify = items.length;
 
         for (let i = 0; i < lengthModify; i++) {
             const item = items[i];
 
-            for (let j = 0; j < length; j++) {
+            for (let j = 0; j < currentItems.length; j++) {
                 if (item.self === currentItems[j].self) {
                     currentItems.splice(j, 1);
                     j--;
@@ -341,7 +339,7 @@ export const AppscoListBehavior = [
                 }
             }
 
-            for (let k = 0; k < allLength; k++) {
+            for (let k = 0; k < allListItems.length; k++) {
                 if (item.self === allListItems[k].self) {
                     allListItems.splice(k, 1);
                     k--;
