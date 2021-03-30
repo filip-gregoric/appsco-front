@@ -542,6 +542,7 @@ class AppscoApp extends mixinBehaviors([
                 company-licences-api="[[ _companyLicencesApi ]]"                                  
                 company-licence-categories-api="[[ _companyLicenceCategoriesApi ]]"
                 company-licences-export-api="[[ _companyLicencesExportApi ]]"
+                company-licences-import-api="[[ _companyLicencesImportApi ]]"
                 customers-api="[[ _companyCustomersApi ]]"
                 api-errors="[[ _apiErrors ]]"                                  
                 toolbar="[[ \$.appscoLicencesPageActions ]]"
@@ -1732,6 +1733,7 @@ class AppscoApp extends mixinBehaviors([
             this._companyImportAccountsApi = companyApi + '/directory/roles/import';
             this._companyLicencesApi = companyApi + '/licences';
             this._companyLicencesExportApi = this._companyLicencesApi + '/export';
+            this._companyLicencesImportApi = this._companyLicencesApi + '/import';
             this._companyLicenceCategoriesApi = companyApi + '/licence-categories';
             this._companyContactsApi = companyApi + '/contacts';
             this._companyOrgunitsApi = companyApi + '/org-units?extended=1';

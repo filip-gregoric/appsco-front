@@ -17,6 +17,7 @@ import './components/licence/appsco-licence-dialog.js';
 import './components/licence/appsco-licence-category-dialog.js';
 import './components/licence/appsco-licence-categories-delete-dialog.js';
 import './components/licence/appsco-delete-licences.js';
+import './components/licence/appsco-import-licences-dialog.js';
 import './components/customer/appsco-customers.js';
 import './components/components/appsco-search.js';
 import { AppscoPageBehavior } from './components/components/appsco-page-behavior.js';
@@ -294,6 +295,13 @@ class AppscoLicencesPage extends mixinBehaviors([
             on-categories-removed="_onDeletedLicenceCategories"
             on-categories-remove-failed="_onDeleteLicenceCategoriesFailed">
         </appsco-licence-categories-delete-dialog>
+
+        <appsco-import-licences-dialog
+            id="appscoImportLicencesDialog"
+            authorization-token="[[ authorizationToken ]]"
+            import-api="[[ companyLicencesImportApi ]]"
+            on-import-finished="_onLicencesImportFinished">
+        </appsco-import-licences-dialog>
 `;
     }
 
@@ -341,6 +349,10 @@ class AppscoLicencesPage extends mixinBehaviors([
             },
 
             companyLicencesExportApi: {
+                type: String,
+            },
+
+            companyLicencesImportApi: {
                 type: String,
             },
 
@@ -437,6 +449,7 @@ class AppscoLicencesPage extends mixinBehaviors([
         this.toolbar.addEventListener('select-all-licences', this._onSelectAllLicences.bind(this));
         this.toolbar.addEventListener('delete-licences', this._onDeleteLicences.bind(this));
         this.toolbar.addEventListener('export-licences', this._onExportLicencesAction.bind(this));
+        this.toolbar.addEventListener('import-licences', this._onImportLicencesAction.bind(this));
     }
 
     pageSelected() {
@@ -887,6 +900,24 @@ class AppscoLicencesPage extends mixinBehaviors([
 
     _companyLicenceListApiChanged(companyLicenceApi) {
         this.licenceListApi = companyLicenceApi;
+    }
+
+    _onImportLicencesAction() {
+        const dialog = this.shadowRoot.getElementById('appscoImportLicencesDialog');
+        dialog.toggle();
+    }
+
+    _onLicencesImportFinished(event) {
+        const response = event.detail.response;
+        let message = response.numberOfImported + ' licences imported out of ' + response.total + '.'
+            + ' Number of exiting licences: ' + response.numberOfExisting + '.'
+            + ' Number of licences skipped because customer is not found: ' + response.numberOfCompaniesNotFound + '.';
+
+        if (0 < response.numberOfImported) {
+            this.reloadLicences();
+        }
+
+        this._notify(message, true);
     }
 
     displayNullableValue(value) {

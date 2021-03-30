@@ -121,6 +121,10 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
         </div>
 
         <div class="action flex-none">
+            <paper-button class="action-button removable-button" on-tap="_onImportFromCsvAction">Import from CSV</paper-button>
+        </div>
+
+        <div class="action flex-none">
             <paper-button id="addCategoryAction" class="action-button" toggles="" on-tap="_onAddCategoryAction">Add category</paper-button>
         </div>
 
@@ -278,6 +282,10 @@ class AppscoLicencesActions extends mixinBehaviors([NeonAnimationRunnerBehavior]
 
     _onExportToCsvAction() {
         this.dispatchEvent(new CustomEvent('export-licences', { bubbles: true, composed: true }));
+    }
+
+    _onImportFromCsvAction() {
+        this.dispatchEvent(new CustomEvent('import-licences', { bubbles: true, composed: true }));
     }
 }
 window.customElements.define(AppscoLicencesActions.is, AppscoLicencesActions);
