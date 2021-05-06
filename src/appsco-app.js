@@ -601,8 +601,23 @@ class AppscoApp extends mixinBehaviors([
             <appsco-manage-customer-page name="manage-customer" page="" company-page="" id="appscoManageCustomerPage" route="[[ subroute ]]" authorization-token="[[ authorizationToken ]]" customers-api="[[ _companyCustomersApi ]]" current-company="[[ currentCompany.company ]]" company-roles-api="[[ _companyRolesApi ]]" add-partner-admin-to-customer-api="[[ _addPartnerAdminToCustomerApi ]]" toolbar="[[ \$.appscoManageCustomerPageActions ]]" api-errors="[[ _apiErrors ]]" on-page-error="_onError" on-partner-admins-added="_onPartnerAdminsAdded" on-customer-removed="_onCustomerRemoved">
             </appsco-manage-customer-page>
 
-            <appsco-manage-group-page name="manage-group" page="" company-page="" id="appscoManageGroupPage" route="[[ subroute ]]" group="{{ _group }}" authorization-token="[[ authorizationToken ]]" group-api="[[ _companyGroupApi ]]" company-applications-api="[[ _companyApplicationsApi ]]" company-roles-api="[[ _companyRolesApi ]]" company-contacts-api="[[ _companyContactsApi ]]" api-errors="[[ _apiErrors ]]" toolbar="[[ \$.appscoManageGroupPageActions ]]" on-page-error="_onError" on-group-removed="_onGroupRemoved" on-resource-removed-from-group="_onResourceRemovedFromGroup" on-resources-added-to-group="_onResourcesAddedToGroup">
-            </appsco-manage-group-page>
+             <appsco-manage-group-page name="manage-group" page="" company-page=""
+                 id="appscoManageGroupPage"
+                 route="[[ subroute ]]"
+                 group="{{ _group }}"
+                 authorization-token="[[ authorizationToken ]]"
+                 group-api="[[ _companyGroupApi ]]"
+                 company-applications-api="[[ _companyApplicationsApi ]]"
+                 company-roles-api="[[ _companyRolesApi ]]"
+                 company-contacts-api="[[ _companyContactsApi ]]"
+                 image-settings-api="[[ _companyGroupSettingApi ]]"
+                 api-errors="[[ _apiErrors ]]"
+                 toolbar="[[ \$.appscoManageGroupPageActions ]]"
+                 on-page-error="_onError"
+                 on-group-removed="_onGroupRemoved"
+                 on-resource-removed-from-group="_onResourceRemovedFromGroup"
+                 on-resources-added-to-group="_onResourcesAddedToGroup">
+             </appsco-manage-group-page>
 
             <appsco-provisioning-page name="provisioning" page="" company-page="" id="appscoProvisioningPage" active-integrations-api="[[ _getActiveIntegrationsApi ]]" available-integrations-api="[[ _getAvailableIntegrationsApi ]]" authorization-token="[[ authorizationToken ]]" api-errors="[[ _apiErrors ]]" toolbar="[[ \$.appscoProvisioningPageActions ]]" on-edit-integration="_onEditIntegrationAction" on-active-integration="_onIntegrationSetup">
             </appsco-provisioning-page>

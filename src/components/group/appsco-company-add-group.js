@@ -64,6 +64,9 @@ class AppscoCompanyAddGroup extends mixinBehaviors([Appsco.HeadersMixin], Polyme
                             <div class="input-container">
                                 <paper-input id="groupName" label="New group name" name="company_group[name]" required="" auto-validate="" error-message="Please enter group name."></paper-input>
                             </div>
+                            <div class="input-container">
+                                <paper-input id="groupDescription" label="New group description" name="company_group[description]" auto-validate="" error-message="Please enter group description."></paper-input>
+                            </div>
                         </form>
                     </iron-form>
                 </div>

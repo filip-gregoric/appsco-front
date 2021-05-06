@@ -48,17 +48,15 @@ class AppscoCompanyGroupImage extends PolymerElement {
             }
         </style>
 
-            <template is="dom-if" if="[[ !preview ]]">
-                <div class="group-image">
-                    <iron-icon icon="social:people"></iron-icon>
-                </div>
-            </template>
-
-            <template is="dom-if" if="[[ preview ]]">
-                <div class="group-image preview">
-                    <iron-icon icon="social:people"></iron-icon>
-                </div>
-            </template>
+        <template is="dom-if" if="[[ group.image_url ]]">
+            <iron-image class\$="[[ imageClasses ]]" src\$="[[ group.image_url ]]" alt="Group image" sizing="cover"></iron-image>
+        </template>
+        
+        <template is="dom-if" if="[[ !group.image_url ]]">
+            <div class\$="[[ imageClasses ]]">
+                <iron-icon icon="social:people"></iron-icon>
+            </div>
+        </template>
 `;
     }
 
@@ -67,18 +65,25 @@ class AppscoCompanyGroupImage extends PolymerElement {
     static get properties() {
         return {
             group: {
-                type: Object,
-                value: function () {
-                    return {};
-                }
+                type: Object
             },
 
             preview: {
                 type: Boolean,
                 value: false,
                 reflectToAttribute: true
+            },
+
+            imageClasses: {
+                type: String,
+                value: 'group-image preview',
+                computed: 'computeImageClasses(preview)'
             }
         };
+    }
+
+    computeImageClasses(preview) {
+        return preview ? 'group-image preview' : 'group-image';
     }
 }
 window.customElements.define(AppscoCompanyGroupImage.is, AppscoCompanyGroupImage);
