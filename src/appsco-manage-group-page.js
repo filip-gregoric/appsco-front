@@ -13,6 +13,7 @@ import './components/group/appsco-manage-group-components-page.js';
 import './components/group/appsco-group-roles-page.js';
 import './components/group/appsco-group-contacts-page.js';
 import './components/group/appsco-group-resources-page.js';
+import './components/group/appsco-group-image-settings.js';
 import './components/group/appsco-manage-group-page-actions.js';
 import './components/group/appsco-company-remove-group.js';
 import './components/group/appsco-group-add-resource.js';
@@ -78,9 +79,12 @@ class AppscoManageGroupPage extends mixinBehaviors([
             <div class="flex-vertical" resource="" slot="resource">
 
                 <div class="resource-header">
-                    <div class="group-icon">
-                        <iron-icon icon="social:people"></iron-icon>
-                    </div>
+                    <appsco-group-image-settings
+                        id="appscoGroupImageSettings"
+                        group="[[ group ]]"
+                        authorization-token="[[ authorizationToken ]]"
+                        image-settings-api="[[ _groupImageSettingsApi ]]">
+                    </appsco-group-image-settings>
                 </div>
 
                 <div class="resource-content group-info">
@@ -182,6 +186,11 @@ class AppscoManageGroupPage extends mixinBehaviors([
             _groupResourcesApi: {
                 type: String,
                 computed: '_computeGroupResourcesApi(group)'
+            },
+
+            _groupImageSettingsApi: {
+                type: String,
+                computed: '_computeGroupImageSettingsApi(group)'
             },
 
             apiErrors: {
@@ -321,6 +330,10 @@ class AppscoManageGroupPage extends mixinBehaviors([
 
     _computeGroupResourcesApi(group) {
         return group.meta ? group.meta.applications + '?extended=1' : null;
+    }
+
+    _computeGroupImageSettingsApi(group) {
+        return group.meta ? group.meta.self + '/image' : null;
     }
 
     _onPageLoaded() {

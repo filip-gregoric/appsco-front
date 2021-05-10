@@ -62,6 +62,9 @@ class AppscoCompanyRenameGroup extends mixinBehaviors([Appsco.HeadersMixin], Pol
                     <div class="input-container">
                         <paper-input id="groupName" label="New group name" name="company_group[name]" required="" auto-validate="" error-message="Please enter group name."></paper-input>
                     </div>
+                    <div class="input-container">
+                        <paper-input id="groupDescription" label="New group description" name="company_group[description]" error-message="Please enter group description."></paper-input>
+                    </div>
                 </div>
             </paper-dialog-scrollable>
 
@@ -168,7 +171,7 @@ class AppscoCompanyRenameGroup extends mixinBehaviors([Appsco.HeadersMixin], Pol
             method: 'PUT',
             handleAs: 'json',
             headers: this._headers,
-            body: 'company_group[name]=' + encodeURIComponent(this.$.groupName.value)
+            body: 'company_group[name]=' + encodeURIComponent(this.$.groupName.value) + '&company_group[description]=' + encodeURIComponent(this.$.groupDescription.value)
         }).then(function() {
             this.dispatchEvent(new CustomEvent('group-renamed', {
                 bubbles: true,
@@ -213,6 +216,7 @@ class AppscoCompanyRenameGroup extends mixinBehaviors([Appsco.HeadersMixin], Pol
 
     _onGroupChanged(group) {
         this.$.groupName.value = group ? group.name : '';
+        this.$.groupDescription.value = group ? group.description : '';
     }
 
     setGroup(group) {
