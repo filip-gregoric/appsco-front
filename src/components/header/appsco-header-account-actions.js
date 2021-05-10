@@ -5,6 +5,7 @@ import './appsco-account-notifications-dropdown.js';
 import '../notifications/appsco-notification-icon.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
 
 class AppscoHeaderAccountActions extends PolymerElement {
     static get template() {
@@ -132,7 +133,7 @@ class AppscoHeaderAccountActions extends PolymerElement {
         const dropDown = this.$.appscoAccountNotificationsDropdown;
         dropDown.removeAttribute('disable-upgrade');
 
-        setTimeout(() => dropDown.toggleNotifications(event.target));
+        afterNextRender(this, () => dropDown.toggleNotifications());
     }
 
     _onGetStartedIcon(event) {
