@@ -12,6 +12,7 @@ import '../../components/appsco-list-styles.js';
 import { AppscoListObserverBehavior } from '../../components/appsco-list-observer-behavior.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status";
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 class AppscoCompanyResources extends mixinBehaviors([
@@ -41,7 +42,7 @@ class AppscoCompanyResources extends mixinBehaviors([
             }
         </style>
 
-        <iron-ajax id="getListApiRequest" url="[[ _listApi ]]" on-error="_onError" on-response="_onGetListResponse" headers="[[ _headers ]]" debounce-duration="300"></iron-ajax>
+        <iron-ajax id="getListApiRequest" url="[[ _listApi ]]" on-error="_onError" on-response="_onGetListResponse" headers="[[ _headers ]]"></iron-ajax>
         
         <div class="list-container">
 
@@ -57,7 +58,7 @@ class AppscoCompanyResources extends mixinBehaviors([
                 </div>
 
                 <div class="list">
-                    <template is="dom-repeat" items="[[ _listItems ]]" on-dom-change="_onItemsDomChange">
+                    <template is="dom-repeat" items="[[ _listItems ]]" initial-count="20">
 
                         <appsco-company-resource-item id="appscoListItem_[[ index ]]" item="[[ item ]]" type="[[ type ]]" selectable="[[ selectable ]]" resource-admin="[[ resourceAdmin ]]" display-grid\$="[[ displayGrid ]]" on-item="_onListItemAction" on-select-item="_onSelectListItemAction"></appsco-company-resource-item>
 
@@ -102,6 +103,32 @@ class AppscoCompanyResources extends mixinBehaviors([
         return [
             '_observeItems(_listItems)'
         ];
+    }
+
+    _addItems(itemList) {
+        this._listEmpty = false;
+
+        itemList.forEach(function(el) {
+            el.activated = false;
+            el.selected = false;
+        });
+
+        this.push('_listItems', ...itemList);
+        this.push('_allListItems', ...itemList);
+
+        afterNextRender(this, function() {
+                this.dispatchEvent(new CustomEvent('list-loaded', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        items: itemList
+                    }
+                }));
+                this._hideProgressBar();
+                this._hideLoadMoreProgressBar();
+                this._setLoadMoreAction();
+            }
+        );
     }
 
     _observeItems(items) {
