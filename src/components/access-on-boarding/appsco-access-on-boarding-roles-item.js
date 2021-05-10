@@ -156,15 +156,15 @@ class AppscoAccessOnBoardingRolesItem extends mixinBehaviors([
                 <div class="info">
                     <span class="info-label">Unresolved:&nbsp;</span>
                     <span class="info-value" data-count\$="[[ _unresolvedCount ]]">[[ _unresolvedCount ]]</span>
-                    <span class="info-label">Resolved:&nbsp;</span>
-                    <span class="info-value">[[ _resolvedCount ]]</span>
                 </div>
             </div>
 
-            <div class="actions">
-                <paper-button on-tap="_onShowEvents" hidden\$="[[ _eventsVisible ]]">Show</paper-button>
-                <paper-button on-tap="_onHideEvents" hidden\$="[[ !_eventsVisible ]]">Hide</paper-button>
-            </div>
+            <template is="dom-if" if="[[ _hasUnresolved ]]">
+                <div class="actions">
+                    <paper-button on-tap="_onShowEvents" hidden\$="[[ _eventsVisible ]]">Show</paper-button>
+                    <paper-button on-tap="_onHideEvents" hidden\$="[[ !_eventsVisible ]]">Hide</paper-button>
+                </div>
+            </template>
         </div>
 
         <iron-collapse id="events">
@@ -253,11 +253,6 @@ class AppscoAccessOnBoardingRolesItem extends mixinBehaviors([
             _resolveRequests: {
                 type: Number,
                 value: 0
-            },
-
-            _resolvedCount: {
-                type: Number,
-                computed: '_computeCountByStatus(item.access_onboardings, "resolved")'
             },
 
             _unresolvedCount: {
