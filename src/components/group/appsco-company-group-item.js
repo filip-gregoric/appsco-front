@@ -41,15 +41,20 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
 
         <iron-media-query query="(max-width: 600px)" query-matches="{{ mobileScreen }}"></iron-media-query>
 
-        <template is="dom-if" if="[[ !preview ]]">
-            <iron-ajax id="getGroupRolesApiRequest" url="[[ _groupRolesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupRolesError" on-response="_onGroupRolesResponse"></iron-ajax>
-    
-            <iron-ajax id="getGroupContactsApiRequest" url="[[ _groupContactsApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupContactsError" on-response="_onGroupContactsResponse"></iron-ajax>
-    
-            <iron-ajax id="getGroupResourcesApiRequest" url="[[ _groupResourcesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupResourcesError" on-response="_onGroupResourcesResponse"></iron-ajax>
-        </template>
+
+        <iron-ajax id="getGroupRolesApiRequest" url="[[ _groupRolesApiUrl ]]" headers="[[ _headers ]]" on-error="_onGroupRolesError" on-response="_onGroupRolesResponse"></iron-ajax>
+
+        <iron-ajax id="getGroupContactsApiRequest" url="[[ _groupContactsApiUrl ]]" headers="[[ _headers ]]" on-error="_onGroupContactsError" on-response="_onGroupContactsResponse"></iron-ajax>
+
+        <iron-ajax id="getGroupResourcesApiRequest" url="[[ _groupResourcesApiUrl ]]" headers="[[ _headers ]]" on-error="_onGroupResourcesError" on-response="_onGroupResourcesResponse"></iron-ajax>
+
         <template is="dom-if" if="[[ preview ]]">
-            <span class="info-label item-title">[[ item.name ]]</span>
+            <span class="info-label item-title">[[ item.name ]] 
+                <template is="dom-if" if="[[ previewShowCountType ]]">
+                    ([[ _previewCount ]])
+                </template>
+            </span>
+
         </template>
 
         <template is="dom-if" if="[[ !preview ]]">
@@ -110,6 +115,13 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
                 reflectToAttribute: true
             },
 
+            /**
+             * Possible values: "resources", "contacts", "roles"
+             */
+            previewShowCountType: {
+                type: String
+            },
+
             _groupRolesApiUrl: {
                 type: String,
                 computed: '_computeGroupRolesApiUrl(item)'
@@ -159,13 +171,19 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
                 type: Boolean,
                 value: false,
                 reflectToAttribute: true
+            },
+
+            _previewCount: {
+                type: String,
+                computed: '_computePreviewCount(preview, previewShowCountType, _groupResourcesCount, _groupContactsCount, _groupRolesCount)'
             }
         };
     }
 
     static get observers() {
         return [
-            '_listenForItemInfoLoad(_groupRolesLoaded, _groupResourcesLoaded, _groupContactsLoaded)'
+            '_listenForItemInfoLoad(_groupRolesLoaded, _groupResourcesLoaded, _groupContactsLoaded)',
+            '_groupChanged(item)'
         ];
     }
 
@@ -258,6 +276,40 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
                 group: this.item
             }
         }));
+    }
+
+    _computePreviewCount(preview, previewShowCountType) {
+        if (!preview) {
+            return '';
+        }
+
+        console.log(preview, previewShowCountType, this._groupResourcesCount, this._groupContactsCount);
+
+        if ('resources' === previewShowCountType) {
+            return this._groupResourcesCount;
+        }
+
+        if ('contacts' === previewShowCountType) {
+            return this._groupContactsCount;
+        }
+
+        if ('roles' === previewShowCountType) {
+            return this._groupRolesCount;
+        }
+
+        return '';
+    }
+
+    _groupChanged(group) {
+        if (!group) {
+            return;
+        }
+
+        if (Object.keys(group.meta.counts).length > 0) {
+            this._groupContactsCount = group.meta.counts.contacts_count;
+            this._groupResourcesCount = group.meta.counts.applications_count;
+            this._groupRolesCount = group.meta.counts.users_count;
+        }
     }
 }
 window.customElements.define(AppscoCompanyGroupItem.is, AppscoCompanyGroupItem);
