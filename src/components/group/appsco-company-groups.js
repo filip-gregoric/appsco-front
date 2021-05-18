@@ -40,7 +40,17 @@ class AppscoCompanyGroups extends mixinBehaviors([
                 <div class="list">
                     <template is="dom-repeat" items="[[ _listItems ]]" on-dom-change="_onItemsDomChange">
 
-                        <appsco-company-group-item id="appscoListItem_[[ index ]]" item="[[ item ]]" type="[[ type ]]" authorization-token="[[ authorizationToken ]]" preview="[[ preview ]]" selectable="[[ selectable ]]" on-item="_onListItemAction" on-select-item="_onSelectListItemAction"></appsco-company-group-item>
+                        <appsco-company-group-item
+                            id="appscoListItem_[[ index ]]"
+                            item="[[ item ]]"
+                            type="[[ type ]]"
+                            authorization-token="[[ authorizationToken ]]"
+                            preview="[[ preview ]]"
+                            preview-show-count-type="[[ previewShowCountType ]]"
+                            selectable="[[ selectable ]]"
+                            on-item="_onListItemAction"
+                            on-select-item="_onSelectListItemAction">
+                        </appsco-company-group-item>
 
                     </template>
                 </div>
@@ -63,6 +73,13 @@ class AppscoCompanyGroups extends mixinBehaviors([
             preview: {
                 type: Boolean,
                 value: false
+            },
+
+            /**
+             * Possible values: "resources", "contacts", "roles"
+             */
+            previewShowCountType: {
+                type: String
             },
 
             hideMessages: {

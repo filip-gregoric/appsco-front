@@ -162,7 +162,18 @@ class AppscoDirectoryPage extends mixinBehaviors([
                         <div name="groups" class="tab-content groups">
                             <appsco-search id="appscoSearch" label="Search groups" on-search="_onSearchGroups" on-search-clear="_onSearchGroupsClear"></appsco-search>
 
-                            <appsco-company-groups id="appscoCompanyGroups" list-api="[[ groupsApi ]]" authorization-token="[[ authorizationToken ]]" size="100" type="group" preview="" selectable="" on-item="_onGroupSelected"></appsco-company-groups>
+                            <appsco-company-groups
+                                id="appscoCompanyGroups"
+                                list-api="[[ groupsApi ]]"
+                                authorization-token="[[ authorizationToken ]]"
+                                size="100"
+                                type="group"
+                                preview=""
+                                preview-show-count-type="roles"
+                                selectable=""
+                                show-total-count=""
+                                on-item="_onGroupSelected">
+                            </appsco-company-groups>
                         </div>
 
                     </neon-animated-pages>
