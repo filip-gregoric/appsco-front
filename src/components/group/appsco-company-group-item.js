@@ -41,12 +41,13 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
 
         <iron-media-query query="(max-width: 600px)" query-matches="{{ mobileScreen }}"></iron-media-query>
 
-        <iron-ajax id="getGroupRolesApiRequest" url="[[ _groupRolesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupRolesError" on-response="_onGroupRolesResponse"></iron-ajax>
-
-        <iron-ajax id="getGroupContactsApiRequest" url="[[ _groupContactsApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupContactsError" on-response="_onGroupContactsResponse"></iron-ajax>
-
-        <iron-ajax id="getGroupResourcesApiRequest" url="[[ _groupResourcesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupResourcesError" on-response="_onGroupResourcesResponse"></iron-ajax>
-
+        <template is="dom-if" if="[[ !preview ]]">
+            <iron-ajax id="getGroupRolesApiRequest" url="[[ _groupRolesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupRolesError" on-response="_onGroupRolesResponse"></iron-ajax>
+    
+            <iron-ajax id="getGroupContactsApiRequest" url="[[ _groupContactsApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupContactsError" on-response="_onGroupContactsResponse"></iron-ajax>
+    
+            <iron-ajax id="getGroupResourcesApiRequest" url="[[ _groupResourcesApiUrl ]]" headers="[[ _headers ]]" auto="" on-error="_onGroupResourcesError" on-response="_onGroupResourcesResponse"></iron-ajax>
+        </template>
         <template is="dom-if" if="[[ preview ]]">
             <span class="info-label item-title">[[ item.name ]]</span>
         </template>
@@ -181,9 +182,9 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
     }
 
     recalculateTotals() {
-        this.$.getGroupRolesApiRequest.generateRequest();
-        this.$.getGroupContactsApiRequest.generateRequest();
-        this.$.getGroupResourcesApiRequest.generateRequest();
+        this.shadowRoot.getElementById('getGroupRolesApiRequest').generateRequest();
+        this.shadowRoot.getElementById('getGroupContactsApiRequest').generateRequest();
+        this.shadowRoot.getElementById('getGroupResourcesApiRequest').generateRequest();
     }
 
     increaseGroupRolesCount(count) {
