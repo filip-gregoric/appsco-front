@@ -118,7 +118,7 @@ class AppscoAccountNotificationsDropdown extends DisableUpgradeMixin(PolymerElem
              */
             _open: {
                 type: Boolean,
-                value: false
+                observer: '_openedChanged'
             },
 
             /**
@@ -137,13 +137,18 @@ class AppscoAccountNotificationsDropdown extends DisableUpgradeMixin(PolymerElem
         this._triggerDropdown = this.shadowRoot.getElementById('notificationsAction');
     }
 
-    toggleNotifications(target) {
+    toggleNotifications() {
         this._open = !this._open;
-        this._triggerDropdown = target;
+    }
+
+    _openedChanged(opened) {
+        if (undefined === opened) {
+            return;
+        }
 
         setTimeout(function() {
             this.$.appscoNotificationsDropdown.toggle();
-            if (this._open) {
+            if (opened) {
                 this.$.appscoAccountNotifications.loadNotifications();
             }
         }.bind(this));

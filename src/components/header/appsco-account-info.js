@@ -7,7 +7,7 @@ import '@polymer/iron-image/iron-image.js';
 import './appsco-dropdown.js';
 import '../account/appsco-account-image.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { afterNextRender, beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 class AppscoAccountInfo extends PolymerElement {
@@ -322,7 +322,7 @@ class AppscoAccountInfo extends PolymerElement {
 
     _toggleDropdown() {
         this._dropDownEnabled = true;
-        setTimeout(() => this.shadowRoot.getElementById('accountInfoDropdown').toggle());
+        afterNextRender(this, () => this.shadowRoot.getElementById('accountInfoDropdown').toggle());
     }
 
     _onAccountSettingsAction() {
