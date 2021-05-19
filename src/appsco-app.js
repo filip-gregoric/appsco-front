@@ -533,7 +533,40 @@ class AppscoApp extends mixinBehaviors([
                 on-image-upload-error="_onImageUploadError">
             </appsco-manage-resource-page>
 
-            <appsco-directory-page name="directory" page="" company-page="" id="appscoDirectoryPage" role="{{ _role }}" authorization-token="[[ authorizationToken ]]" company-invitations-api="[[ _companyInvitationsApi ]]" company-directory-roles-api="[[ _companyRolesApi ]]" company-orgunits-api="[[ _companyOrgunitsApi ]]" company-subscription-api="[[ _companySubscriptionApi ]]" domains-api="[[ _companyDomainsApi ]]" groups-api="[[ _companyGroupsApi ]]" company-notifications-api="[[ _companyNotificationsApi ]]" company-contacts-api="[[ _companyContactsApi ]]" company-import-accounts-api="[[ _companyImportAccountsApi ]]" company-api="[[ _companyApi ]]" api-errors="[[ _apiErrors ]]" domain="[[ domain ]]" toolbar="[[ \$.appscoDirectoryPageActions ]]" on-added-to-orgunit="_onAccountsAddedToOrgunit" on-accounts-removed="_onAccountsRemoved" on-import-finished="_onAccountImportFinished" on-orgunit-added="_onOrgunitChanged" on-orgunit-modified="_onOrgunitChanged" on-orgunit-removed="_onOrgunitChanged" on-edit-account="_onEditAccount" on-info-edit-account="_onEditAccount" on-group-added="_onGroupAdded" on-observable-list-empty="_onObservableListEmpty" on-observable-list-filled="_onObservableListFilled" on-company-subscription-loaded="_onSubscriptionLoaded" on-page-loaded="_onDirectoryPageLoaded">
+            <appsco-directory-page
+                name="directory"
+                page=""
+                company-page=""
+                id="appscoDirectoryPage"
+                role="{{ _role }}"
+                authorization-token="[[ authorizationToken ]]"
+                company-invitations-api="[[ _companyInvitationsApi ]]"
+                company-directory-roles-api="[[ _companyRolesApi ]]"
+                company-directory-summary-api="[[ _companyDirectorySummaryApi ]]"
+                company-orgunits-api="[[ _companyOrgunitsApi ]]"
+                company-subscription-api="[[ _companySubscriptionApi ]]"
+                domains-api="[[ _companyDomainsApi ]]"
+                groups-api="[[ _companyGroupsApi ]]"
+                company-notifications-api="[[ _companyNotificationsApi ]]"
+                company-contacts-api="[[ _companyContactsApi ]]"
+                company-import-accounts-api="[[ _companyImportAccountsApi ]]"
+                company-api="[[ _companyApi ]]"
+                api-errors="[[ _apiErrors ]]"
+                domain="[[ domain ]]"
+                toolbar="[[ \$.appscoDirectoryPageActions ]]"
+                on-added-to-orgunit="_onAccountsAddedToOrgunit"
+                on-accounts-removed="_onAccountsRemoved"
+                on-import-finished="_onAccountImportFinished"
+                on-orgunit-added="_onOrgunitChanged"
+                on-orgunit-modified="_onOrgunitChanged"
+                on-orgunit-removed="_onOrgunitChanged"
+                on-edit-account="_onEditAccount"
+                on-info-edit-account="_onEditAccount"
+                on-group-added="_onGroupAdded"
+                on-observable-list-empty="_onObservableListEmpty"
+                on-observable-list-filled="_onObservableListFilled"
+                on-company-subscription-loaded="_onSubscriptionLoaded"
+                on-page-loaded="_onDirectoryPageLoaded">
             </appsco-directory-page>
 
             <appsco-licences-page name="licences" page="" company-page=""
@@ -922,6 +955,10 @@ class AppscoApp extends mixinBehaviors([
             },
 
             _companyRolesApi: {
+                type: String
+            },
+
+            _companyDirectorySummaryApi: {
                 type: String
             },
 
@@ -1743,6 +1780,7 @@ class AppscoApp extends mixinBehaviors([
 
         if (company.company_admin) {
             this._companyRolesApi = companyApi + '/directory/roles';
+            this._companyDirectorySummaryApi = companyApi + '/directory/summary';
             this._companyNotificationsApi = companyApi + '/notification';
             this._companyInvitationsApi = companyApi + '/invitation';
             this._companyImportAccountsApi = companyApi + '/directory/roles/import';
