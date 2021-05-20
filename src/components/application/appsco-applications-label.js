@@ -34,7 +34,7 @@ class AppscoApplicationsLabel extends mixinBehaviors([
                 ([[ _applicationCount ]])
                 <iron-icon icon="icons:expand-less" class="toggle-icon" opened\$="[[ opened ]]"></iron-icon>
             </div>
-            <iron-collapse id="ironCollapse">
+            <iron-collapse id="ironCollapse" opened="">
                 <appsco-applications
                     id="appscoApplications"
                     size="[[ size ]]"
