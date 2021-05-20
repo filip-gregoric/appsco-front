@@ -29,6 +29,7 @@ import './directory/appsco-import-accounts.js';
 import './components/notifications/appsco-send-notification.js';
 import './components/account/company/appsco-account-orgunit.js';
 import './components/group/appsco-resource-add-groups.js';
+import './directory/appsco-directory-summary.js';
 import './upgrade/appsco-upgrade-action.js';
 import './components/account/appsco-invitation-remove.js';
 import './lib/mixins/appsco-headers-mixin.js';
@@ -147,6 +148,12 @@ class AppscoDirectoryPage extends mixinBehaviors([
         <appsco-content id="appscoContent" resource-active="">
 
             <div class="flex-vertical" resource="" slot="resource">
+                <div class="resource-header">Summary</div>
+                <appsco-directory-summary
+                    id="directorySummary"
+                    directory-summary-api="[[ companyDirectorySummaryApi ]]"
+                    authorization-token="[[ authorizationToken ]]">
+                </appsco-directory-summary>
                 <div class="resource-content flex-vertical">
                     <paper-tabs id="paperTabs" selected="{{ _selectedFilter }}">
                         <paper-tab name="organization-units">Organization units</paper-tab>
@@ -250,7 +257,6 @@ class AppscoDirectoryPage extends mixinBehaviors([
         <appsco-account-orgunit id="appscoAccountOrgunit" authorization-token="[[ authorizationToken ]]" company-orgunits-api="[[ companyOrgunitsApi ]]" accounts="[[ selectedAccounts ]]">
         </appsco-account-orgunit>
 
-
         <appsco-resource-add-groups id="appscoShareToGroupDialog" authorization-token="[[ authorizationToken ]]" groups-api="[[ groupsApi ]]">
         </appsco-resource-add-groups>
 
@@ -313,6 +319,10 @@ class AppscoDirectoryPage extends mixinBehaviors([
             },
 
             companyDirectoryRolesApi: {
+                type: String
+            },
+
+            companyDirectorySummaryApi: {
                 type: String
             },
 
@@ -873,21 +883,25 @@ class AppscoDirectoryPage extends mixinBehaviors([
 
     addInvitations(invitations) {
         this.shadowRoot.getElementById('appscoInvitations').addInvitations(invitations);
+        this.shadowRoot.getElementById('directorySummary').addInvitationCount(invitations.length);
         this._evaluateSubscriptionLicences();
     }
 
     removeInvitations(invitations) {
         this.shadowRoot.getElementById('appscoInvitations').removeInvitations(invitations);
+        this.shadowRoot.getElementById('directorySummary').removeInvitationCount(invitations.length);
         this._evaluateSubscriptionLicences();
     }
 
     reloadInvitations() {
         this._invitationsLoaded = false;
         this.shadowRoot.getElementById('appscoInvitations').reloadInvitations();
+        this.reloadSummary();
     }
 
     addAccounts(accounts) {
         this.shadowRoot.getElementById('appscoAccounts').addItems(accounts);
+        this.shadowRoot.getElementById('directorySummary').addUserCount(accounts.length);
         this._evaluateSubscriptionLicences();
     }
 
@@ -901,6 +915,7 @@ class AppscoDirectoryPage extends mixinBehaviors([
 
     removeAccounts(accounts) {
         this.shadowRoot.getElementById('appscoAccounts').removeItems(accounts);
+        this.shadowRoot.getElementById('directorySummary').removeUserCount(accounts.length);
         this.setDefaultAccount();
         this._evaluateSubscriptionLicences();
     }
@@ -934,6 +949,10 @@ class AppscoDirectoryPage extends mixinBehaviors([
             default:
                 return false;
         }
+    }
+
+    reloadSummary() {
+        setTimeout(() => { this.shadowRoot.getElementById('directorySummary').reload() }, 1000);
     }
 
     _showAccounts() {
@@ -1118,6 +1137,7 @@ class AppscoDirectoryPage extends mixinBehaviors([
         }
 
         this._notify(message, true);
+        this.reloadSummary();
     }
 
     _onSelectAllCompanyRolesAction() {

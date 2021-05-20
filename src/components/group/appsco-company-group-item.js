@@ -283,8 +283,6 @@ class AppscoCompanyGroupItem extends mixinBehaviors([
             return '';
         }
 
-        console.log(preview, previewShowCountType, this._groupResourcesCount, this._groupContactsCount);
-
         if ('resources' === previewShowCountType) {
             return this._groupResourcesCount;
         }
