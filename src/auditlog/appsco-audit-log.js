@@ -994,7 +994,38 @@ class AppscoAuditLog extends mixinBehaviors([
                 );
                 break;
 
+            case 'provisioning_webhook_watcher_initialized':
+                event = this.localize(
+                    'provisioning_webhook_watcher_initialized',
+                    'title', item.data.watcher.title,
+                    'action', item.data.watcher.action,
+                    'integration', (item.data.integrationName ? item.data.integrationName: "")
+                );
+                break;
+            case 'provisioning_webhook_watcher_sys_processing':
+                event = this.localize(
+                    'provisioning_webhook_watcher_sys_processing',
+                    'title', item.data.watcher.title,
+                    'action', item.data.watcher.action,
+                    'integration', (item.data.integrationName ? item.data.integrationName: "")
+                );
+                break;
+            case 'provisioning_pst_request_successful':
+                event = this.localize(
+                    'provisioning_pst_request_successful',
+                    'action', item.data.action,
+                    'message', item.data.message
+                );
+                break;
+            case 'provisioning_pst_request_failed':
+                event = this.localize(
+                    'provisioning_pst_request_failed',
+                    'action', item.data.action,
+                    'message', item.data.message
+                );
+                break;
             default:
+                event = this.localize(item.type);
         }
 
         return event;

@@ -91,6 +91,13 @@
         "company_access_on_boarding_resolved": "Access on boarding event for user \"{user}\" and application \"{application}\" has been resolved by {resolvedBy}. ",
         "public_profile_changed": "Public profile turned {newValue}.",
         "company_policy_enabled": "\"{policy}\" policy enabled.",
-        "company_policy_disabled": "\"{policy}\" policy disabled."
+        "company_policy_disabled": "\"{policy}\" policy disabled.",
+        "provisioning_webhook_watcher_initialized": "Provisioning recipe \"{title}\" with action [{action}] towards AppsCo Workplace initialized by {integration} webhook.",
+        "provisioning_webhook_watcher_unauthorized": "Provisioning to AppsCo Workplace initialized but unauthorized!",
+        "provisioning_webhook_watcher_sys_processing": "Initialized provisioning sequence for {title}.",
+        "provisioning_recipe_integration_inactive": "Provisioning to AppsCo Workplace integration is inactive!",
+        "provisioning_recipe_to_be_executed": "Provisioning to AppsCo Workplace calling provisioning target.",
+        "provisioning_pst_request_successful": "Provisioning action \"{action}\" towards PST was successful.",
+        "provisioning_pst_request_failed": "Provisioning action \"{action}\" towards PST failed."
     }
 }
