@@ -298,9 +298,7 @@ class AppscoGroupsPage extends mixinBehaviors([
         this.toolbar.addEventListener('notify-groups', this._onNotifyGroupsAction.bind(this));
     }
 
-    initializePage() {
-        this.setDefaultGroup();
-    }
+    initializePage() {}
 
     toggleInfo() {
         if (this._groupExists) {
