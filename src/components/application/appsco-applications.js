@@ -159,17 +159,11 @@ class AppscoApplications extends mixinBehaviors([
 
             _applications: {
                 type: Array,
-                value: function () {
-                    return [];
-                },
                 notify: true
             },
 
             _allApplications: {
-                type: Array,
-                value: function () {
-                    return [];
-                }
+                type: Array
             },
 
             _searchedApplications: {
@@ -267,8 +261,6 @@ class AppscoApplications extends mixinBehaviors([
         super.ready();
 
         beforeNextRender(this, function() {
-            this._clearApplications();
-
             if (this.applicationsApi && this.applicationsApi !== '' &&
                 (this._personalDashboardAllowed || this.isOnCompany == true)) {
                 this._currentUrl = this._computeListApi(this.applicationsApi, this.size, this._sort);
@@ -311,6 +303,9 @@ class AppscoApplications extends mixinBehaviors([
     }
 
     _onApplicationsApiChanged(api) {
+        if (!api) {
+            return;
+        }
         this._clearApplications();
         this._loadApplications();
     }
@@ -323,7 +318,6 @@ class AppscoApplications extends mixinBehaviors([
             this._loadMore = false;
 
             this._currentUrl = this._computeListApi(this.applicationsApi, this.size, this._sort);
-            this._clearApplications();
             this.dispatchEvent(new CustomEvent('show-page-progress-bar', { bubbles: true, composed: true }));
         }
     }
@@ -368,10 +362,6 @@ class AppscoApplications extends mixinBehaviors([
             icons = response.icons ? response.icons : response.applications,
             meta = response.meta;
 
-        if (meta.page.toString() === '1') {
-            this._clearApplications();
-        }
-
         this._loadMore = this._applications.length + icons.length < meta.total;
         this._totalApplications = meta.total;
         this._next = this._computeNextPageListApi(meta.next, this.size, this._sort);
@@ -384,8 +374,13 @@ class AppscoApplications extends mixinBehaviors([
         this._applicationsEmpty = false;
         this._message = '';
 
-        this.push('_allApplications', ...icons);
-        this.push('_applications', ...icons);
+        if (meta.page.toString() === '1') {
+            this.set('_allApplications', icons);
+            this.set('_applications', icons);
+        } else {
+            this.push('_allApplications', ...icons);
+            this.push('_applications', ...icons);
+        }
 
         this.dispatchEvent(new CustomEvent('loaded', {
             bubbles: true,
@@ -452,10 +447,7 @@ class AppscoApplications extends mixinBehaviors([
             }
         }
 
-        this.set('_applications', []);
         this.set('_applications', _applications);
-
-        this.set('_allApplications', []);
         this.set('_allApplications', allApplications);
     }
 
@@ -556,7 +548,6 @@ class AppscoApplications extends mixinBehaviors([
             }
         }
 
-        this._clearApplications();
         this.set('_applications', _applications);
         this.set('_allApplications', allApplications);
     }
@@ -595,10 +586,7 @@ class AppscoApplications extends mixinBehaviors([
             this._totalApplications--;
         }
 
-        this.set('_applications', []);
         this.set('_applications', _applications);
-
-        this.set('_allApplications', []);
         this.set('_allApplications', allApplications);
 
         this.dispatchEvent(new CustomEvent('applications-removed', {
@@ -670,10 +658,7 @@ class AppscoApplications extends mixinBehaviors([
             }
         }
 
-        this.set('_applications', []);
         this.set('_applications', _applications);
-
-        this.set('_allApplications', []);
         this.set('_allApplications', allApplications);
     }
 
@@ -694,7 +679,6 @@ class AppscoApplications extends mixinBehaviors([
         this._getApplications(this._computeListApi(api, 100, this._sort)).then(function(applications) {
             const applicationsLength = applications.length;
 
-            this._clearLoaders();
             this._clearApplications();
             this._hideLoadMoreAction();
             this._totalApplications = applicationsLength;

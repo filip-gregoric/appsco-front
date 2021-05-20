@@ -21,7 +21,7 @@ class AppscoApplicationsLabels extends mixinBehaviors([
                     label="[[ item ]]"
                     size="[[ size ]]"
                     hide-on-empty="[[ hideOnEmpty ]]"
-                    collapse-on-empty="[[ hideOnEmpty ]]"
+                    collapse-on-empty="false"
                     display-style="[[ displayStyle ]]"
                     sort="[[ sort ]]">
                 </appsco-applications-label>            
